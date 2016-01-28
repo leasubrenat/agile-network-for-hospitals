@@ -7,11 +7,14 @@ package com.trand.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
  * @author Anh
  */
+@XmlRootElement
 public class User implements Serializable {
 
     private long id;
@@ -30,11 +33,12 @@ public class User implements Serializable {
         this.role = role;
         this.office = office;
     }
-
+    
+    @XmlElement
     public long getId() {
         return id;
     }
-
+    @XmlElement
     public String getUsername() {
         return username;
     }

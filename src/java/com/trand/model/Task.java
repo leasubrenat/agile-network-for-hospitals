@@ -6,16 +6,23 @@
 package com.trand.model;
 
 import java.util.ArrayList;
+import java.util.List;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
  * @author Anh
  */
+@XmlRootElement
 public class Task {
+    
+    // private static long count;
     private long id;
-    private String name;
-    private String description;
+    private boolean emergencyClass;
     private User poster;
-    private ArrayList<User> participants;
-    private ArrayList<Patient> patients;
+    private List<User> participants;
+    private String name;
+    private String desc;
+    private List<Patient> patient;
 }
+

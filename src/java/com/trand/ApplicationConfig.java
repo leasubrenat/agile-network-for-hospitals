@@ -29,10 +29,13 @@ public class ApplicationConfig extends Application {
      * If required, comment out calling this method in getClasses().
      */
     private void addRestResourceClasses(Set<Class<?>> resources) {
-        resources.add(com.trand.CatResource.class);
-        resources.add(com.trand.CatsResource.class);
-        resources.add(com.trand.DogResource.class);
-        resources.add(com.trand.DogsResource.class);
+        resources.add(com.trand.resources.CatResource.class);
+        resources.add(com.trand.resources.CatsResource.class);
+        resources.add(com.trand.resources.DogResource.class);
+        resources.add(com.trand.resources.DogsResource.class);
+        resources.add(com.trand.resources.TasksResource.class);
+        resources.add(com.trand.resources.UserResource.class);
+        resources.add(com.trand.resources.UsersResource.class);
     }
     
 }
