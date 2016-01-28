@@ -5,7 +5,8 @@
  */
 package com.trand.resources;
 
-import com.trand.model.Task;
+import com.trand.model.Location;
+import com.trand.model.Locations;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.PathParam;
@@ -21,38 +22,38 @@ import javax.ws.rs.core.Response;
  *
  * @author Won Seob Seo <Wons at Metropolia UAS>
  */
-@Path("/tasks")
-public class TasksResource {
+@Path("/locations")
+public class LocationsResource {
 
     @Context
     private UriInfo context;
 
     /**
-     * Creates a new instance of TasksResource
+     * Creates a new instance of LocationsResource
      */
-    public TasksResource() {
+    public LocationsResource() {
     }
 
     /**
-     * Retrieves representation of an instance of com.trand.resources.TasksResource
-     * @return an instance of com.trand.model.Task
+     * Retrieves representation of an instance of com.trand.resources.LocationsResource
+     * @return an instance of com.trand.model.Locations
      */
     @GET
     @Produces("application/xml")
-    public Task getXml() {
+    public Locations getXml() {
         //TODO return proper representation object
         throw new UnsupportedOperationException();
     }
 
     /**
-     * POST method for creating an instance of TaskResource
+     * POST method for creating an instance of LocationResource
      * @param content representation for the new resource
      * @return an HTTP response with content of the created resource
      */
     @POST
     @Consumes("application/xml")
     @Produces("application/xml")
-    public Response postXml(Task content) {
+    public Response postXml(Location content) {
         //TODO
         return Response.created(context.getAbsolutePath()).build();
     }
@@ -60,8 +61,8 @@ public class TasksResource {
     /**
      * Sub-resource locator method for {id}
      */
-//    @Path("{id}")
-//    public TaskResource getTaskResource(@PathParam("id") String id) {
-//        return TaskResource.getInstance(id);
-//    }
+    @Path("{id}")
+    public LocationResource getLocationResource(@PathParam("id") String id) {
+        return LocationResource.getInstance(id);
+    }
 }

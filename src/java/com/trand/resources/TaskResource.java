@@ -6,62 +6,66 @@
 package com.trand.resources;
 
 import com.trand.model.Task;
+import com.trand.service.TaskService;
+import java.net.URI;
+import java.util.List;
+import javax.ws.rs.BeanParam;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.Produces;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
 import javax.ws.rs.DELETE;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriInfo;
 
 /**
  * REST Web Service
  *
  * @author Won Seob Seo <Wons at Metropolia UAS>
  */
+
+@Path("/tasks")
+@Consumes(MediaType.APPLICATION_XML)
+@Produces(MediaType.APPLICATION_XML)
 public class TaskResource {
 
-    private String id;
+        private TaskService taskService = new TaskService();
+        
+	@GET
+	public List<Task> getTasks() {
+		return taskService.getAllTasks();
+	}
 
-    /**
-     * Creates a new instance of TaskResource
-     */
-    private TaskResource(String id) {
-        this.id = id;
-    }
-
-    /**
-     * Get instance of the TaskResource
-     */
-    public static TaskResource getInstance(String id) {
-        // The user may use some kind of persistence mechanism
-        // to store and restore instances of TaskResource class.
-        return new TaskResource(id);
-    }
-
-    /**
-     * Retrieves representation of an instance of com.trand.resources.TaskResource
-     * @return an instance of com.trand.model.Task
-     */
-    @GET
-    @Produces("application/xml")
-    public Task getXml() {
-        //TODO return proper representation object
-        throw new UnsupportedOperationException();
-    }
-
-    /**
-     * PUT method for updating or creating an instance of TaskResource
-     * @param content representation for the resource
-     * @return an HTTP response with content of the updated or created resource.
-     */
-    @PUT
-    @Consumes("application/xml")
-    public void putXml(Task content) {
-    }
-
-    /**
-     * DELETE method for resource TaskResource
-     */
-    @DELETE
-    public void delete() {
-    }
+	@POST
+	public Task addTask(Task task) {
+		
+		Task newTask = taskService.addTask(task);
+		String newId = String.valueOf(newTask.getId());
+		return newTask;
+	}
+	
+	@PUT
+	@Path("/{taskId}")
+	public Task updateTask(@PathParam("taskId") long id, Task task) {
+		task.setId(id);
+		return taskService.updateTask(task);
+	}
+	
+	@DELETE
+	@Path("/{taskId}")
+	public void deleteTask(@PathParam("taskId") long id) {
+		taskService.removeTask(id);
+	}
+	
+	
+	@GET
+	@Path("/{taskId}")
+	public Task getTask(@PathParam("taskId") long id) {
+		return taskService.getTask(id);
+	}
 }

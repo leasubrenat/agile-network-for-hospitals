@@ -33,6 +33,9 @@ public class ApplicationConfig extends Application {
         resources.add(com.trand.resources.CatsResource.class);
         resources.add(com.trand.resources.DogResource.class);
         resources.add(com.trand.resources.DogsResource.class);
+        resources.add(com.trand.resources.LocationResource.class);
+        resources.add(com.trand.resources.LocationsResource.class);
+        resources.add(com.trand.resources.TaskResource.class);
         resources.add(com.trand.resources.TasksResource.class);
         resources.add(com.trand.resources.UserResource.class);
         resources.add(com.trand.resources.UsersResource.class);

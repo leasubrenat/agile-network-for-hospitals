@@ -18,55 +18,43 @@ import java.util.Map;
  */
 public class TaskService {
     
-	private Map<Long, Task> messages = DatabaseClass.getMessages();
+	private Map<Long, Task> tasks = DatabaseClass.getTasks();
 	
-	public MessageService() {
-		messages.put(1L, new Message(1, "Hello World", "koushik"));
-		messages.put(2L, new Message(2, "Hello Jersey", "koushik"));
+	public TaskService() {
+		tasks.put(1L, new Task("Heart Operations"));
+		tasks.put(2L, new Task("Blood infusions"));
 	}
 	
-	public List<Message> getAllMessages() {
-		return new ArrayList<Message>(messages.values()); 
+	public List<Task> getAllTasks() {
+		return new ArrayList<Task>(tasks.values()); 
 	}
 	
-	public List<Message> getAllMessagesForYear(int year) {
-		List<Message> messagesForYear = new ArrayList<>();
-		Calendar cal = Calendar.getInstance();
-		for (Message message : messages.values()) {
-			cal.setTime(message.getCreated());
-			if (cal.get(Calendar.YEAR) == year) {
-				messagesForYear.add(message);
-			}
-		}
-		return messagesForYear;
-	}
-	
-	public List<Message> getAllMessagesPaginated(int start, int size) {
-		ArrayList<Message> list = new ArrayList<Message>(messages.values());
-		if (start + size > list.size()) return new ArrayList<Message>();
+	public List<Task> getAllTasksPaginated(int start, int size) {
+		ArrayList<Task> list = new ArrayList<Task>(tasks.values());
+		if (start + size > list.size()) return new ArrayList<Task>();
 		return list.subList(start, start + size); 
 	}
 	
 	
-	public Message getMessage(long id) {
-		return messages.get(id);
+	public Task getTask(long id) {
+		return tasks.get(id);
 	}
 	
-	public Message addMessage(Message message) {
-		message.setId(messages.size() + 1);
-		messages.put(message.getId(), message);
-		return message;
+	public Task addTask(Task task) {
+		task.setId(Task.count);
+		tasks.put(task.getId(), task);
+		return task;
 	}
 	
-	public Message updateMessage(Message message) {
-		if (message.getId() <= 0) {
+	public Task updateTask(Task task) {
+		if (task.getId() <= 0) {
 			return null;
 		}
-		messages.put(message.getId(), message);
-		return message;
+		tasks.put(task.getId(), task);
+		return task;
 	}
 	
-	public Message removeMessage(long id) {
-		return messages.remove(id);
+	public Task removeTask(long id) {
+		return tasks.remove(id);
 	}
 }

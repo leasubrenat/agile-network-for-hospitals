@@ -5,6 +5,7 @@
  */
 package com.trand.data;
 
+import com.trand.model.Location;
 import com.trand.model.Patient;
 import com.trand.model.Task;
 import java.util.HashMap;
@@ -17,15 +18,20 @@ import java.util.Map;
 public class DatabaseClass {
 
     private static Map<Long, Task> tasks = new HashMap<>();
-    private static Map<String, Patient> patients = new HashMap<>();
-    private static Map<Long, Task> locations = new HashMap<>();
+    private static Map<Long, Patient> patients = new HashMap<>();
+    private static Map<Long, Location> locations = new HashMap<>();
     
 
     public static Map<Long, Task> getTasks() {
         return tasks;
     }
 
-    public static Map<String, Patient> getPatients() {
+    public static Map<Long, Patient> getPatients() {
         return patients;
     }
+    
+    public static Map<Long, Location> getLocations() {
+        return locations;
+    }
+    
 }
