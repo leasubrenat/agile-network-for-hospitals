@@ -13,7 +13,13 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public class AutoId {
 
-    public static int create(AtomicInteger i) {
-        return i.incrementAndGet();
+    private AtomicInteger count;
+
+    public AutoId() {
+        this.count = new AtomicInteger();
+    }
+    
+    public int create() {
+        return count.incrementAndGet();
     }
 }

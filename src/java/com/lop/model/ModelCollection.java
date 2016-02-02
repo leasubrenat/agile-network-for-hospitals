@@ -5,6 +5,7 @@
  */
 package com.lop.model;
 
+import java.io.Serializable;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -12,9 +13,10 @@ import java.util.concurrent.atomic.AtomicInteger;
  *
  * @author Anh
  */
-public class ModelCollection<M extends Model> {
+public class ModelCollection<M extends Model> implements Serializable {
 
     protected AtomicInteger count;
+    protected Class<M> model;
     protected ConcurrentHashMap<Integer, M> byId;
     
     public ModelCollection() {

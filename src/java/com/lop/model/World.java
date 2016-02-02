@@ -18,6 +18,7 @@ public class World {
     private static World instance = new World();
     private Users users;
     private ModelCollection<Role> roles;
+    private ModelCollection<Location> locations;
     private Dogs dogs;
     
     private World() {
@@ -28,6 +29,8 @@ public class World {
         roles = new ModelCollection<>();
         roles.add(new Role("doctor"));
         roles.add(new Role("nurse"));
+        
+        locations = new ModelCollection<>();
         
         dogs = new Dogs();
     }

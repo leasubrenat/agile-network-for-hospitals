@@ -5,6 +5,7 @@
  */
 package com.lop.model;
 
+import java.io.Serializable;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -12,7 +13,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author Anh
  */
 @XmlRootElement
-public class Role extends Model {
+public class Role extends Model implements Serializable {
     private String name;
 
     public Role() {

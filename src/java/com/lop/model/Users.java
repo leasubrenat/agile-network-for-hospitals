@@ -12,17 +12,23 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author Anh
  */
 public class Users {
-    private final ConcurrentHashMap<Integer, User> collection;
+    private final ConcurrentHashMap<Integer, User> byId;
+    private final ConcurrentHashMap<String, User> byUsername;
     
     public Users() {
-        collection = new ConcurrentHashMap<>();
+        byId = new ConcurrentHashMap<>();
+        byUsername = new ConcurrentHashMap<>();
     }
     
     public User add(User o) {
-        return collection.put(o.getId(), o);
+        return byId.put(o.getId(), o);
     }
     
     public User get(Integer key) {
-        return collection.get(key);
+        return byId.get(key);
+    }
+    
+    public User get(String key, String method) {
+        return byId.get(key);
     }
 }
