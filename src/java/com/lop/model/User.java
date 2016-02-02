@@ -3,18 +3,23 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.trand.model;
+package com.lop.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.concurrent.atomic.AtomicInteger;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
  * @author Anh
  */
+@XmlRootElement
 public class User implements Serializable {
+    private static AtomicInteger count = new AtomicInteger();
 
-    private long id;
+    private int id;
     private String username;
     private String name;
     private Role role;
@@ -24,29 +29,39 @@ public class User implements Serializable {
     public User() {
     }
     
+    public User(String username, String name) {
+        this(username, name, null, null);
+    }
+    
     public User(String username, String name, Role role, Location office) {
+        this.id = count.incrementAndGet();
         this.username = username;
         this.name = name;
         this.role = role;
         this.office = office;
     }
 
-    public long getId() {
+    @XmlElement
+    public int getId() {
         return id;
     }
 
+    @XmlElement
     public String getUsername() {
         return username;
     }
 
+    @XmlElement
     public String getName() {
         return name;
     }
 
+    @XmlElement
     public Role getRole() {
         return role;
     }
 
+    @XmlElement
     public Location getOffice() {
         return office;
     }

@@ -3,22 +3,18 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.trand.model;
+package com.lop.model;
 
-import java.util.Date;
+import java.util.ArrayList;
 
 /**
  *
  * @author Anh
  */
-public class Patient {
+public class Location {
 
     private long id;
-    private String name;
-    private int age;
-    private User mainDoctor;
-    private Location room;
-    private String description;
-    private Date hospitalizedAt;
-
+    private String number;
+    private ArrayList<User> users;
+    private ArrayList<Patient> patients;
 }

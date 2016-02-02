@@ -3,10 +3,8 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.trand;
+package com.lop;
 
-import com.trand.model.Cat;
-import com.trand.model.Cats;
 import javax.ws.rs.BadRequestException;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.PUT;

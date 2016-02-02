@@ -3,10 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.trand;
+package com.lop.api;
 
-import com.trand.model.Cats;
-import com.trand.model.Cat;
+import com.lop.model.User;
+import com.lop.model.Users;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.POST;
@@ -23,41 +23,39 @@ import javax.ws.rs.core.Response;
  *
  * @author Anh
  */
-@Path("/cats")
-public class CatsResource {
+@Path("/users")
+public class UsersResource {
 
     @Context
     private UriInfo context;
-    private Cats collection;
 
     /**
-     * Creates a new instance of CatsResource
+     * Creates a new instance of UsersResource
      */
-    public CatsResource() {
-        collection = Cats.getInstance();
+    public UsersResource() {
     }
 
     /**
-     * Retrieves representation of an instance of com.trand.CatsResource
-     * @return an instance of com.trand.Cats
+     * Retrieves representation of an instance of com.lop.api.UsersResource
+     * @return an instance of com.lop.model.Users
      */
     @GET
     @Produces(MediaType.APPLICATION_XML)
-    public Cats getXml() {
+    public Users getXml() {
         //TODO return proper representation object
-        return collection;
+        throw new UnsupportedOperationException();
     }
 
     /**
-     * POST method for creating an instance of CatResource
+     * POST method for creating an instance of UserResource
      * @param content representation for the new resource
      * @return an HTTP response with content of the created resource
      */
     @POST
     @Consumes(MediaType.APPLICATION_XML)
     @Produces(MediaType.APPLICATION_XML)
-    public Response postXml(Cat content) {
-        collection.getCats().add(content);
+    public Response postXml(User content) {
+        //TODO
         return Response.created(context.getAbsolutePath()).build();
     }
 
@@ -65,7 +63,7 @@ public class CatsResource {
      * Sub-resource locator method for {id}
      */
     @Path("{id}")
-    public CatResource getCatResource(@PathParam("id") String id) {
-        return CatResource.getInstance(id);
+    public UserResource getUserResource(@PathParam("id") String id) {
+        return UserResource.getInstance(id);
     }
 }

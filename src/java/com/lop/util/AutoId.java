@@ -3,18 +3,17 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.trand.model;
+package com.lop.util;
 
-import java.util.ArrayList;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  *
  * @author Anh
  */
-public class Location {
+public class AutoId {
 
-    private long id;
-    private String number;
-    private ArrayList<User> users;
-    private ArrayList<Patient> patients;
+    public static int create(AtomicInteger i) {
+        return i.incrementAndGet();
+    }
 }

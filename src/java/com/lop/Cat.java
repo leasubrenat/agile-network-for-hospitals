@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.trand.model;
+package com.lop;
 
 import java.io.Serializable;
 import javax.xml.bind.annotation.XmlElement;

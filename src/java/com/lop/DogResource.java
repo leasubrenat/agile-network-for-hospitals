@@ -3,14 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.trand;
+package com.lop;
 
+import com.lop.model.World;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.PUT;
 import javax.ws.rs.GET;
 import javax.ws.rs.Produces;
 import javax.ws.rs.DELETE;
-import javax.ws.rs.POST;
 import javax.ws.rs.core.MediaType;
 
 /**
@@ -21,45 +21,36 @@ import javax.ws.rs.core.MediaType;
 public class DogResource {
 
     private String id;
-    private Dogs dogs;
-
+    private String method;
+    private Dogs collection;
+    
     /**
      * Creates a new instance of DogResource
      */
-    private DogResource(String id) {
+    private DogResource(String id, String method) {
         this.id = id;
-        this.dogs = Dogs.getInstance();
+        this.method = method;
+        this.collection = World.getInstance().getDogs();
     }
 
     /**
      * Get instance of the DogResource
      */
-    public static DogResource getInstance(String id) {
+    public static DogResource getInstance(String id, String search) {
         // The user may use some kind of persistence mechanism
         // to store and restore instances of DogResource class.
-        return new DogResource(id);
+        return new DogResource(id, search);
     }
 
     /**
      * Retrieves representation of an instance of com.trand.DogResource
-     * @return an instance of com.trand.Dog
+     * @return an instance of com.trand.model.Dog
      */
     @GET
     @Produces(MediaType.APPLICATION_XML)
     public Dog getXml() {
         //TODO return proper representation object
-        //return dogs.getDogs().get(id);
-        System.out.println("GET GET GET GET");
-        return Dogs.getInstance().getDogs().get(id);
-    }
-    
-    @POST
-    @Produces(MediaType.APPLICATION_XML)
-    public Dog postXml() {
-        //TODO return proper representation object
-        //return dogs.getDogs().get(id);
-        System.out.println("POST POST POST");
-        return Dogs.getInstance().getDogs().get(id);
+        return collection.get(id, method);
     }
 
     /**
@@ -69,17 +60,12 @@ public class DogResource {
     @PUT
     @Consumes(MediaType.APPLICATION_XML)
     public void putXml(Dog content) {
-//        dogs.getDogs().get(id).setName(content.getName());
-        Dogs.getInstance().getDogs().put(content.getName(), content);
     }
 
     /**
      * DELETE method for resource DogResource
      */
     @DELETE
-//    @Produces(MediaType.APPLICATION_XML)
     public void delete() {
-        System.out.println("DEL DEL DEL DEL DEL");
-        Dogs.getInstance().getDogs().remove(id);
     }
 }

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.trand;
+package com.lop;
 
 import java.util.Set;
 import javax.ws.rs.core.Application;
@@ -29,10 +29,12 @@ public class ApplicationConfig extends Application {
      * If required, comment out calling this method in getClasses().
      */
     private void addRestResourceClasses(Set<Class<?>> resources) {
-        resources.add(com.trand.CatResource.class);
-        resources.add(com.trand.CatsResource.class);
-        resources.add(com.trand.DogResource.class);
-        resources.add(com.trand.DogsResource.class);
+        resources.add(com.lop.CatResource.class);
+        resources.add(com.lop.CatsResource.class);
+        resources.add(com.lop.DogsResource.class);
+        resources.add(com.lop.api.RoleResource.class);
+        resources.add(com.lop.api.RolesResource.class);
+        resources.add(com.lop.api.UsersResource.class);
     }
     
 }
