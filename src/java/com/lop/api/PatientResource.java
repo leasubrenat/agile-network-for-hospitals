@@ -56,7 +56,7 @@ public class PatientResource {
     @PUT
     @Consumes(MediaType.APPLICATION_XML)
     public void putXml(Patient content) {
-        World.getInstance().getPatients().getById().replace(id, content);
+        World.getInstance().getPatients().getById().replace(id, content); 
     }
 
     /**
