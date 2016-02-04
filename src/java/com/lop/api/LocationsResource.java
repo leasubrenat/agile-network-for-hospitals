@@ -55,7 +55,7 @@ public class LocationsResource {
     @Consumes(MediaType.APPLICATION_XML)
     @Produces(MediaType.APPLICATION_XML)
     public Response postXml(Location content) {
-        //TODO
+        World.getInstance().getLocations().add(content);
         return Response.created(context.getAbsolutePath()).build();
     }
 

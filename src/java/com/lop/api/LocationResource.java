@@ -56,6 +56,7 @@ public class LocationResource {
     @PUT
     @Consumes(MediaType.APPLICATION_XML)
     public void putXml(Location content) {
+        World.getInstance().getLocations().getById().replace(id, content);
     }
 
     /**
@@ -63,5 +64,6 @@ public class LocationResource {
      */
     @DELETE
     public void delete() {
+        World.getInstance().getLocations().getById().remove(id);
     }
 }

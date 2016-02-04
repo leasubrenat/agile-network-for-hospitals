@@ -57,6 +57,7 @@ public class RoleResource {
     @PUT
     @Consumes(MediaType.APPLICATION_XML)
     public void putXml(Role content) {
+        World.getInstance().getRoles().getById().replace(id, content);
     }
 
     /**
@@ -64,5 +65,6 @@ public class RoleResource {
      */
     @DELETE
     public void delete() {
+        World.getInstance().getRoles().getById().remove(id);
     }
 }

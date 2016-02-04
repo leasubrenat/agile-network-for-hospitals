@@ -55,7 +55,7 @@ public class RolesResource {
     @Consumes(MediaType.APPLICATION_XML)
     @Produces(MediaType.APPLICATION_XML)
     public Response postXml(Role content) {
-        //TODO
+        World.getInstance().getRoles().add(content);
         return Response.created(context.getAbsolutePath()).build();
     }
 

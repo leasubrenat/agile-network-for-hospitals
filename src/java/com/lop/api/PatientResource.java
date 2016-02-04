@@ -6,6 +6,7 @@
 package com.lop.api;
 
 import com.lop.model.Patient;
+import com.lop.model.World;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.PUT;
 import javax.ws.rs.GET;
@@ -56,6 +57,7 @@ public class PatientResource {
     @PUT
     @Consumes(MediaType.APPLICATION_XML)
     public void putXml(Patient content) {
+        World.getInstance().getPatients().getById().replace(id, content);
     }
 
     /**
@@ -63,5 +65,6 @@ public class PatientResource {
      */
     @DELETE
     public void delete() {
+        World.getInstance().getPatients().getById().remove(id);
     }
 }

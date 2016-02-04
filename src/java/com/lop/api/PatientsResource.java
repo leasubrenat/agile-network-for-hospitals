@@ -55,7 +55,7 @@ public class PatientsResource {
     @Consumes(MediaType.APPLICATION_XML)
     @Produces(MediaType.APPLICATION_XML)
     public Response postXml(Patient content) {
-        //TODO
+        World.getInstance().getPatients().add(content);
         return Response.created(context.getAbsolutePath()).build();
     }
 
