@@ -6,6 +6,8 @@
 package com.lop.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -14,7 +16,13 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @XmlRootElement
 public class Role extends Model implements Serializable {
+    
     private String name;
+    private List<Link> links = new ArrayList<>();
+
+    public Role(int id) {
+        super(id);
+    }
 
     public Role() {
     }
@@ -31,4 +39,18 @@ public class Role extends Model implements Serializable {
         this.name = name;
     }
     
+    public List<Link> getLinks() {
+        return links;
+    }
+
+    public void setLinks(List<Link> links) {
+        this.links = links;
+    }
+
+    public void addLink(String url, String rel) {
+        Link link = new Link();
+        link.setLink(url);
+        link.setRel(rel);
+        links.add(link);
+    }
 }

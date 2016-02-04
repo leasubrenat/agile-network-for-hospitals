@@ -29,8 +29,8 @@ public class World {
         locations = new Locations();
         patients = new Patients();
         
-        users.add(new User("huj", "Hugh Jackman"));
-        users.add(new User("ctu", "Channing Tatum"));
+        users.add(new User("huj", "111111","Hugh Jackman"));
+        users.add(new User("ctu", "111111", "Channing Tatum"));
         
         roles.add(new Role("doctor"));
         roles.add(new Role("nurse"));

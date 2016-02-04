@@ -8,6 +8,9 @@ package com.lop.api;
 import com.lop.model.User;
 import com.lop.model.Users;
 import com.lop.model.World;
+import java.net.URI;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.POST;
@@ -18,6 +21,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import org.jboss.weld.context.http.HttpRequestContext;
 
 /**
  * REST Web Service
@@ -25,10 +29,14 @@ import javax.ws.rs.core.Response;
  * @author Anh
  */
 @Path("/users")
+@Consumes(MediaType.APPLICATION_XML)
+@Produces(MediaType.APPLICATION_XML)
 public class UsersResource {
 
     @Context
-    private UriInfo context;
+    private UriInfo uriInfo;
+    @Context
+    private HttpServletRequest request;
 
     /**
      * Creates a new instance of UsersResource
@@ -38,32 +46,74 @@ public class UsersResource {
 
     /**
      * Retrieves representation of an instance of com.lop.api.UsersResource
+     *
      * @return an instance of com.lop.model.Users
      */
     @GET
-    @Produces(MediaType.APPLICATION_XML)
     public Users getXml() {
         return World.getInstance().getUsers();
     }
 
     /**
      * POST method for creating an instance of UserResource
+     *
      * @param content representation for the new resource
      * @return an HTTP response with content of the created resource
      */
     @POST
-    @Consumes(MediaType.APPLICATION_XML)
-    @Produces(MediaType.APPLICATION_XML)
     public Response postXml(User content) {
         World.getInstance().getUsers().add(content);
-        return Response.created(context.getAbsolutePath()).build();
+        return Response.created(uriInfo.getAbsolutePath()).build();
     }
 
     /**
      * Sub-resource locator method for {id}
      */
+    @GET
     @Path("{id}")
-    public UserResource getUserResource(@PathParam("id") String id) {
-        return UserResource.getInstance(id);
+    public Response getUserResource(@PathParam("id") String id) {
+        User user = addLinks(World.getInstance().getUsers().get(id));
+        return Response.ok(getUriForSelf(user))
+                    .entity(user)
+                    .build();
+    }
+
+    @POST
+    @Path("/login")
+    public Response login(@Context HttpServletRequest request, User u) {
+        User me = World.getInstance().getUsers().login(u);
+        if (me != null) {
+            HttpSession session = request.getSession();
+            me = addLinks(me);
+            session.setAttribute("me", me);
+            // User userNoPassword = new User(me);
+            URI uri = uriInfo.getAbsolutePathBuilder()
+                    .path(UsersResource.class)
+                    .path(Integer.toString(me.getId()))
+                    .build();
+            return Response.ok(uri)
+                    .entity(me)
+                    .build();
+        } else {
+            return Response.status(400)
+                    .build();
+        }
+    }
+    
+    /*** 
+     * @param user to be added with hateoas link
+     * @return a user with the added links
+     */
+    private User addLinks(User user) {
+        return user.addLink(getUriForSelf(user), "self");
+    }
+
+    public String getUriForSelf(User user) {
+        String uri = uriInfo.getBaseUriBuilder()
+                .path(UsersResource.class)
+                .path(Long.toString(user.getId()))
+                .build()
+                .toString();
+        return uri;
     }
 }
