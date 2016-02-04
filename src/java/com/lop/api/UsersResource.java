@@ -9,6 +9,8 @@ import com.lop.model.User;
 import com.lop.model.Users;
 import com.lop.model.World;
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.ws.rs.core.Context;
@@ -50,8 +52,12 @@ public class UsersResource {
      * @return an instance of com.lop.model.Users
      */
     @GET
-    public Users getXml() {
-        return World.getInstance().getUsers();
+    public List<User> getXml() {
+        List<User> users = new ArrayList<>(World.getInstance().getUsers().getById().values());
+        for (User u : users) {
+            addLinks(u);
+        }
+        return users;
     }
 
     /**
@@ -63,7 +69,10 @@ public class UsersResource {
     @POST
     public Response postXml(User content) {
         World.getInstance().getUsers().add(content);
-        return Response.created(uriInfo.getAbsolutePath()).build();
+        URI uri = uriInfo.getAbsolutePathBuilder().path(Integer.toString(content.getId())).build();
+        return Response.created(uri)
+                .entity(content)
+                .build();
     }
 
     /**
@@ -74,8 +83,8 @@ public class UsersResource {
     public Response getUserResource(@PathParam("id") String id) {
         User user = addLinks(World.getInstance().getUsers().get(id));
         return Response.ok(getUriForSelf(user))
-                    .entity(user)
-                    .build();
+                .entity(user)
+                .build();
     }
 
     @POST
@@ -99,8 +108,9 @@ public class UsersResource {
                     .build();
         }
     }
-    
-    /*** 
+
+    /**
+     * *
      * @param user to be added with hateoas link
      * @return a user with the added links
      */

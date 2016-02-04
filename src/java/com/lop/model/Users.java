@@ -57,4 +57,9 @@ public class Users implements ModelCollectionInterface<User>, Serializable {
         return byId;
     }
     
+    @XmlElement
+    public ConcurrentHashMap<String, User> getByUsername() {
+        return byUsername;
+    }
+    
 }
