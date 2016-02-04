@@ -5,30 +5,47 @@
  */
 package com.lop.model;
 
+import java.io.Serializable;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicInteger;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
  * @author Anh
  */
-public class Users {
-    private final ConcurrentHashMap<Integer, User> byId;
+@XmlRootElement
+public class Users implements ModelCollectionInterface<User>, Serializable {
+    
+    private AtomicInteger count;
+    private final ConcurrentHashMap<String, User> byId;
     private final ConcurrentHashMap<String, User> byUsername;
     
     public Users() {
+        count = new AtomicInteger();
         byId = new ConcurrentHashMap<>();
         byUsername = new ConcurrentHashMap<>();
     }
     
-    public User add(User o) {
-        return byId.put(o.getId(), o);
+    @Override
+    public void add(User obj) {
+        obj.setId(count.incrementAndGet());
+        byId.put(Integer.toString(obj.getId()), obj);
     }
     
-    public User get(Integer key) {
+    public User get(String key) {
         return byId.get(key);
     }
     
-    public User get(String key, String method) {
+    public User get(String key, String method) throws NumberFormatException {
         return byId.get(key);
     }
+
+    @XmlElement
+    @Override
+    public ConcurrentHashMap<String, User> getById() {
+        return byId;
+    }
+    
 }

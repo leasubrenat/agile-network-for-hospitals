@@ -16,27 +16,25 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author Anh
  */
 @XmlRootElement
-public class ModelCollection<M extends Model> implements Serializable {
-
-    protected AtomicInteger count;
-    protected Class<M> model;
-    protected ConcurrentHashMap<String, M> byId;
+public class Patients implements ModelCollectionInterface<Patient>, Serializable {
     
-    public ModelCollection() {
+    private AtomicInteger count;
+    private final ConcurrentHashMap<String, Patient> byId;
+
+    public Patients() {
         count = new AtomicInteger();
         byId = new ConcurrentHashMap<>();
     }
-    
-    public void add(M obj) {
+
+    @Override
+    public void add(Patient obj) {
         obj.setId(count.incrementAndGet());
         byId.put(Integer.toString(obj.getId()), obj);
     }
-    
-    public M get(String key) {
-        return byId.get(key);
-    }
-    
-    public ConcurrentHashMap<String, M> getById() {
+
+    @XmlElement
+    @Override
+    public ConcurrentHashMap<String, Patient> getById() {
         return byId;
     }
     

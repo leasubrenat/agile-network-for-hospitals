@@ -70,6 +70,10 @@ public class User implements Serializable {
         return patients;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public void setUsername(String username) {
         this.username = username;
     }

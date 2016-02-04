@@ -5,9 +5,8 @@
  */
 package com.lop.api;
 
-import com.lop.model.User;
+import com.lop.model.Location;
 import com.lop.model.World;
-import javax.ws.rs.BadRequestException;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.PUT;
 import javax.ws.rs.GET;
@@ -20,53 +19,49 @@ import javax.ws.rs.core.MediaType;
  *
  * @author Anh
  */
-public class UserResource {
+public class LocationResource {
 
     private String id;
 
     /**
-     * Creates a new instance of UserResource
+     * Creates a new instance of LocationResource
      */
-    private UserResource(String id) {
+    private LocationResource(String id) {
         this.id = id;
     }
 
     /**
-     * Get instance of the UserResource
+     * Get instance of the LocationResource
      */
-    public static UserResource getInstance(String id) {
+    public static LocationResource getInstance(String id) {
         // The user may use some kind of persistence mechanism
-        // to store and restore instances of UserResource class.
-        return new UserResource(id);
+        // to store and restore instances of LocationResource class.
+        return new LocationResource(id);
     }
 
     /**
-     * Retrieves representation of an instance of com.lop.api.UserResource
-     *
-     * @return an instance of com.lop.model.User
+     * Retrieves representation of an instance of com.lop.api.LocationResource
+     * @return an instance of com.lop.model.Location
      */
     @GET
     @Produces(MediaType.APPLICATION_XML)
-    public User getXml() {
-        return World.getInstance().getUsers().get(id);
+    public Location getXml() {
+        return World.getInstance().getLocations().getById().get(id);
     }
 
     /**
-     * PUT method for updating or creating an instance of UserResource
-     *
+     * PUT method for updating or creating an instance of LocationResource
      * @param content representation for the resource
      */
     @PUT
     @Consumes(MediaType.APPLICATION_XML)
-    public void putXml(User content) {
-        World.getInstance().getUsers().getById().replace(id, content);
+    public void putXml(Location content) {
     }
 
     /**
-     * DELETE method for resource UserResource
+     * DELETE method for resource LocationResource
      */
     @DELETE
     public void delete() {
-        World.getInstance().getUsers().getById().remove(id);
     }
 }

@@ -7,11 +7,14 @@ package com.lop.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
  * @author Anh
  */
+@XmlRootElement
 public class Location extends Model implements Serializable {
 
     private String number;
@@ -21,12 +24,17 @@ public class Location extends Model implements Serializable {
     public Location() {
     }
 
+    public Location(String number) {
+        this.number = number;
+    }
+
     public Location(String number, ArrayList<User> users) {
         this.number = number;
         this.users = users;
         this.patients = new ArrayList<>();
     }
 
+    @XmlElement
     public String getNumber() {
         return number;
     }

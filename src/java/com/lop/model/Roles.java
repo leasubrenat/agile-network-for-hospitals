@@ -5,30 +5,41 @@
  */
 package com.lop.model;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Type;
+import java.io.Serializable;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicInteger;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
  * @author Anh
  */
-public class Roles {
-    private final ConcurrentHashMap<Integer, Role> byId;
+@XmlRootElement
+public class Roles extends ModelCollection<Role> implements Serializable {
     
     public Roles() {
+        count = new AtomicInteger();
         byId = new ConcurrentHashMap<>();
     }
-    
-    public Role add(Role o) {
-        return byId.put(o.getId(), o);
-    }
-    
-    public Role get(Integer key) {
-        return byId.get(key);
-    }
-    
-    public Role get(String key, String method) {
-        return byId.get(key);
+//    
+//    @Override
+//    public void add(Role obj) {
+//        obj.setId(count.incrementAndGet());
+//        byId.put(Integer.toString(obj.getId()), obj);
+//    }
+//    
+//    public Role get(String key) {
+//        return byId.get(key);
+//    }
+//    
+//    public Role get(String key, String method) {
+//        return byId.get(key);
+//    }
+//    
+    @XmlElement
+    @Override
+    public ConcurrentHashMap<String, Role> getById() {
+        return byId;
     }
 }

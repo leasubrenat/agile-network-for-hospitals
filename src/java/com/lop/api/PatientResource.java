@@ -5,9 +5,7 @@
  */
 package com.lop.api;
 
-import com.lop.model.Role;
-import com.lop.model.World;
-import javax.ws.rs.BadRequestException;
+import com.lop.model.Patient;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.PUT;
 import javax.ws.rs.GET;
@@ -20,47 +18,48 @@ import javax.ws.rs.core.MediaType;
  *
  * @author Anh
  */
-public class RoleResource {
+public class PatientResource {
 
     private String id;
 
     /**
-     * Creates a new instance of RoleResource
+     * Creates a new instance of PatientResource
      */
-    private RoleResource(String id) {
+    private PatientResource(String id) {
         this.id = id;
     }
 
     /**
-     * Get instance of the RoleResource
+     * Get instance of the PatientResource
      */
-    public static RoleResource getInstance(String id) {
+    public static PatientResource getInstance(String id) {
         // The user may use some kind of persistence mechanism
-        // to store and restore instances of RoleResource class.
-        return new RoleResource(id);
+        // to store and restore instances of PatientResource class.
+        return new PatientResource(id);
     }
 
     /**
-     * Retrieves representation of an instance of com.lop.api.RoleResource
-     * @return an instance of com.lop.model.Role
+     * Retrieves representation of an instance of com.lop.api.PatientResource
+     * @return an instance of com.lop.model.Patient
      */
     @GET
     @Produces(MediaType.APPLICATION_XML)
-    public Role getXml() {
-        return World.getInstance().getRoles().get(id);
+    public Patient getXml() {
+        //TODO return proper representation object
+        throw new UnsupportedOperationException();
     }
 
     /**
-     * PUT method for updating or creating an instance of RoleResource
+     * PUT method for updating or creating an instance of PatientResource
      * @param content representation for the resource
      */
     @PUT
     @Consumes(MediaType.APPLICATION_XML)
-    public void putXml(Role content) {
+    public void putXml(Patient content) {
     }
 
     /**
-     * DELETE method for resource RoleResource
+     * DELETE method for resource PatientResource
      */
     @DELETE
     public void delete() {

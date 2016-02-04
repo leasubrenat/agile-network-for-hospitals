@@ -17,20 +17,29 @@ import javax.inject.Singleton;
 public class World {
     private static World instance = new World();
     private Users users;
-    private ModelCollection<Role> roles;
-    private ModelCollection<Location> locations;
+    private final Roles roles;
+    private final Locations locations;
+    private final Patients patients;
+    // Test Collection
     private Dogs dogs;
     
     private World() {
         users = new Users();
+        roles = new Roles();
+        locations = new Locations();
+        patients = new Patients();
+        
         users.add(new User("huj", "Hugh Jackman"));
         users.add(new User("ctu", "Channing Tatum"));
         
-        roles = new ModelCollection<>();
         roles.add(new Role("doctor"));
         roles.add(new Role("nurse"));
         
-        locations = new ModelCollection<>();
+        locations.add(new Location("3"));
+        
+        patients.add(new Patient("Lawton", 28, users.get("1"), locations.getById().get("1")));
+        patients.add(new Patient("Cross", 50, users.get("1"), locations.getById().get("1")));
+        patients.add(new Patient("Presence", 75, users.get("2"), locations.getById().get("1")));
         
         dogs = new Dogs();
     }
@@ -43,8 +52,16 @@ public class World {
         return users;
     }
 
-    public ModelCollection<Role> getRoles() {
+    public Roles getRoles() {
         return roles;
+    }
+
+    public Locations getLocations() {
+        return locations;
+    }
+
+    public Patients getPatients() {
+        return patients;
     }
     
     public Dogs getDogs() {
@@ -52,7 +69,6 @@ public class World {
     }
     
     private void populate() {
-        
         dogs.add(new Dog("Hunter", "german shepherd"));
         dogs.add(new Dog("Pope", "terrier"));
         dogs.add(new Dog("Witch", "some breed 1"));

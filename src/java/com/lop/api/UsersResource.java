@@ -7,6 +7,7 @@ package com.lop.api;
 
 import com.lop.model.User;
 import com.lop.model.Users;
+import com.lop.model.World;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.POST;
@@ -42,8 +43,7 @@ public class UsersResource {
     @GET
     @Produces(MediaType.APPLICATION_XML)
     public Users getXml() {
-        //TODO return proper representation object
-        throw new UnsupportedOperationException();
+        return World.getInstance().getUsers();
     }
 
     /**
@@ -55,7 +55,7 @@ public class UsersResource {
     @Consumes(MediaType.APPLICATION_XML)
     @Produces(MediaType.APPLICATION_XML)
     public Response postXml(User content) {
-        //TODO
+        World.getInstance().getUsers().add(content);
         return Response.created(context.getAbsolutePath()).build();
     }
 
