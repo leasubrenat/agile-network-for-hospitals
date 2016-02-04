@@ -46,8 +46,7 @@ public class PatientResource {
     @GET
     @Produces(MediaType.APPLICATION_XML)
     public Patient getXml() {
-        //TODO return proper representation object
-        throw new UnsupportedOperationException();
+        return World.getInstance().getPatients().getById().get(id);
     }
 
     /**

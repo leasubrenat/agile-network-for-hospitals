@@ -7,7 +7,6 @@ package com.lop.api;
 
 import com.lop.model.User;
 import com.lop.model.World;
-import javax.ws.rs.BadRequestException;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.PUT;
 import javax.ws.rs.GET;
