@@ -22,8 +22,6 @@ import javax.xml.bind.annotation.XmlTransient;
 @XmlRootElement
 public class User implements Serializable {
 
-    private static AtomicInteger count = new AtomicInteger();
-
     private int id;
     private String username;
     private String password;
@@ -41,7 +39,6 @@ public class User implements Serializable {
     }
 
     public User(String username, String password, String name, Role role, Location office) {
-        this.id = count.incrementAndGet();
         this.username = username;
         this.password = password;
         this.name = name;

@@ -5,6 +5,7 @@
  */
 package com.lop.api;
 
+import com.lop.model.Link;
 import com.lop.model.User;
 import com.lop.model.Users;
 import com.lop.model.World;
@@ -53,7 +54,7 @@ public class UsersResource {
     public List<User> getXml() {
         List<User> users = new ArrayList<>(World.getInstance().getUsers().getById().values());
         for (User u : users) {
-            addLinks(u);
+            Link.addLinks(u, uriInfo);
         }
         return users;
     }
@@ -79,8 +80,8 @@ public class UsersResource {
     @GET
     @Path("{id}")
     public Response getUserResource(@PathParam("id") String id) {
-        User user = addLinks(World.getInstance().getUsers().get(id));
-        return Response.ok(getUriForSelf(user))
+        User user = Link.addLinks(World.getInstance().getUsers().get(id), uriInfo);
+        return Response.ok(Link.getUriForSelf(user, uriInfo))
                 .entity(user)
                 .build();
     }
@@ -91,7 +92,7 @@ public class UsersResource {
         User me = World.getInstance().getUsers().login(u);
         if (me != null) {
             HttpSession session = request.getSession();
-            me = addLinks(me);
+            me = Link.addLinks(me, uriInfo);
             session.setAttribute("me", me);
             // User userNoPassword = new User(me);
             URI uri = uriInfo.getAbsolutePathBuilder()
@@ -105,23 +106,5 @@ public class UsersResource {
             return Response.status(400)
                     .build();
         }
-    }
-
-    /**
-     * *
-     * @param user to be added with hateoas link
-     * @return a user with the added links
-     */
-    private User addLinks(User user) {
-        return user.addLink(getUriForSelf(user), "self");
-    }
-
-    public String getUriForSelf(User user) {
-        String uri = uriInfo.getBaseUriBuilder()
-                .path(UsersResource.class)
-                .path(Long.toString(user.getId()))
-                .build()
-                .toString();
-        return uri;
     }
 }

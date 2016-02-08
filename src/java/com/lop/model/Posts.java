@@ -7,6 +7,7 @@ package com.lop.model;
 
 import java.io.Serializable;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  *
@@ -14,14 +15,31 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class Posts implements ModelCollectionInterface<Post>, Serializable {
 
+    private AtomicInteger count;
+    private final ConcurrentHashMap<String, Post> byId;
+
+    public Posts() {
+        count = new AtomicInteger();
+        byId = new ConcurrentHashMap<>();
+    }
+    
+    public Post get(String key) {
+        return byId.get(key);
+    }
+    
+    public Post get(String key, String method) throws NumberFormatException {
+        return byId.get(key);
+    }
+    
     @Override
     public void add(Post obj) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        obj.setId(count.incrementAndGet());
+        byId.put(Integer.toString(obj.getId()), obj);
     }
 
     @Override
     public ConcurrentHashMap<String, Post> getById() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return byId;
     }
     
 }

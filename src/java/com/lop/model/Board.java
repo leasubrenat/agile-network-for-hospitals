@@ -17,7 +17,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @XmlRootElement
 public class Board implements Serializable {
-    private static AtomicInteger count = new AtomicInteger();
+
     private int id;
     private String name;
     private ArrayList<Post> posts;
