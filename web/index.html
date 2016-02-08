@@ -1,40 +1,34 @@
 <!DOCTYPE html>
-<!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
--->
 <html>
-    <head>
-        <title>TODO supply a title</title>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <script src="js/json2xml.js"></script>
-        <script src="//code.jquery.com/jquery-1.12.0.js"></script>
-    </head>
-    <body>
-        <div>Add Cat
-            <div id="add-cat">
-                Name: <input id="cat-name" type="text" name="name">
-                <button id="submit">Submit</button>
-            </div>
-            <div id="list"></div>
-        </div>
-        <script>
-            $(document).ready(function () {
-                $('#submit').click(function () {
-                    var cat = {name: $('#cat-name').val()};
-                    var catxml = json2xml(cat);
-                    $.post('api/cats', catxml, function (res) {
-                        //update();
-                    });
-                });
-            });
-            function update() {
-                $.get('api/cats', function (res) {
-                    updateXML(res);
-                });
-            }
-        </script>
-    </body>
+<head>
+	<title>A.N.H.</title>
+	<meta charset="UTF-8">
+	<link rel="stylesheet" type="text/css" href="webstyle.css">
+	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+</head>
+<body>
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-md-4">
+				
+			</div>
+			<div class="col-md-4">
+				<div id="center">
+					<h1>A.N.H.</h1><br>
+					<a href="board.html" class="menu">Boards</a>
+					<a href="patients.html" class="menu">Patients</a><br>
+					<a href="tasks.html" class="menu">Tasks</a>
+					<a href="#" class="menu">HELP</a><br><br>
+					<p><i class="fa fa-commenting-o"></i> <a href="contact.html">Contact us</a></p>
+                                        <p><i class="fa fa-book"></i> <a href="#">User manual</a></p>
+				</div>
+			</div>
+			<div class="col-md-4">
+				
+			</div>
+		</div>
+	</div>
+</body>
 </html>
