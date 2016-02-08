@@ -5,7 +5,11 @@
  */
 package com.lop.model;
 
+import com.lop.api.BoardsResource;
+import com.lop.api.UsersResource;
 import java.util.Objects;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.UriInfo;
 
 /**
  *
@@ -15,6 +19,32 @@ public class Link {
 
     private String link;
     private String rel;
+    
+    public static Board addLinks(Board b, @Context UriInfo uriInfo) {
+        return b.addLink(getUriForSelf(b, uriInfo), "self");
+    }
+    
+    private static User addLinks(User user, @Context UriInfo uriInfo) {
+        return user.addLink(getUriForSelf(user, uriInfo), "self");
+    }
+
+    public static String getUriForSelf(Board board, @Context UriInfo uriInfo) {
+        String uri = uriInfo.getBaseUriBuilder()
+                .path(BoardsResource.class)
+                .path(Long.toString(board.getId()))
+                .build()
+                .toString();
+        return uri;
+    }
+    
+    public static String getUriForSelf(User user, @Context UriInfo uriInfo) {
+        String uri = uriInfo.getBaseUriBuilder()
+                .path(UsersResource.class)
+                .path(Long.toString(user.getId()))
+                .build()
+                .toString();
+        return uri;
+    }
 
     public String getLink() {
         return link;

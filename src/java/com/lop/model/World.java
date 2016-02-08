@@ -20,6 +20,8 @@ public class World {
     private final Roles roles;
     private final Locations locations;
     private final Patients patients;
+    private final Boards boards;
+
     // Test Collection
     private Dogs dogs;
     
@@ -28,6 +30,7 @@ public class World {
         roles = new Roles();
         locations = new Locations();
         patients = new Patients();
+        boards = new Boards();
         
         users.add(new User("huj", "111111","Hugh Jackman"));
         users.add(new User("ctu", "111111", "Channing Tatum"));
@@ -40,6 +43,9 @@ public class World {
         patients.add(new Patient("Lawton", 28, users.get("1"), locations.getById().get("1")));
         patients.add(new Patient("Cross", 50, users.get("1"), locations.getById().get("1")));
         patients.add(new Patient("Presence", 75, users.get("2"), locations.getById().get("1")));
+
+        boards.add(new Board(1, "Emergency Board"));
+        boards.add(new Board(2, "Notice"));
         
         dogs = new Dogs();
     }
@@ -62,6 +68,10 @@ public class World {
 
     public Patients getPatients() {
         return patients;
+    }
+    
+    public Boards getBoards() {
+        return boards;
     }
     
     public Dogs getDogs() {

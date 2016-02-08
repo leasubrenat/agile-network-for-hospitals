@@ -37,8 +37,6 @@ public class UsersResource {
 
     @Context
     private UriInfo uriInfo;
-    @Context
-    private HttpServletRequest request;
 
     /**
      * Creates a new instance of UsersResource

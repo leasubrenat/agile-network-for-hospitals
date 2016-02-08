@@ -25,6 +25,14 @@ public class Boards implements ModelCollectionInterface<Board>, Serializable {
         byName = new ConcurrentHashMap<>();
     }
     
+    public Board get(String key) {
+        return byId.get(key);
+    }
+    
+    public Board get(String key, String method) throws NumberFormatException {
+        return byId.get(key);
+    }
+    
     @Override
     public void add(Board obj) {
         obj.setId(count.incrementAndGet());
@@ -35,5 +43,9 @@ public class Boards implements ModelCollectionInterface<Board>, Serializable {
     @Override
     public ConcurrentHashMap<String, Board> getById() {
         return byId;
+    }
+    
+    public ConcurrentHashMap<String, Board> getByName() {
+        return byName;
     }
 }

@@ -29,7 +29,7 @@ public class Board implements Serializable {
     public Board(int id, String name) {
         this.id = id;
         this.name = name;
-        this.posts = posts;
+        this.posts = new ArrayList<>();
     }
 
     public int getId() {
@@ -64,5 +64,12 @@ public class Board implements Serializable {
         this.links = links;
     }
     
+    public Board addLink(String url, String rel) {
+        Link link = new Link();
+        link.setLink(url);
+        link.setRel(rel);
+        links.add(link);
+        return this;
+    }
     
 }
