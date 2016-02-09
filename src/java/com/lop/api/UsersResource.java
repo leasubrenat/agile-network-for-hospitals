@@ -75,14 +75,19 @@ public class UsersResource {
     /**
      * Sub-resource locator method for {id}
      */
-    @GET
     @Path("{id}")
-    public Response getUserResource(@PathParam("id") String id) {
-        User user = Link.addLinks(World.getInstance().getUsers().get(id), uriInfo);
-        return Response.ok(Link.getUriForSelf(user, uriInfo))
-                .entity(user)
-                .build();
+    public UserResource getUserResource(@PathParam("id") String id) {
+        return UserResource.getInstance(id);
     }
+    
+//    @GET
+//    @Path("{id}")
+//    public Response getUserResource(@PathParam("id") String id) {
+//        User user = Link.addLinks(World.getInstance().getUsers().get(id), uriInfo);
+//        return Response.ok(Link.getUriForSelf(user, uriInfo))
+//                .entity(user)
+//                .build();
+//    }
 
     @POST
     @Path("login")

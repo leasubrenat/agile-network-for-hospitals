@@ -42,7 +42,6 @@ public class Post implements Serializable, Comparable<Post> {
         this.id = id;
         this.author = author;
         this.content = content;
-        this.createdAt = createdAt;
         this.repliedTo = repliedTo;
     }
 
@@ -72,18 +71,6 @@ public class Post implements Serializable, Comparable<Post> {
 
     public HashSet<Task> getTasks() {
         return tasks;
-    }
-
-    public ArrayList<Post> getComments() {
-        return comments;
-    }
-
-    public Date getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(Date createdAt) {
-        this.createdAt = createdAt;
     }
 
     public Post getRepliedTo() {

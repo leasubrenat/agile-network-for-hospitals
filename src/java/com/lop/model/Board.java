@@ -30,7 +30,7 @@ public class Board implements Serializable {
         this.id = id;
         this.name = name;
     }
-    
+
     public void addPost(Post post){
         posts.add(post);
     }

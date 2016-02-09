@@ -26,7 +26,7 @@ public class User implements Serializable {
     private String name;
     private Role role;
     private Location office;
-    private ArrayList<Patient> patients;
+    private final ArrayList<Patient> patients = new ArrayList<>();
     private HashSet<Link> links = new HashSet<>();
 
     public User() {
@@ -54,7 +54,7 @@ public class User implements Serializable {
         return username;
     }
 
-    @XmlTransient // TRANSIENT
+    @XmlTransient
     public String getPassword() {
         return password;
     }
@@ -105,7 +105,7 @@ public class User implements Serializable {
     public void setLinks(HashSet<Link> links) {
         this.links = links;
     }
-
+ 
     public HashSet<Link> getLinks() {
         return links;
     }

@@ -5,6 +5,7 @@
  */
 package com.lop.api;
 
+import com.lop.model.Link;
 import com.lop.model.User;
 import com.lop.model.World;
 import javax.ws.rs.Consumes;
@@ -12,7 +13,10 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.GET;
 import javax.ws.rs.Produces;
 import javax.ws.rs.DELETE;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriInfo;
 
 /**
  * REST Web Service
@@ -46,8 +50,12 @@ public class UserResource {
      */
     @GET
     @Produces(MediaType.APPLICATION_XML)
-    public User getXml() {
-        return World.getInstance().getUsers().get(id);
+    public Response getXml(@Context UriInfo uriInfo) {
+//        return World.getInstance().getUsers().get(id);
+        User user = Link.addLinks(World.getInstance().getUsers().get(id), uriInfo);
+        return Response.ok(Link.getUriForSelf(user, uriInfo))
+                .entity(user)
+                .build();
     }
 
     /**
