@@ -49,8 +49,8 @@ public class World {
         boards.add(new Board(1, "Emergency Board"));
         boards.add(new Board(2, "Notice"));
         
-        posts.add(new Post(1, users.get("1"), "A crafty eyedoctor needed", "The lenses got stuck in his eye"));
-        posts.add(new Post(2, users.get("2"), "A charismatic psychologist needed", "This guy seems to be out of his mind."));
+        posts.add(new Post(1, users.get("1"), "A crafty eyedoctor needed: The lenses got stuck in his eye"));
+        posts.add(new Post(2, users.get("2"), "A charismatic psychologist needed: This guy seems to be out of his mind."));
 
         dogs = new Dogs();
     }

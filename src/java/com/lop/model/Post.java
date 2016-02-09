@@ -20,7 +20,6 @@ public class Post implements Serializable {
 
     private int id;
     private User author;
-    private String title;
     private String content;
     private HashSet<Task> tasks;
     private ArrayList<Comment> comments;
@@ -30,18 +29,17 @@ public class Post implements Serializable {
     public Post() {
     }
 
-    public Post(int id, User author, String title, String content) {
-        this(id, author, title, content, null, null, null);
+    public Post(int id, User author, String content) {
+        this(id, author, content, null, null, null);
     }
     
-    public Post(int id, User author, String title, String content, Post repliedTo) {
-        this(id, author, title, content, null, null, repliedTo);
+    public Post(int id, User author, String content, Post repliedTo) {
+        this(id, author, content, null, null, repliedTo);
     }
 
-    public Post(int id, User author, String title, String content, HashSet<Task> tasks, ArrayList<Comment> comments, Post repliedTo) {
+    public Post(int id, User author, String content, HashSet<Task> tasks, ArrayList<Comment> comments, Post repliedTo) {
         this.id = id;
         this.author = author;
-        this.title = title;
         this.content = content;
         this.tasks = tasks;
         this.comments = comments;
@@ -62,14 +60,6 @@ public class Post implements Serializable {
 
     public void setAuthor(User author) {
         this.author = author;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
     }
 
     public String getContent() {

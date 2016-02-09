@@ -5,13 +5,17 @@
  */
 package com.lop.api;
 
+import com.lop.model.Board;
 import com.lop.model.Link;
 import com.lop.model.Post;
 import com.lop.model.Posts;
+import com.lop.model.User;
 import com.lop.model.World;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.PathParam;
@@ -28,7 +32,7 @@ import javax.ws.rs.core.Response;
  *
  * @author Won Seob Seo <Wons at Metropolia UAS>
  */
-@Path("/posts")
+@Path("/")
 @Consumes(MediaType.APPLICATION_XML)
 @Produces(MediaType.APPLICATION_XML)
 public class PostsResource {
@@ -64,22 +68,26 @@ public class PostsResource {
     @POST
     @Consumes("application/xml")
     @Produces("application/xml")
-    public Response postXml(Post content) {
+    public Response postXml(Post content, Board board,  @Context HttpServletRequest request) {
+        return addPost(content, board, request);
+    }
+
+    public Response addPost(Post content, Board board,  @Context HttpServletRequest request) {
         //set the POST author using username
-        String authorName = content.getAuthor().getUsername();
+        HttpSession session = request.getSession();
+        User author = (User) session.getAttribute("me");
         try {
-            content.setAuthor(World.getInstance().getUsers().getByUsername().get(authorName));
+            content.setAuthor(World.getInstance().getUsers().getByUsername().get(author.getName()));
         } catch (NullPointerException e) {
-            return Response.status(400).entity("The username not found").build();
+            return Response.status(400).entity("Invalid user").build();
         }
-        
         World.getInstance().getPosts().add(content);
         URI uri = uriInfo.getAbsolutePathBuilder().path(Integer.toString(content.getId())).build();
         return Response.created(uri)
                 .entity(content)
                 .build();
     }
-
+    
     /**
      * Sub-resource locator method for {id}
      */
@@ -91,4 +99,5 @@ public class PostsResource {
                 .entity(post)
                 .build();
     }
+    
 }

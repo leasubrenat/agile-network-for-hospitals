@@ -87,7 +87,7 @@ public class UsersResource {
     }
 
     @POST
-    @Path("/login")
+    @Path("login")
     public Response login(@Context HttpServletRequest request, User u) {
         User me = World.getInstance().getUsers().login(u);
         if (me != null) {

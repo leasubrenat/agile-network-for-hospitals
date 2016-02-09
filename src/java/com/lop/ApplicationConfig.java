@@ -33,7 +33,6 @@ public class ApplicationConfig extends Application {
         resources.add(com.lop.CatsResource.class);
         resources.add(com.lop.DogResource.class);
         resources.add(com.lop.DogsResource.class);
-        resources.add(com.lop.api.BoardResource.class);
         resources.add(com.lop.api.BoardsResource.class);
         resources.add(com.lop.api.LocationResource.class);
         resources.add(com.lop.api.LocationsResource.class);
