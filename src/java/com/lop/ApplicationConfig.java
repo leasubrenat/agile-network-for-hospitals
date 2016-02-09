@@ -32,9 +32,11 @@ public class ApplicationConfig extends Application {
         resources.add(com.lop.CatResource.class);
         resources.add(com.lop.CatsResource.class);
         resources.add(com.lop.DogsResource.class);
+        resources.add(com.lop.api.BoardResource.class);
         resources.add(com.lop.api.BoardsResource.class);
         resources.add(com.lop.api.LocationsResource.class);
         resources.add(com.lop.api.PatientsResource.class);
+        resources.add(com.lop.api.RoleResource.class);
         resources.add(com.lop.api.RolesResource.class);
         resources.add(com.lop.api.UsersResource.class);
     }
