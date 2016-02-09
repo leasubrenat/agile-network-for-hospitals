@@ -55,12 +55,19 @@ public class World {
         Board b = new Board(1, "Emergency Board");
         boards.add(b);
         boards.add(new Board(2, "Notice"));
+        boards.getById().get("1").addUser(users.getById().get("1"));
+        boards.getById().get("1").addUser(users.getById().get("2"));
+        boards.getById().get("1").addUser(users.getById().get("3"));
+        boards.getById().get("2").addUser(users.getById().get("4"));
+        boards.getById().get("2").addUser(users.getById().get("5"));
+        boards.getById().get("2").addUser(users.getById().get("6"));
         
-        Post post1 = new Post(1, users.get("1"), "A crafty eyedoctor needed: The lenses got stuck in his eye");
-        Post post2 = new Post(2, users.get("2"), "A charismatic psychologist needed: This guy seems to be out of his mind.");
-        posts.add(post1);
-        posts.add(post2);
+        posts.add(new Post(1, users.get("1"), "A crafty eyedoctor needed: The lenses got stuck in his eye"));
+        posts.add(new Post(2, users.get("2"), "A charismatic psychologist needed: This guy seems to be out of his mind."));
 
+        boards.getById().get("1").addPost(posts.getById().get("1"));
+        boards.getById().get("2").addPost(posts.getById().get("2"));
+        
     }
 
     public static World getInstance() {
