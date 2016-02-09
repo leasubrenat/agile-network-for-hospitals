@@ -28,10 +28,19 @@ public class Users implements ModelCollectionInterface<User>, Serializable {
         byUsername = new ConcurrentHashMap<>();
     }
     
+    public User login(User user) {
+        for (User u : byUsername.values()) {
+            if (u.getUsername().equals(user.getUsername()) && u.getPassword().equals(user.getPassword()))
+                return u;
+        }
+        return null;
+    }
+    
     @Override
     public void add(User obj) {
         obj.setId(count.incrementAndGet());
         byId.put(Integer.toString(obj.getId()), obj);
+        byUsername.put(obj.getUsername(), obj);
     }
     
     public User get(String key) {
@@ -46,6 +55,11 @@ public class Users implements ModelCollectionInterface<User>, Serializable {
     @Override
     public ConcurrentHashMap<String, User> getById() {
         return byId;
+    }
+    
+    @XmlElement
+    public ConcurrentHashMap<String, User> getByUsername() {
+        return byUsername;
     }
     
 }

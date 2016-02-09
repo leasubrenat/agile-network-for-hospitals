@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <!-- board name in the title -->
+        <title></title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" type="text/css" href="webstyle.css">
+	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+        <script src="js/json2xml.js"></script>
+        <script src="js/xmlToJSON.js"></script>
+        <script src="//code.jquery.com/jquery-1.12.0.js"></script>
+    </head>
+    <body>
+        <div>
+            <!-- For the moment these are buttons. Will be a collapsible
+            vertical left navbar in the future. -->
+            <form>
+                <input id="listUsers" type="button" value="Users">
+            </form>
+            <!-- The output goes here through the innerHTML function.-->
+            <div id="userList"></div>
+        </div>
+        <script>
+            var names;
+            var name;
+            var i;
+            $(document).ready(function () {
+                //list all the users' names (get)
+                $('#listUsers').click(function () {
+                    $.get('api/users', function (xml) {
+                        console.log(xml);
+                        var $xml = $(xml);
+                        names = $xml.find("name");
+                        for (i = 0; i < names.length; i++) {
+                            name += names[i].textContent + "<br>";
+                        }
+                        document.getElementById("userList").innerHTML = name;
+                    });
+                    name = "";
+                });
+                
+                //post on the board (post)
+                //$('post2board').click(function () {
+                //  $.post(api/boards/{id}/posts),
+                //    console.log(xml))
+                //}
+            });
+            function update() {
+                $.get('api/cats', function (res) {
+                    updateXML(res);
+                });
+            }
+        </script>
+        
+    </body>
+</html>

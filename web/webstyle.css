@@ -1,0 +1,39 @@
+#center {
+	text-align:center;
+}
+#comment {
+	height:100px;
+}
+.menu {
+	display:inline-block;
+	width:160px;
+	height:160px;
+	border-radius:80px;
+	font-size:20px;
+	color:white;
+	line-height:160px;
+	text-align:center;
+	text-decoration:none;
+	background:lightgreen; 
+}
+.menu:hover {
+	color:white;
+	text-decoration:none;
+	background:#33CC66;
+}
+#box {
+	width:370px;
+	height:520px;
+	padding:15px;
+	border:3px solid lightgray;
+	margin:25px;
+}
+#smbox {
+	width:220px;
+	height:270px;
+	padding:10px;
+	border:3px solid lightgray;
+	margin:10px;
+}
+
+/*#menuBtn {width: 100%; text-align: left}*/

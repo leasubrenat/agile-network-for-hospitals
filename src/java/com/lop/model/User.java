@@ -7,9 +7,13 @@ package com.lop.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
+
 
 /**
  *
@@ -17,25 +21,26 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @XmlRootElement
 public class User implements Serializable {
-    private static AtomicInteger count = new AtomicInteger();
 
     private int id;
     private String username;
+    private String password;
     private String name;
     private Role role;
     private Location office;
     private ArrayList<Patient> patients;
+    private HashSet<Link> links = new HashSet<>();
 
     public User() {
     }
-    
-    public User(String username, String name) {
-        this(username, name, null, null);
+
+    public User(String username, String password, String name) {
+        this(username, password, name, null, null);
     }
-    
-    public User(String username, String name, Role role, Location office) {
-        this.id = count.incrementAndGet();
+
+    public User(String username, String password, String name, Role role, Location office) {
         this.username = username;
+        this.password = password;
         this.name = name;
         this.role = role;
         this.office = office;
@@ -49,6 +54,10 @@ public class User implements Serializable {
     @XmlElement
     public String getUsername() {
         return username;
+    }
+
+    public String getPassword() {
+        return password;
     }
 
     @XmlElement
@@ -78,6 +87,10 @@ public class User implements Serializable {
         this.username = username;
     }
 
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     public void setName(String name) {
         this.name = name;
     }
@@ -89,5 +102,20 @@ public class User implements Serializable {
     public void setOffice(Location office) {
         this.office = office;
     }
-    
+
+    public void setLinks(HashSet<Link> links) {
+        this.links = links;
+    }
+
+    public HashSet<Link> getLinks() {
+        return links;
+    }
+
+    public User addLink(String url, String rel) {
+        Link link = new Link();
+        link.setLink(url);
+        link.setRel(rel);
+        links.add(link);
+        return this;
+    }
 }
