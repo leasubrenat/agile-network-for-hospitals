@@ -21,8 +21,8 @@ public class Post implements Serializable, Comparable<Post> {
     private int id;
     private User author;
     private String content;
-    private HashSet<Task> tasks;
-    private ArrayList<Post> comments;
+    private final HashSet<Task> tasks = new HashSet<>();
+    private final ArrayList<Post> comments = new ArrayList<>();
     private Date createdAt;
     private Post repliedTo;
     private HashSet<Link> links = new HashSet<>();
@@ -31,19 +31,17 @@ public class Post implements Serializable, Comparable<Post> {
     }
 
     public Post(int id, User author, String content) {
-        this(id, author, content, null, null, new Date(), null);
+        this(id, author, content, new Date(), null);
     }
     
     public Post(int id, User author, String content, Post repliedTo) {
-        this(id, author, content, null, null, new Date(), repliedTo);
+        this(id, author, content, new Date(), repliedTo);
     }
 
-    public Post(int id, User author, String content, HashSet<Task> tasks, ArrayList<Post> comments, Date createdAt, Post repliedTo) {
+    public Post(int id, User author, String content, Date createdAt, Post repliedTo) {
         this.id = id;
         this.author = author;
         this.content = content;
-        this.tasks = tasks;
-        this.comments = comments;
         this.createdAt = createdAt;
         this.repliedTo = repliedTo;
     }
@@ -76,16 +74,8 @@ public class Post implements Serializable, Comparable<Post> {
         return tasks;
     }
 
-    public void setTasks(HashSet<Task> tasks) {
-        this.tasks = tasks;
-    }
-
     public ArrayList<Post> getComments() {
         return comments;
-    }
-
-    public void setComments(ArrayList<Post> comments) {
-        this.comments = comments;
     }
 
     public Date getCreatedAt() {

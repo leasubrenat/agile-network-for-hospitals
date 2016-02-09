@@ -8,7 +8,6 @@ package com.lop.model;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.concurrent.atomic.AtomicInteger;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -20,8 +19,8 @@ public class Board implements Serializable {
 
     private int id;
     private String name;
-    private ArrayList<Post> posts;
-    private ArrayList<User> users;
+    private final ArrayList<Post> posts = new ArrayList<>();
+    private final ArrayList<User> users = new ArrayList<>();
     private HashSet<Link> links = new HashSet<>();
 
     public Board() {
@@ -30,39 +29,6 @@ public class Board implements Serializable {
     public Board(int id, String name) {
         this.id = id;
         this.name = name;
-        this.posts = new ArrayList<>();
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public ArrayList<Post> getPosts() {
-        return posts;
-    }
-
-    public void setPosts(ArrayList<Post> posts) {
-        this.posts = posts;
-    }
-
-    public HashSet<Link> getLinks() {
-        return links;
-    }
-
-    public void setLinks(HashSet<Link> links) {
-        this.links = links;
     }
     
     public void addPost(Post post){
@@ -85,4 +51,33 @@ public class Board implements Serializable {
         return this;
     }
     
+    // GETTERS AND SETTERS
+    
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public ArrayList<Post> getPosts() {
+        return posts;
+    }
+
+    public HashSet<Link> getLinks() {
+        return links;
+    }
+
+    public void setLinks(HashSet<Link> links) {
+        this.links = links;
+    }
 }

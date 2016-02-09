@@ -70,10 +70,6 @@ public class PostsResource {
     @Consumes("application/xml")
     @Produces("application/xml")
     public Response postXml(Post content, @PathParam("id") String boardId,  @Context HttpServletRequest request) {
-        return addPost(content, boardId, request);
-    }
-
-    public Response addPost(Post content, @PathParam("id") String boardId,  @Context HttpServletRequest request) {
         //set the POST author using username
         HttpSession session = request.getSession();
         User author = (User) session.getAttribute("me");
@@ -99,7 +95,6 @@ public class PostsResource {
     /**
      * Sub-resource locator method for {id}
      */
-    @GET
     @Path("{id}")
     public Response getPostResource(@PathParam("id") String id) {
         Post post = Link.addLinks(World.getInstance().getPosts().get(id), uriInfo);

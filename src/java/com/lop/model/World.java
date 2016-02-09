@@ -39,12 +39,6 @@ public class World {
         
         roles.add(new Role("doctor"));
         roles.add(new Role("nurse"));
-        
-        users.add(new User("huj", "111111", "Hugh Jackman"));
-        users.add(new User("ctu", "111111", "Channing Tatum"));
-        users.add(new User("sup", "222222", "Superman"));
-        users.add(new User("bat", "222222", "Batman"));
-        users.add(new User("hul", "222222", "The Hulk"));
 
         locations.add(new Location("3"));
 
