@@ -21,6 +21,7 @@ public class Board implements Serializable {
     private int id;
     private String name;
     private ArrayList<Post> posts;
+    private ArrayList<User> users;
     private HashSet<Link> links = new HashSet<>();
 
     public Board() {
@@ -66,6 +67,14 @@ public class Board implements Serializable {
     
     public void addPost(Post post){
         posts.add(post);
+    }
+    
+    public void addUser(User user){
+        users.add(user);
+    }
+    
+    public void removeUser(User user){
+        users.add(user);
     }
     
     public Board addLink(String url, String rel) {
