@@ -45,6 +45,7 @@ public class BoardsResource {
 
     /**
      * Retrieves representation of an instance of com.lop.api.BoardsResource
+     *
      * @return an instance of com.lop.model.Boards
      */
     @GET
@@ -59,6 +60,7 @@ public class BoardsResource {
 
     /**
      * POST method for creating an instance of BoardResource
+     *
      * @param content representation for the new board
      * @return an HTTP response with content of the created resource
      */
@@ -84,10 +86,10 @@ public class BoardsResource {
                 .entity(board)
                 .build();
     }
-    
-    	@Path("/{id}/posts")
-	public PostsResource getCommentResource() {
-		return new PostsResource();
-	}
-    
+
+    @Path("/{id}/posts")
+    public PostsResource getPostsResource() {
+        return new PostsResource();
+    }
+
 }
