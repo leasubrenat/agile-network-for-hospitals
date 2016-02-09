@@ -58,7 +58,8 @@ public class UserResource {
     @PUT
     @Consumes(MediaType.APPLICATION_XML)
     public void putXml(User content) {
-        World.getInstance().getUsers().getById().replace(id, content);
+//        World.getInstance().getUsers().getById().replace(id, content);
+        World.getInstance().getUsers().modify(id, content);
     }
 
     /**

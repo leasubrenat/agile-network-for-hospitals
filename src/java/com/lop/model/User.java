@@ -8,8 +8,6 @@ package com.lop.model;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -56,6 +54,7 @@ public class User implements Serializable {
         return username;
     }
 
+    @XmlTransient // TRANSIENT
     public String getPassword() {
         return password;
     }

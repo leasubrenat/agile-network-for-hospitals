@@ -43,6 +43,18 @@ public class Users implements ModelCollectionInterface<User>, Serializable {
         byUsername.put(obj.getUsername(), obj);
     }
     
+    public boolean modify(String id, User newU) {
+//        User u = byId.get(id);
+        User oldU = byId.replace(id, newU);
+        if (oldU != null) {
+//            byUsername.remove(oldU.getUsername(), oldU);
+//            byUsername.put(newU.getUsername(), newU);
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
     public User get(String key) {
         return byId.get(key);
     }

@@ -7,8 +7,8 @@ package com.lop.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
-import java.util.concurrent.atomic.AtomicInteger;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -16,14 +16,15 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author Won Seob Seo <Wons at Metropolia UAS>
  */
 @XmlRootElement
-public class Post implements Serializable {
+public class Post implements Serializable, Comparable<Post> {
 
     private int id;
     private User author;
     private String title;
     private String content;
     private HashSet<Task> tasks;
-    private ArrayList<Comment> comments;
+    private ArrayList<Post> comments;
+    private Date createdAt;
     private Post repliedTo;
     private HashSet<Link> links = new HashSet<>();
 
@@ -31,20 +32,21 @@ public class Post implements Serializable {
     }
 
     public Post(int id, User author, String title, String content) {
-        this(id, author, title, content, null, null, null);
+        this(id, author, title, content, null, null, new Date(), null);
     }
     
     public Post(int id, User author, String title, String content, Post repliedTo) {
-        this(id, author, title, content, null, null, repliedTo);
+        this(id, author, title, content, null, null, new Date(), repliedTo);
     }
 
-    public Post(int id, User author, String title, String content, HashSet<Task> tasks, ArrayList<Comment> comments, Post repliedTo) {
+    public Post(int id, User author, String title, String content, HashSet<Task> tasks, ArrayList<Post> comments, Date createdAt, Post repliedTo) {
         this.id = id;
         this.author = author;
         this.title = title;
         this.content = content;
         this.tasks = tasks;
         this.comments = comments;
+        this.createdAt = createdAt;
         this.repliedTo = repliedTo;
     }
 
@@ -88,12 +90,20 @@ public class Post implements Serializable {
         this.tasks = tasks;
     }
 
-    public ArrayList<Comment> getComments() {
+    public ArrayList<Post> getComments() {
         return comments;
     }
 
-    public void setComments(ArrayList<Comment> comments) {
+    public void setComments(ArrayList<Post> comments) {
         this.comments = comments;
+    }
+
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
     }
 
     public Post getRepliedTo() {
@@ -118,5 +128,10 @@ public class Post implements Serializable {
         link.setRel(rel);
         links.add(link);
         return this;
+    }
+
+    @Override
+    public int compareTo(Post o) {
+        return createdAt.compareTo(o.createdAt);
     }
 }
