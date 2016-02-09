@@ -52,15 +52,7 @@ and open the template in the editor.
             });
 
             function getID() {
-                $(document).ready(function () {
-                    $.get('api/boards', function (xml) {
-                        console.log(xml);
-                        var $xml = $(xml);
-                        boardID = $xml.find("id");// !!!TO DO: return only 1 id!!!
-                        console.log(boardID);
-                        //return boardID;
-                    });
-                });
+                
             }
         </script>
     </body>
