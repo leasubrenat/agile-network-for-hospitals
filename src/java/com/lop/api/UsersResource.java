@@ -7,7 +7,6 @@ package com.lop.api;
 
 import com.lop.model.Link;
 import com.lop.model.User;
-import com.lop.model.Users;
 import com.lop.model.World;
 import java.net.URI;
 import java.util.ArrayList;
@@ -24,7 +23,6 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import org.jboss.weld.context.http.HttpRequestContext;
 
 /**
  * REST Web Service
@@ -87,7 +85,7 @@ public class UsersResource {
     }
 
     @POST
-    @Path("/login")
+    @Path("login")
     public Response login(@Context HttpServletRequest request, User u) {
         User me = World.getInstance().getUsers().login(u);
         if (me != null) {

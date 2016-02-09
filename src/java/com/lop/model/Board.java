@@ -64,6 +64,10 @@ public class Board implements Serializable {
         this.links = links;
     }
     
+    public void addPost(Post post){
+        posts.add(post);
+    }
+    
     public Board addLink(String url, String rel) {
         Link link = new Link();
         link.setLink(url);

@@ -20,7 +20,6 @@ public class Post implements Serializable, Comparable<Post> {
 
     private int id;
     private User author;
-    private String title;
     private String content;
     private HashSet<Task> tasks;
     private ArrayList<Post> comments;
@@ -31,18 +30,17 @@ public class Post implements Serializable, Comparable<Post> {
     public Post() {
     }
 
-    public Post(int id, User author, String title, String content) {
-        this(id, author, title, content, null, null, new Date(), null);
+    public Post(int id, User author, String content) {
+        this(id, author, content, null, null, new Date(), null);
     }
     
-    public Post(int id, User author, String title, String content, Post repliedTo) {
-        this(id, author, title, content, null, null, new Date(), repliedTo);
+    public Post(int id, User author, String content, Post repliedTo) {
+        this(id, author, content, null, null, new Date(), repliedTo);
     }
 
-    public Post(int id, User author, String title, String content, HashSet<Task> tasks, ArrayList<Post> comments, Date createdAt, Post repliedTo) {
+    public Post(int id, User author, String content, HashSet<Task> tasks, ArrayList<Post> comments, Date createdAt, Post repliedTo) {
         this.id = id;
         this.author = author;
-        this.title = title;
         this.content = content;
         this.tasks = tasks;
         this.comments = comments;
@@ -64,14 +62,6 @@ public class Post implements Serializable, Comparable<Post> {
 
     public void setAuthor(User author) {
         this.author = author;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
     }
 
     public String getContent() {

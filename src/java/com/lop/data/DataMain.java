@@ -5,7 +5,7 @@
  */
 package com.lop.data;
 
-import com.lop.Cat;
+import com.lop.model.User;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -33,13 +33,7 @@ public class DataMain {
         ObjectOutputStream os = null;
         try {
             os = new ObjectOutputStream(new FileOutputStream(file));
-            os.writeObject(new Cat("Wheezy"));
-            os.writeObject(new Cat("Durio"));
-            os.writeObject(new Cat("Click"));
-            os.writeObject(new Cat("Merlin"));
-            os.writeObject(new Cat("Grumpie"));
-            os.writeObject(new Cat("Pope"));
-            os.writeObject(new Cat("Arthur"));
+            os.writeObject(new User());
         } catch (IOException ex) {
             Logger.getLogger(DataMain.class.getName()).log(Level.SEVERE, null, ex);
         } finally {

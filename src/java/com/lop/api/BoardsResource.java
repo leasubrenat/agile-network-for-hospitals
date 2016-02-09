@@ -85,5 +85,9 @@ public class BoardsResource {
                 .build();
     }
     
+    	@Path("/{id}/posts")
+	public PostsResource getCommentResource() {
+		return new PostsResource();
+	}
     
 }

@@ -39,7 +39,7 @@
                     $.get('api/patients', function (xml) {
                         console.log(xml);
                         var $xml = $(xml);
-                        names = $xml.find("value>name");
+                        names = $xml.find("value > name");
                         for (i = 0; i < names.length; i++) {
                             name += names[i].textContent + "<br>";
                         }
