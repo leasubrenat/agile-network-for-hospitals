@@ -45,6 +45,10 @@ public class PostsResource {
      */
     public PostsResource() {
     }
+    
+    public PostsResource(@Context UriInfo uriInfo) {
+        this.uriInfo = uriInfo;
+    }
 
     /**
      * Retrieves representation of an instance of com.lop.api.PostsResource
@@ -52,10 +56,11 @@ public class PostsResource {
      */
     @GET
     @Produces("application/xml")
-    public List<Post> getXml() {
-        List<Post> posts = new ArrayList<>(World.getInstance().getPosts().getById().values());
-        for (Post b : posts) {
-            Link.addLinks(b, uriInfo);
+    public List<Post> getXml(@PathParam("boardId") String boardId) {
+        Board board = World.getInstance().getBoards().getById().get(boardId);
+        List<Post> posts = board.getPosts();
+        for (Post p : posts) {
+            Link.addLinks(boardId, p, uriInfo);
         }
         return posts;
     }
@@ -100,10 +105,10 @@ public class PostsResource {
      * Sub-resource locator method for {id}
      */
     @GET
-    @Path("{id}")
-    public Response getPostResource(@PathParam("id") String id) {
-        Post post = Link.addLinks(World.getInstance().getPosts().get(id), uriInfo);
-        return Response.ok(Link.getUriForSelf(post, uriInfo))
+    @Path("{postId}")
+    public Response getPostResource(@PathParam("boardId") String boardId, @PathParam("postId") String postId) {
+        Post post = Link.addLinks(boardId, World.getInstance().getPosts().get(postId), uriInfo);      
+        return Response.ok(Link.getUriForSelf(boardId, post, uriInfo))
                 .entity(post)
                 .build();
     }

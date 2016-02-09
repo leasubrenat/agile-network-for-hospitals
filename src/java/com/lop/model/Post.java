@@ -22,7 +22,6 @@ public class Post implements Serializable {
     private User author;
     private String content;
     private HashSet<Task> tasks;
-    private ArrayList<Comment> comments;
     private Post repliedTo;
     private HashSet<Link> links = new HashSet<>();
 
@@ -42,7 +41,6 @@ public class Post implements Serializable {
         this.author = author;
         this.content = content;
         this.tasks = tasks;
-        this.comments = comments;
         this.repliedTo = repliedTo;
     }
 
@@ -76,14 +74,6 @@ public class Post implements Serializable {
 
     public void setTasks(HashSet<Task> tasks) {
         this.tasks = tasks;
-    }
-
-    public ArrayList<Comment> getComments() {
-        return comments;
-    }
-
-    public void setComments(ArrayList<Comment> comments) {
-        this.comments = comments;
     }
 
     public Post getRepliedTo() {

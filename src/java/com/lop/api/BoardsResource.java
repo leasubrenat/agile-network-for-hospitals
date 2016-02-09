@@ -87,9 +87,9 @@ public class BoardsResource {
                 .build();
     }
 
-    @Path("/{id}/posts")
+    @Path("/{boardId}/posts")
     public PostsResource getPostsResource() {
-        return new PostsResource();
+        return new PostsResource(uriInfo);
     }
 
 }
