@@ -30,6 +30,13 @@ public class World {
         boards = new Boards();
         posts = new Posts();
 
+        users.add(new User("huj", "111111", "Hugh Jackman"));
+        users.add(new User("ctu", "111111", "Channing Tatum"));
+        users.add(new User("batman", "111111", "Christiano"));
+        users.add(new User("superman", "111111", "Channing Tatum"));
+        users.add(new User("hulk", "111111", "ugly"));
+        users.add(new User("vampire", "111111", "blood seeker"));
+        
         roles.add(new Role("doctor"));
         roles.add(new Role("nurse"));
         
@@ -49,8 +56,10 @@ public class World {
         boards.add(b);
         boards.add(new Board(2, "Notice"));
         
-        posts.add(new Post(1, users.get("1"), "A crafty eyedoctor needed: The lenses got stuck in his eye"));
-        posts.add(new Post(2, users.get("2"), "A charismatic psychologist needed: This guy seems to be out of his mind."));
+        Post post1 = new Post(1, users.get("1"), "A crafty eyedoctor needed: The lenses got stuck in his eye");
+        Post post2 = new Post(2, users.get("2"), "A charismatic psychologist needed: This guy seems to be out of his mind.");
+        posts.add(post1);
+        posts.add(post2);
 
     }
 

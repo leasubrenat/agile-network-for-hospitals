@@ -63,16 +63,17 @@ public class PostsResource {
     /**
      * POST method for creating an instance of PostResource
      * @param content representation for the new resource
+     * @param boardId
      * @return an HTTP response with content of the created resource
      */
     @POST
     @Consumes("application/xml")
     @Produces("application/xml")
-    public Response postXml(Post content, Board board,  @Context HttpServletRequest request) {
-        return addPost(content, board, request);
+    public Response postXml(Post content, @PathParam("id") String boardId,  @Context HttpServletRequest request) {
+        return addPost(content, boardId, request);
     }
 
-    public Response addPost(Post content, Board board,  @Context HttpServletRequest request) {
+    public Response addPost(Post content, @PathParam("id") String boardId,  @Context HttpServletRequest request) {
         //set the POST author using username
         HttpSession session = request.getSession();
         User author = (User) session.getAttribute("me");
@@ -81,7 +82,14 @@ public class PostsResource {
         } catch (NullPointerException e) {
             return Response.status(400).entity("Invalid user").build();
         }
+        Board board;
+        try {
+            board = World.getInstance().getBoards().getById().get(boardId);
+        } catch (Exception e){
+            return Response.status(400).entity("No such a board").build();
+        }
         World.getInstance().getPosts().add(content);
+        board.addPost(content);
         URI uri = uriInfo.getAbsolutePathBuilder().path(Integer.toString(content.getId())).build();
         return Response.created(uri)
                 .entity(content)
