@@ -35,6 +35,7 @@ public class Board implements Serializable {
         posts.add(post);
     }
     
+    // SUBSCRIBER SECTION
     public void addUser(User user){
         users.add(user);
     }
@@ -42,6 +43,7 @@ public class Board implements Serializable {
     public void removeUser(User user){
         users.add(user);
     }
+    // END SUBSCRIBER SECTION
     
     public Board addLink(String url, String rel) {
         Link link = new Link();
