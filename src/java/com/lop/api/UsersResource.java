@@ -45,14 +45,23 @@ public class UsersResource {
     public UsersResource() {
     }
 
+    public UsersResource(@Context UriInfo uriInfo) {
+        this.uriInfo = uriInfo;
+    }
+
     /**
      * Retrieves representation of an instance of com.lop.api.UsersResource
      *
      * @return an instance of com.lop.model.Users
      */
     @GET
-    public List<User> getXml() {
-        List<User> users = new ArrayList<>(World.getInstance().getUsers().getById().values());
+    public List<User> getXml(@PathParam("boardId") String boardId) {
+        List<User> users;
+        if (boardId != null) {
+            users = new ArrayList<>(World.getInstance().getBoards().getById().get(boardId).getUsers());
+        } else {
+            users = new ArrayList<>(World.getInstance().getUsers().getById().values());
+        }
         for (User u : users) {
             Link.addLinks(u, uriInfo);
         }
@@ -66,12 +75,24 @@ public class UsersResource {
      * @return an HTTP response with content of the created resource
      */
     @POST
-    public Response postXml(User content) {
-        World.getInstance().getUsers().add(content);
-        URI uri = uriInfo.getAbsolutePathBuilder().path(Integer.toString(content.getId())).build();
-        return Response.created(uri)
-                .entity(content)
-                .build();
+    public Response postXml(@PathParam("boardId") String boardId, User content) {
+        if (boardId != null) {
+            System.out.println("lala:" + content.getId());
+            content = World.getInstance().getUsers().getById().get(Integer.toString(content.getId()));
+            World.getInstance().getBoards().getById().get(boardId).addUser(content);
+            System.out.println(uriInfo.toString());
+            System.out.println(content.getId());
+            URI uri = uriInfo.getAbsolutePathBuilder().path(Integer.toString(content.getId())).build();
+            return Response.created(uri)
+                    .entity(content)
+                    .build();
+        } else {
+            World.getInstance().getUsers().add(content);
+            URI uri = uriInfo.getAbsolutePathBuilder().path(Integer.toString(content.getId())).build();
+            return Response.created(uri)
+                    .entity(content)
+                    .build();
+        }
     }
 
     /**

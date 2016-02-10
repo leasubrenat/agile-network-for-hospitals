@@ -75,6 +75,10 @@ public class Board implements Serializable {
     public void removeUser(User user){
         users.add(user);
     }
+
+    public ArrayList<User> getUsers() {
+        return users;
+    }
     
     public Board addLink(String url, String rel) {
         Link link = new Link();

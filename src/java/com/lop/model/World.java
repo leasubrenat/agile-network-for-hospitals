@@ -41,6 +41,9 @@ public class World {
         users.add(new User("hulk", "111111", "ugly"));
         users.add(new User("vampire", "111111", "blood seeker"));
         
+        users.add(new User("iHaveNoBoard", "111111", "nobody"));
+        users.add(new User("meNoBoard", "111111", "transparentGuy"));
+        
         roles.add(new Role("doctor"));
         roles.add(new Role("nurse"));
 
