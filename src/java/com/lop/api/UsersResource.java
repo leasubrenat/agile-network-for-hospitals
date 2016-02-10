@@ -70,18 +70,15 @@ public class UsersResource {
 
     /**
      * POST method for creating an instance of UserResource
-     *
+     * add a new user to the board when path is /boards/{boardId}/users but add new user when path is /users
      * @param content representation for the new resource
      * @return an HTTP response with content of the created resource
      */
     @POST
     public Response postXml(@PathParam("boardId") String boardId, User content) {
         if (boardId != null) {
-            System.out.println("lala:" + content.getId());
             content = World.getInstance().getUsers().getById().get(Integer.toString(content.getId()));
             World.getInstance().getBoards().getById().get(boardId).addUser(content);
-            System.out.println(uriInfo.toString());
-            System.out.println(content.getId());
             URI uri = uriInfo.getAbsolutePathBuilder().path(Integer.toString(content.getId())).build();
             return Response.created(uri)
                     .entity(content)
@@ -127,5 +124,10 @@ public class UsersResource {
             return Response.status(400)
                     .build();
         }
+    }
+    
+    @Path("/{UserId}/tasks")
+    public TasksResource getTasksResource() {
+        return new TasksResource(uriInfo);
     }
 }
