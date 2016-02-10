@@ -5,6 +5,7 @@
  */
 package com.lop.api;
 
+import com.lop.model.Link;
 import com.lop.model.User;
 import com.lop.model.Users;
 import com.lop.model.World;
@@ -44,16 +45,25 @@ public class UsersResource {
     public UsersResource() {
     }
 
+    public UsersResource(@Context UriInfo uriInfo) {
+        this.uriInfo = uriInfo;
+    }
+
     /**
      * Retrieves representation of an instance of com.lop.api.UsersResource
      *
      * @return an instance of com.lop.model.Users
      */
     @GET
-    public List<User> getXml() {
-        List<User> users = new ArrayList<>(World.getInstance().getUsers().getById().values());
+    public List<User> getXml(@PathParam("boardId") String boardId) {
+        List<User> users;
+        if (boardId != null) {
+            users = new ArrayList<>(World.getInstance().getBoards().getById().get(boardId).getUsers());
+        } else {
+            users = new ArrayList<>(World.getInstance().getUsers().getById().values());
+        }
         for (User u : users) {
-            addLinks(u);
+            Link.addLinks(u, uriInfo);
         }
         return users;
     }
@@ -65,12 +75,24 @@ public class UsersResource {
      * @return an HTTP response with content of the created resource
      */
     @POST
-    public Response postXml(User content) {
-        World.getInstance().getUsers().add(content);
-        URI uri = uriInfo.getAbsolutePathBuilder().path(Integer.toString(content.getId())).build();
-        return Response.created(uri)
-                .entity(content)
-                .build();
+    public Response postXml(@PathParam("boardId") String boardId, User content) {
+        if (boardId != null) {
+            System.out.println("lala:" + content.getId());
+            content = World.getInstance().getUsers().getById().get(Integer.toString(content.getId()));
+            World.getInstance().getBoards().getById().get(boardId).addUser(content);
+            System.out.println(uriInfo.toString());
+            System.out.println(content.getId());
+            URI uri = uriInfo.getAbsolutePathBuilder().path(Integer.toString(content.getId())).build();
+            return Response.created(uri)
+                    .entity(content)
+                    .build();
+        } else {
+            World.getInstance().getUsers().add(content);
+            URI uri = uriInfo.getAbsolutePathBuilder().path(Integer.toString(content.getId())).build();
+            return Response.created(uri)
+                    .entity(content)
+                    .build();
+        }
     }
 
     /**
@@ -79,19 +101,19 @@ public class UsersResource {
     @GET
     @Path("{id}")
     public Response getUserResource(@PathParam("id") String id) {
-        User user = addLinks(World.getInstance().getUsers().get(id));
-        return Response.ok(getUriForSelf(user))
+        User user = Link.addLinks(World.getInstance().getUsers().get(id), uriInfo);
+        return Response.ok(Link.getUriForSelf(user, uriInfo))
                 .entity(user)
                 .build();
     }
 
     @POST
-    @Path("/login")
+    @Path("login")
     public Response login(@Context HttpServletRequest request, User u) {
         User me = World.getInstance().getUsers().login(u);
         if (me != null) {
             HttpSession session = request.getSession();
-            me = addLinks(me);
+            me = Link.addLinks(me, uriInfo);
             session.setAttribute("me", me);
             // User userNoPassword = new User(me);
             URI uri = uriInfo.getAbsolutePathBuilder()
@@ -105,23 +127,5 @@ public class UsersResource {
             return Response.status(400)
                     .build();
         }
-    }
-
-    /**
-     * *
-     * @param user to be added with hateoas link
-     * @return a user with the added links
-     */
-    private User addLinks(User user) {
-        return user.addLink(getUriForSelf(user), "self");
-    }
-
-    public String getUriForSelf(User user) {
-        String uri = uriInfo.getBaseUriBuilder()
-                .path(UsersResource.class)
-                .path(Long.toString(user.getId()))
-                .build()
-                .toString();
-        return uri;
     }
 }

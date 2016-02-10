@@ -6,6 +6,7 @@
 package com.lop.model;
 
 import com.lop.api.BoardsResource;
+import com.lop.api.PostsResource;
 import com.lop.api.UsersResource;
 import java.util.Objects;
 import javax.ws.rs.core.Context;
@@ -19,13 +20,29 @@ public class Link {
 
     private String link;
     private String rel;
-    
+
+    public static Post addLinks(String boardId, Post p, @Context UriInfo uriInfo) {
+        return p.addLink(getUriForSelf(boardId, p, uriInfo), "self");
+    }
+
     public static Board addLinks(Board b, @Context UriInfo uriInfo) {
         return b.addLink(getUriForSelf(b, uriInfo), "self");
     }
-    
-    private static User addLinks(User user, @Context UriInfo uriInfo) {
+
+    public static User addLinks(User user, @Context UriInfo uriInfo) {
         return user.addLink(getUriForSelf(user, uriInfo), "self");
+    }
+
+    public static String getUriForSelf(String boardId, Post post, @Context UriInfo uriInfo) {        
+        String uri = uriInfo.getBaseUriBuilder()
+                .path(BoardsResource.class) //boards
+                .path(BoardsResource.class, "getPostsResource") // {id}/posts
+                .path(PostsResource.class) // /
+                .path(Long.toString(post.getId())) // post ID
+                .resolveTemplate("boardId", boardId)
+                .build()
+                .toString();
+        return uri;
     }
 
     public static String getUriForSelf(Board board, @Context UriInfo uriInfo) {
@@ -36,7 +53,7 @@ public class Link {
                 .toString();
         return uri;
     }
-    
+
     public static String getUriForSelf(User user, @Context UriInfo uriInfo) {
         String uri = uriInfo.getBaseUriBuilder()
                 .path(UsersResource.class)
@@ -87,6 +104,5 @@ public class Link {
         }
         return true;
     }
-    
-    
+
 }

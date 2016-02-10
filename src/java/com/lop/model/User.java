@@ -22,15 +22,13 @@ import javax.xml.bind.annotation.XmlTransient;
 @XmlRootElement
 public class User implements Serializable {
 
-    private static AtomicInteger count = new AtomicInteger();
-
     private int id;
     private String username;
     private String password;
     private String name;
     private Role role;
     private Location office;
-    private ArrayList<Patient> patients;
+    private final ArrayList<Patient> patients = new ArrayList<>();;
     private HashSet<Link> links = new HashSet<>();
 
     public User() {
@@ -41,7 +39,6 @@ public class User implements Serializable {
     }
 
     public User(String username, String password, String name, Role role, Location office) {
-        this.id = count.incrementAndGet();
         this.username = username;
         this.password = password;
         this.name = name;
@@ -59,6 +56,7 @@ public class User implements Serializable {
         return username;
     }
 
+    @XmlTransient
     public String getPassword() {
         return password;
     }
@@ -109,7 +107,7 @@ public class User implements Serializable {
     public void setLinks(HashSet<Link> links) {
         this.links = links;
     }
-
+ 
     public HashSet<Link> getLinks() {
         return links;
     }

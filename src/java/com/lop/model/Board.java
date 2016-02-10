@@ -17,10 +17,11 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @XmlRootElement
 public class Board implements Serializable {
-    private static AtomicInteger count = new AtomicInteger();
+
     private int id;
     private String name;
-    private ArrayList<Post> posts;
+    private final ArrayList<Post> posts = new ArrayList<>();
+    private final ArrayList<User> users = new ArrayList<>();
     private HashSet<Link> links = new HashSet<>();
 
     public Board() {
@@ -29,7 +30,6 @@ public class Board implements Serializable {
     public Board(int id, String name) {
         this.id = id;
         this.name = name;
-        this.posts = new ArrayList<>();
     }
 
     public int getId() {
@@ -52,9 +52,9 @@ public class Board implements Serializable {
         return posts;
     }
 
-    public void setPosts(ArrayList<Post> posts) {
-        this.posts = posts;
-    }
+//    public void setPosts(ArrayList<Post> posts) {
+//        this.posts = posts;
+//    }
 
     public HashSet<Link> getLinks() {
         return links;
@@ -62,6 +62,22 @@ public class Board implements Serializable {
 
     public void setLinks(HashSet<Link> links) {
         this.links = links;
+    }
+    
+    public void addPost(Post post){
+        posts.add(post);
+    }
+    
+    public void addUser(User user){
+        users.add(user);
+    }
+    
+    public void removeUser(User user){
+        users.add(user);
+    }
+
+    public ArrayList<User> getUsers() {
+        return users;
     }
     
     public Board addLink(String url, String rel) {
