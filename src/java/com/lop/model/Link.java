@@ -7,6 +7,7 @@ package com.lop.model;
 
 import com.lop.api.BoardsResource;
 import com.lop.api.PostsResource;
+import com.lop.api.TasksResource;
 import com.lop.api.UsersResource;
 import java.util.Objects;
 import javax.ws.rs.core.Context;
@@ -20,7 +21,15 @@ public class Link {
 
     private String link;
     private String rel;
+    
+    public static Task addLinks(Task t ,@Context UriInfo uriInfo) {
+        return t.addLink(getUriForSelf(t, uriInfo), "self");
+    }
 
+    public static Task addLinks(String userId, Task t, @Context UriInfo uriInfo) {
+        return t.addLink(getUriForSelf(userId, t, uriInfo), "self");
+    }
+    
     public static Post addLinks(String boardId, Post p, @Context UriInfo uriInfo) {
         return p.addLink(getUriForSelf(boardId, p, uriInfo), "self");
     }
@@ -31,6 +40,27 @@ public class Link {
 
     public static User addLinks(User user, @Context UriInfo uriInfo) {
         return user.addLink(getUriForSelf(user, uriInfo), "self");
+    }
+    
+    public static String getUriForSelf(Task t ,@Context UriInfo uriInfo) {        
+        String uri = uriInfo.getBaseUriBuilder()
+                .path(TasksResource.class) // tasks
+                .path(Long.toString(t.getId())) // ID
+                .build()
+                .toString();
+        return uri;
+    }
+    
+    public static String getUriForSelf(String userId, Task t, @Context UriInfo uriInfo) {        
+        String uri = uriInfo.getBaseUriBuilder()
+                .path(UsersResource.class) //users
+                .path(UsersResource.class, "getTasksResource") // {UserId}/tasks
+                // .path(TasksResource.class) // /
+                .path(Long.toString(t.getId())) // task ID
+                .resolveTemplate("UserId", userId)
+                .build()
+                .toString();
+        return uri;
     }
 
     public static String getUriForSelf(String boardId, Post post, @Context UriInfo uriInfo) {        

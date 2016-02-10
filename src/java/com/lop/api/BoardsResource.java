@@ -89,5 +89,10 @@ public class BoardsResource {
     public PostsResource getPostsResource() {
         return new PostsResource(uriInfo);
     }
+    
+    @Path("/{boardId}/users")
+    public UsersResource getUsersResource() {
+        return new UsersResource(uriInfo);
+    }
 
 }

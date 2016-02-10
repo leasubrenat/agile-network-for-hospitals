@@ -57,7 +57,7 @@ public class Board implements Sender, Serializable {
     }
 
     public void removeUser(User user) {
-        users.add(user);
+        users.remove(user);
     }
     // END SUBSCRIBER SECTION
 

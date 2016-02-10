@@ -5,7 +5,9 @@
  */
 package com.lop.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -14,33 +16,43 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author Anh
  */
 @XmlRootElement
-public class Task {
+public class Task implements Serializable {
 
-    private long id;
+    private int id;
     private String name;
     private String description;
     private User poster;
-    private ArrayList<User> participants;
-    private ArrayList<Patient> patients;
-    private List<Link> links = new ArrayList<>();
+    private Status status;
+    private ArrayList<User> participants = new ArrayList<>();
+    private Patient patient;
+    private HashSet<Link> links = new HashSet<>();
 
-    public Task() {
+    public enum Status {
+        ACHIEVED, FAILED, UNDER_PROCESS
     }
 
-    public Task(long id, String name, String description, User poster, ArrayList<User> participants, ArrayList<Patient> patients) {
+    public Task() {
+        this.status = Status.UNDER_PROCESS;
+    }
+
+    public Task(String name, String description, User poster, Patient patient) {
+        this(0, name, description, poster, patient);
+    }
+
+    public Task(int id, String name, String description, User poster, Patient patient) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.poster = poster;
-        this.participants = participants;
-        this.patients = patients;
+        this.patient = patient;
+        status = Status.UNDER_PROCESS;
     }
 
-    public long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -68,6 +80,10 @@ public class Task {
         this.poster = poster;
     }
 
+    public void addParticipant(User p) {
+        participants.add(p);
+    }
+
     public ArrayList<User> getParticipants() {
         return participants;
     }
@@ -76,27 +92,36 @@ public class Task {
         this.participants = participants;
     }
 
-    public ArrayList<Patient> getPatients() {
-        return patients;
+    public Status getStatus() {
+        return status;
     }
 
-    public void setPatients(ArrayList<Patient> patients) {
-        this.patients = patients;
+    public void setStatus(Status status) {
+        this.status = status;
     }
 
-    public List<Link> getLinks() {
+    public Patient getPatient() {
+        return patient;
+    }
+
+    public void setPatient(Patient patient) {
+        this.patient = patient;
+    }
+
+    public HashSet<Link> getLinks() {
         return links;
     }
 
-    public void setLinks(List<Link> links) {
+    public void setLinks(HashSet<Link> links) {
         this.links = links;
     }
 
-    public void addLink(String url, String rel) {
+    public Task addLink(String url, String rel) {
         Link link = new Link();
         link.setLink(url);
         link.setRel(rel);
         links.add(link);
+        return this;
     }
 
 }

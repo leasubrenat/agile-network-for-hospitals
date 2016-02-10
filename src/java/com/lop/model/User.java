@@ -30,6 +30,7 @@ public class User implements Sender, Serializable {
     private Location office;
     private final ArrayList<Patient> patients = new ArrayList<>();
     private final ArrayList<Notification> notifications = new ArrayList<>();
+    private final ArrayList<Task> tasks = new ArrayList<>();
     private HashSet<Link> links = new HashSet<>();
 
     public User() {
@@ -134,6 +135,18 @@ public class User implements Sender, Serializable {
         this.office = office;
     }
 
+    public ArrayList<Task> getTasks() {
+        return tasks;
+    }
+    
+    public void addTask(Task t){
+        tasks.add(t);
+    }
+    
+    public void removeTask(Task t){
+        tasks.remove(t);
+    }
+    
     public void setLinks(HashSet<Link> links) {
         this.links = links;
     }
