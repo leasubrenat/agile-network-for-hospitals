@@ -55,6 +55,7 @@ public class PostsResource {
     @GET
     @Produces("application/xml")
     public List<Post> getXml(@PathParam("boardId") String boardId) {
+        System.out.println("getXml " + boardId);
         Board board = World.getInstance().getBoards().getById().get(boardId);
         List<Post> posts = board.getPosts();
         for (Post p : posts) {
@@ -72,7 +73,7 @@ public class PostsResource {
     @POST
     @Consumes("application/xml")
     @Produces("application/xml")
-    public Response postXml(Post content, @PathParam("id") String boardId,  @Context HttpServletRequest request) {
+    public Response postXml(Post content, @PathParam("boardId") String boardId, @Context HttpServletRequest request) {
         //set the POST author using username
         HttpSession session = request.getSession();
         User author = (User) session.getAttribute("me");
@@ -83,6 +84,7 @@ public class PostsResource {
         }
         Board board;
         try {
+            System.out.println(boardId);
             board = World.getInstance().getBoards().getById().get(boardId);
         } catch (Exception e){
             return Response.status(400).entity("No such a board").build();
@@ -101,6 +103,7 @@ public class PostsResource {
     @GET
     @Path("{postId}")
     public Response getPostResource(@PathParam("boardId") String boardId, @PathParam("postId") String postId) {
+        System.out.println("getPostResource " + boardId);
         Post post = Link.addLinks(boardId, World.getInstance().getPosts().get(postId), uriInfo);      
         return Response.ok(Link.getUriForSelf(boardId, post, uriInfo))
                 .entity(post)

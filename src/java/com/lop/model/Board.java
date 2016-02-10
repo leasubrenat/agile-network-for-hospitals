@@ -8,6 +8,7 @@ package com.lop.model;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -15,7 +16,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author Won Seob Seo <Wons at Metropolia UAS>
  */
 @XmlRootElement
-public class Board implements Serializable {
+public class Board implements Sender, Serializable {
 
     private int id;
     private String name;
@@ -31,20 +32,35 @@ public class Board implements Serializable {
         this.name = name;
     }
 
-    public void addPost(Post post){
+    public void addPost(Post post) {
         posts.add(post);
+        broadcast(post);
     }
-    
+
+    @Override
+    public void send(User u, Notification notification) {
+        //notification.setRecipient(u);
+        //u.receive(notification);
+        notification.send(u);
+    }
+
+    public void broadcast(Post post) {
+        for (User u : users) {
+            Notification n = new Notification(post.getAuthor(), null, post, true, name);
+            send(u, n);
+        }
+    }
+
     // SUBSCRIBER SECTION
-    public void addUser(User user){
+    public void addUser(User user) {
         users.add(user);
     }
-    
-    public void removeUser(User user){
+
+    public void removeUser(User user) {
         users.add(user);
     }
     // END SUBSCRIBER SECTION
-    
+
     public Board addLink(String url, String rel) {
         Link link = new Link();
         link.setLink(url);
@@ -52,9 +68,8 @@ public class Board implements Serializable {
         links.add(link);
         return this;
     }
-    
+
     // GETTERS AND SETTERS
-    
     public int getId() {
         return id;
     }
@@ -73,6 +88,11 @@ public class Board implements Serializable {
 
     public ArrayList<Post> getPosts() {
         return posts;
+    }
+
+    @XmlElement
+    public ArrayList<User> getUsers() {
+        return users;
     }
 
     public HashSet<Link> getLinks() {

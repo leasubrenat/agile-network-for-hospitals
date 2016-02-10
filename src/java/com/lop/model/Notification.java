@@ -5,27 +5,41 @@
  */
 package com.lop.model;
 
+import java.io.Serializable;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
 /**
  *
  * @author Anh
  */
-public class Notification {
+@XmlRootElement
+public class Notification implements Serializable {
     private int id;
-    private Board from;
-    private User to;
+    private User sender;
+    private User recipient;
     private Post post;
-    private boolean read;
+    private boolean unread;
     private String title;
 
     public Notification() {
     }
 
-    public Notification(Board from, User to, Post post, boolean read, String title) {
-        this.from = from;
-        this.to = to;
+    public Notification(User sender, Post post, String title) {
+        this(sender, null, post, true, title);
+    }
+
+    public Notification(User from, User to, Post post, boolean read, String title) {
+        this.sender = from;
+        this.recipient = to;
         this.post = post;
-        this.read = read;
+        this.unread = read;
         this.title = title;
+    }
+    
+    public void send(User u) {
+        recipient = u;
+        u.receive(this);
     }
 
     // GETTERS AND SETTERS
@@ -38,20 +52,21 @@ public class Notification {
         this.id = id;
     }
 
-    public Board getFrom() {
-        return from;
+    public User getSender() {
+        return sender;
     }
 
-    public void setFrom(Board from) {
-        this.from = from;
+    public void setSender(User sender) {
+        this.sender = sender;
     }
 
-    public User getTo() {
-        return to;
+    @XmlElement
+    public User getRecipient() {
+        return recipient;
     }
 
-    public void setTo(User to) {
-        this.to = to;
+    public void setRecipient(User recipient) {
+        this.recipient = recipient;
     }
 
     public Post getPost() {
@@ -62,12 +77,12 @@ public class Notification {
         this.post = post;
     }
 
-    public boolean isRead() {
-        return read;
+    public boolean isUnread() {
+        return unread;
     }
 
-    public void setRead(boolean read) {
-        this.read = read;
+    public void setUnread(boolean unread) {
+        this.unread = unread;
     }
 
     public String getTitle() {

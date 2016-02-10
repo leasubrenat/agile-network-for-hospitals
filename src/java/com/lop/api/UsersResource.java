@@ -92,6 +92,7 @@ public class UsersResource {
     @POST
     @Path("login")
     public Response login(@Context HttpServletRequest request, User u) {
+        System.out.println(u.getPassword());
         User me = World.getInstance().getUsers().login(u);
         if (me != null) {
             HttpSession session = request.getSession();

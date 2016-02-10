@@ -56,11 +56,13 @@ public class World {
         boards.getById().get("2").addUser(users.getById().get("5"));
         boards.getById().get("2").addUser(users.getById().get("6"));
         
-        posts.add(new Post(1, users.get("1"), "A crafty eyedoctor needed: The lenses got stuck in his eye"));
+        posts.add(new Post(1, users.get("1"), "A crafty eyedoctor needed: The lenses got stuck in his eye."));
+        posts.add(new Post(1, users.get("3"), "Emergency at the entrance."));
         posts.add(new Post(2, users.get("2"), "A charismatic psychologist needed: This guy seems to be out of his mind."));
 
         boards.getById().get("1").addPost(posts.getById().get("1"));
-        boards.getById().get("2").addPost(posts.getById().get("2"));
+        boards.getById().get("1").addPost(posts.getById().get("2"));
+        boards.getById().get("2").addPost(posts.getById().get("3"));
         
     }
 
