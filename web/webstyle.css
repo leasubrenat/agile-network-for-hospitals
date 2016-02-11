@@ -1,40 +1,60 @@
-#center {
-	text-align:center;
+h1 {
+    text-align: center;
 }
+
+#center {
+    text-align: center;
+}
+
 #comment {
-	height:100px;
+    height:100px;
 }
 .menu {
-	display:inline-block;
-	width:160px;
-	height:160px;
-	border-radius:80px;
-	font-size:20px;
-	color:white;
-	line-height:160px;
-	text-align:center;
-	text-decoration:none;
-	background:lightgreen; 
+    display:inline-block;
+    width:160px;
+    height:160px;
+    border-radius:80px;
+    font-size:20px;
+    color:white;
+    line-height:160px;
+    text-align:center;
+    text-decoration:none;
+    background:lightgreen; 
 }
 .menu:hover {
-	color:white;
-	text-decoration:none;
-	background:#33CC66;
+    color:white;
+    text-decoration:none;
+    background:#33CC66;
 }
 #box {
-	width:370px;
-	height:520px;
-	padding:15px;
-	border:3px solid lightgray;
-	margin:25px;
+    width:370px;
+    height:520px;
+    padding:15px;
+    border:3px solid lightgray;
+    margin:25px;
 }
 #smbox {
-	width:220px;
-	height:270px;
-	padding:10px;
-	border:3px solid lightgray;
-	margin:10px;
+    width:220px;
+    height:270px;
+    padding:10px;
+    border:3px solid lightgray;
+    margin:10px;
 }
-#users {text-align: center}
 
-/*#menuBtn {width: 100%; text-align: left}*/
+body{margin-top:50px;}
+.glyphicon { margin-right:10px; }
+.panel-body { padding:0px; }
+.panel-body table tr td { padding-left: 15px }
+.panel-body .table {margin-bottom: 0px; }
+
+a:visited {
+    color: #000000 !important;
+}
+
+a:hover {
+    color: #009999 !important;
+}
+
+a {
+    color: #000000 !important;
+}

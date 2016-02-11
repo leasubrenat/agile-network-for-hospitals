@@ -204,6 +204,17 @@ and open the template in the editor.
                     else {
                         console.log("empty message");
                     }
+                    $.ajax({
+                        url:"api/boards/1/posts",
+                        data: postXMLDoc,
+                        processData: false,
+                        type: "POST",
+                        contentType: "application/xml",
+                        dataType: "xml",
+                        error: function (response) {
+                            alert ("Error: " + response.statusText);
+                        }
+                    });
                 });
             }
             ;
