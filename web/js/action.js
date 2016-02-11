@@ -22,7 +22,6 @@ var msg;
 //display all the posts in the board (get)
 function showPosts(boardId) {
     $.get('api/boards/' + boardId + '/posts', function (xml) {
-//        console.log("function showPosts");
         var $postList = $(document.getElementById("postList"));
         $postList.empty();
         var $xml = $(xml);
@@ -35,8 +34,6 @@ function showPosts(boardId) {
             postDOM.append('<em>' + authorName + '</em><br>');
             postDOM.append(content);
             $postList.append(postDOM);
-//            $('<em>' + author + '</em><br>').appendTo(postDOM);
-//            $(content).appendTo(postDOM);
         });
         
 //        posterNames = $xml.find("name");
