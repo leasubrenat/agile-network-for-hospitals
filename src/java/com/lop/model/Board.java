@@ -8,7 +8,7 @@ package com.lop.model;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.concurrent.atomic.AtomicInteger;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -16,7 +16,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author Won Seob Seo <Wons at Metropolia UAS>
  */
 @XmlRootElement
-public class Board implements Serializable {
+public class Board implements Sender, Serializable {
 
     private int id;
     private String name;
@@ -32,6 +32,44 @@ public class Board implements Serializable {
         this.name = name;
     }
 
+    public void addPost(Post post) {
+        posts.add(post);
+        broadcast(post);
+    }
+
+    @Override
+    public void send(User u, Notification notification) {
+        //notification.setRecipient(u);
+        //u.receive(notification);
+        notification.send(u);
+    }
+
+    public void broadcast(Post post) {
+        for (User u : users) {
+            Notification n = new Notification(post.getAuthor(), null, post, true, name);
+            send(u, n);
+        }
+    }
+
+    // SUBSCRIBER SECTION
+    public void addUser(User user) {
+        users.add(user);
+    }
+
+    public void removeUser(User user) {
+        users.remove(user);
+    }
+    // END SUBSCRIBER SECTION
+
+    public Board addLink(String url, String rel) {
+        Link link = new Link();
+        link.setLink(url);
+        link.setRel(rel);
+        links.add(link);
+        return this;
+    }
+
+    // GETTERS AND SETTERS
     public int getId() {
         return id;
     }
@@ -52,9 +90,10 @@ public class Board implements Serializable {
         return posts;
     }
 
-//    public void setPosts(ArrayList<Post> posts) {
-//        this.posts = posts;
-//    }
+    @XmlElement
+    public ArrayList<User> getUsers() {
+        return users;
+    }
 
     public HashSet<Link> getLinks() {
         return links;
@@ -63,29 +102,4 @@ public class Board implements Serializable {
     public void setLinks(HashSet<Link> links) {
         this.links = links;
     }
-    
-    public void addPost(Post post){
-        posts.add(post);
-    }
-    
-    public void addUser(User user){
-        users.add(user);
-    }
-    
-    public void removeUser(User user){
-        users.add(user);
-    }
-
-    public ArrayList<User> getUsers() {
-        return users;
-    }
-    
-    public Board addLink(String url, String rel) {
-        Link link = new Link();
-        link.setLink(url);
-        link.setRel(rel);
-        links.add(link);
-        return this;
-    }
-    
 }

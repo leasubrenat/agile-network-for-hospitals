@@ -8,8 +8,8 @@ package com.lop.model;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.ConcurrentHashMap;
+import javax.xml.bind.annotation.XmlAnyElement;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -20,7 +20,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author Anh
  */
 @XmlRootElement
-public class User implements Serializable {
+public class User implements Sender, Serializable {
 
     private int id;
     private String username;
@@ -28,7 +28,9 @@ public class User implements Serializable {
     private String name;
     private Role role;
     private Location office;
-    private final ArrayList<Patient> patients = new ArrayList<>();;
+    private final ArrayList<Patient> patients = new ArrayList<>();
+    private final ArrayList<Notification> notifications = new ArrayList<>();
+    private final ArrayList<Task> tasks = new ArrayList<>();
     private HashSet<Link> links = new HashSet<>();
 
     public User() {
@@ -46,6 +48,18 @@ public class User implements Serializable {
         this.office = office;
     }
 
+    @Override
+    public void send(User u, Notification notification) {
+//        u.receive(notification);
+        notification.send(u);
+    }
+    
+    public void receive(Notification n) {
+        notifications.add(n);
+    }
+    
+    // GETTERS AND SETTERS
+    
     @XmlElement
     public int getId() {
         return id;
@@ -56,7 +70,7 @@ public class User implements Serializable {
         return username;
     }
 
-    @XmlTransient
+//    @XmlTransient
     public String getPassword() {
         return password;
     }
@@ -76,8 +90,25 @@ public class User implements Serializable {
         return office;
     }
 
+//    @XmlElement
     public ArrayList<Patient> getPatients() {
         return patients;
+    }
+    
+//    @XmlElement
+//    public ConcurrentHashMap<String, User> getUsers() {
+//        return World.getInstance().getUsers().getById();
+//    }
+
+//    @XmlElement
+//    public Notification getNotification() {
+//        return new Notification(null, null, new Post(), true, name);
+//    }
+    
+//    @XmlElement
+//    // TODO: Returns only unread notificaitons
+    public ArrayList<Notification> getNotifications() {
+        return notifications;
     }
 
     public void setId(int id) {
@@ -104,6 +135,18 @@ public class User implements Serializable {
         this.office = office;
     }
 
+    public ArrayList<Task> getTasks() {
+        return tasks;
+    }
+    
+    public void addTask(Task t){
+        tasks.add(t);
+    }
+    
+    public void removeTask(Task t){
+        tasks.remove(t);
+    }
+    
     public void setLinks(HashSet<Link> links) {
         this.links = links;
     }
@@ -119,4 +162,11 @@ public class User implements Serializable {
         links.add(link);
         return this;
     }
+    
+    // toString
+    @Override
+    public String toString() {
+        return "User{" + "id=" + id + ", username=" + username + ", password=" + password + '}';
+    }
+    
 }

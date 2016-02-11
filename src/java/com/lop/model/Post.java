@@ -7,8 +7,8 @@ package com.lop.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
-import java.util.concurrent.atomic.AtomicInteger;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -16,12 +16,14 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author Won Seob Seo <Wons at Metropolia UAS>
  */
 @XmlRootElement
-public class Post implements Serializable {
+public class Post implements Serializable, Comparable<Post> {
 
     private int id;
     private User author;
     private String content;
-    private HashSet<Task> tasks;
+    private final HashSet<Task> tasks = new HashSet<>();
+    private final ArrayList<Post> comments = new ArrayList<>();
+    private Date createdAt;
     private Post repliedTo;
     private HashSet<Link> links = new HashSet<>();
 
@@ -29,18 +31,17 @@ public class Post implements Serializable {
     }
 
     public Post(int id, User author, String content) {
-        this(id, author, content, null, null, null);
+        this(id, author, content, new Date(), null);
     }
     
     public Post(int id, User author, String content, Post repliedTo) {
-        this(id, author, content, null, null, repliedTo);
+        this(id, author, content, new Date(), repliedTo);
     }
 
-    public Post(int id, User author, String content, HashSet<Task> tasks, ArrayList<Comment> comments, Post repliedTo) {
+    public Post(int id, User author, String content, Date createdAt, Post repliedTo) {
         this.id = id;
         this.author = author;
         this.content = content;
-        this.tasks = tasks;
         this.repliedTo = repliedTo;
     }
 
@@ -72,10 +73,6 @@ public class Post implements Serializable {
         return tasks;
     }
 
-    public void setTasks(HashSet<Task> tasks) {
-        this.tasks = tasks;
-    }
-
     public Post getRepliedTo() {
         return repliedTo;
     }
@@ -98,5 +95,10 @@ public class Post implements Serializable {
         link.setRel(rel);
         links.add(link);
         return this;
+    }
+
+    @Override
+    public int compareTo(Post o) {
+        return createdAt.compareTo(o.createdAt);
     }
 }

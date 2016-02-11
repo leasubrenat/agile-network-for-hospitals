@@ -8,11 +8,9 @@ package com.lop.api;
 import com.lop.model.Board;
 import com.lop.model.Link;
 import com.lop.model.Post;
-import com.lop.model.Posts;
 import com.lop.model.User;
 import com.lop.model.World;
 import java.net.URI;
-import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -32,7 +30,7 @@ import javax.ws.rs.core.Response;
  *
  * @author Won Seob Seo <Wons at Metropolia UAS>
  */
-@Path("/")
+@Path("/posts")
 @Consumes(MediaType.APPLICATION_XML)
 @Produces(MediaType.APPLICATION_XML)
 public class PostsResource {
@@ -57,6 +55,7 @@ public class PostsResource {
     @GET
     @Produces("application/xml")
     public List<Post> getXml(@PathParam("boardId") String boardId) {
+        System.out.println("getXml " + boardId);
         Board board = World.getInstance().getBoards().getById().get(boardId);
         List<Post> posts = board.getPosts();
         for (Post p : posts) {
@@ -74,11 +73,7 @@ public class PostsResource {
     @POST
     @Consumes("application/xml")
     @Produces("application/xml")
-    public Response postXml(Post content, @PathParam("id") String boardId,  @Context HttpServletRequest request) {
-        return addPost(content, boardId, request);
-    }
-
-    public Response addPost(Post content, @PathParam("id") String boardId,  @Context HttpServletRequest request) {
+    public Response postXml(Post content, @PathParam("boardId") String boardId, @Context HttpServletRequest request) {
         //set the POST author using username
         HttpSession session = request.getSession();
         User author = (User) session.getAttribute("me");
@@ -89,6 +84,7 @@ public class PostsResource {
         }
         Board board;
         try {
+            System.out.println(boardId);
             board = World.getInstance().getBoards().getById().get(boardId);
         } catch (Exception e){
             return Response.status(400).entity("No such a board").build();
@@ -107,6 +103,7 @@ public class PostsResource {
     @GET
     @Path("{postId}")
     public Response getPostResource(@PathParam("boardId") String boardId, @PathParam("postId") String postId) {
+        System.out.println("getPostResource " + boardId);
         Post post = Link.addLinks(boardId, World.getInstance().getPosts().get(postId), uriInfo);      
         return Response.ok(Link.getUriForSelf(boardId, post, uriInfo))
                 .entity(post)

@@ -7,6 +7,7 @@ package com.lop.model;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -17,15 +18,20 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class Patient extends Model {
 
+    private int id;
     private String name;
     private int age;
     private User mainDoctor;
     private Location room;
     private String description;
     private Date hospitalizedAt;
-    private List<Link> links = new ArrayList<>();
+    private HashSet<Link> links = new HashSet<>();
 
     public Patient() {
+    }
+    
+    public Patient(int id) {
+        this.id = id;
     }
 
     public Patient(String name, int age, User mainDoctor, Location room) {
@@ -83,14 +89,14 @@ public class Patient extends Model {
         this.hospitalizedAt = hospitalizedAt;
     }
 
-    public List<Link> getLinks() {
+    public HashSet<Link> getLinks() {
         return links;
     }
 
-    public void setLinks(List<Link> links) {
+    public void setLinks(HashSet<Link> links) {
         this.links = links;
     }
-
+    
     public void addLink(String url, String rel) {
         Link link = new Link();
         link.setLink(url);

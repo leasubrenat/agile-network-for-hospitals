@@ -6,9 +6,7 @@
 package com.lop.api;
 
 import com.lop.model.Board;
-import com.lop.model.Boards;
 import com.lop.model.Link;
-import com.lop.model.User;
 import com.lop.model.World;
 import java.net.URI;
 import java.util.ArrayList;
@@ -76,7 +74,7 @@ public class BoardsResource {
     }
 
     /**
-     * Sub-resource locator method for {id}
+     * Sub-resource GET method for {id}
      */
     @GET
     @Path("{id}")

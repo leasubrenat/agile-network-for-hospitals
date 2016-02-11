@@ -7,7 +7,6 @@ package com.lop.api;
 
 import com.lop.model.Link;
 import com.lop.model.User;
-import com.lop.model.Users;
 import com.lop.model.World;
 import java.net.URI;
 import java.util.ArrayList;
@@ -24,7 +23,6 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import org.jboss.weld.context.http.HttpRequestContext;
 
 /**
  * REST Web Service
@@ -70,18 +68,15 @@ public class UsersResource {
 
     /**
      * POST method for creating an instance of UserResource
-     *
+     * add a new user to the board when path is /boards/{boardId}/users but add new user when path is /users
      * @param content representation for the new resource
      * @return an HTTP response with content of the created resource
      */
     @POST
     public Response postXml(@PathParam("boardId") String boardId, User content) {
         if (boardId != null) {
-            System.out.println("lala:" + content.getId());
             content = World.getInstance().getUsers().getById().get(Integer.toString(content.getId()));
             World.getInstance().getBoards().getById().get(boardId).addUser(content);
-            System.out.println(uriInfo.toString());
-            System.out.println(content.getId());
             URI uri = uriInfo.getAbsolutePathBuilder().path(Integer.toString(content.getId())).build();
             return Response.created(uri)
                     .entity(content)
@@ -98,18 +93,24 @@ public class UsersResource {
     /**
      * Sub-resource locator method for {id}
      */
-    @GET
     @Path("{id}")
-    public Response getUserResource(@PathParam("id") String id) {
-        User user = Link.addLinks(World.getInstance().getUsers().get(id), uriInfo);
-        return Response.ok(Link.getUriForSelf(user, uriInfo))
-                .entity(user)
-                .build();
+    public UserResource getUserResource(@PathParam("id") String id) {
+        return UserResource.getInstance(id);
     }
+    
+//    @GET
+//    @Path("{id}")
+//    public Response getUserResource(@PathParam("id") String id) {
+//        User user = Link.addLinks(World.getInstance().getUsers().get(id), uriInfo);
+//        return Response.ok(Link.getUriForSelf(user, uriInfo))
+//                .entity(user)
+//                .build();
+//    }
 
     @POST
     @Path("login")
     public Response login(@Context HttpServletRequest request, User u) {
+        System.out.println(u.getPassword());
         User me = World.getInstance().getUsers().login(u);
         if (me != null) {
             HttpSession session = request.getSession();
@@ -127,5 +128,10 @@ public class UsersResource {
             return Response.status(400)
                     .build();
         }
+    }
+    
+    @Path("/{UserId}/tasks")
+    public TasksResource getTasksResource() {
+        return new TasksResource(uriInfo);
     }
 }
