@@ -132,10 +132,11 @@ and open the template in the editor.
                         <h2>Contents</h2>
                         Page contents go here (board posts, tasks etc.)<br><br>
                         <script>
-                            //onclick function for boards (display posts)
+                            //onclick function for boards (display posts) TO DO: display buttons
                             function showBoard() {
                                 showPosts();
                                 addPost();
+                                pollPosts();
                             }
                             ;
                         </script>
@@ -147,9 +148,9 @@ and open the template in the editor.
                             </form>
                         </div>
                         <div id="postMsgForm">
-                            <form>
                                 <input id="message" type="text" value="New message">
                                 <input id="post2board" type="submit" value="Send">
+                            <form onsubmit="false">
                             </form>
                         </div>
                     </div>
@@ -161,63 +162,8 @@ and open the template in the editor.
             <p><span class="glyphicon glyphicon-book"></span><a href="#">User manual</a></p>
         </div>
         <script>
-            var posterNames;
-            var posterName;
-            var post;
-            var posts;
-            var j;
-            var i;
-            var postXMLDoc;
-            var postXML;
-            var msg;
-            //display all the posts in the board (get)
-            function showPosts() {
-                $.get('api/boards/1/posts', function (xml) {
-                    console.log("function showPosts");
-                    var $xml = $(xml);
-                    posterNames = $xml.find("name");
-                    posts = $xml.find("content");
-                    for (j = 0; j < posts.length; j++) {
-                        post += posts[j].textContent + "<br>";
-                    }
-                    for (i = 0; i < posterNames.length; i++) {
-                        posterName += posterNames[i].textContent + "<br>";
-                    }
-                    document.getElementById("postList").innerHTML = posterName + post + "<br>";
-                });
-                post = "";
-                posterName = "";
-            }
-            ;
-
-            //add a new post to the board (post)
-            function addPost() {
-                console.log("function addPost");
-                $('#post2board').click(function () {
-                    console.log("function post2board");
-                    postXMLDoc = $.parseXML('<post><author><username></username></author><content></content></post>');
-                    postXML = $(postXMLDoc);
-                    msg = $('#message').val();
-                    if (msg !== null) {
-                        postXML.find("content").append(msg);
-                    }
-                    else {
-                        console.log("empty message");
-                    }
-                    $.ajax({
-                        url:"api/boards/1/posts",
-                        data: postXMLDoc,
-                        processData: false,
-                        type: "POST",
-                        contentType: "application/xml",
-                        dataType: "xml",
-                        error: function (response) {
-                            alert ("Error: " + response.statusText);
-                        }
-                    });
-                });
-            }
-            ;
+            
+            
         </script>
     </body>
 </html>
