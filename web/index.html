@@ -1,34 +1,212 @@
 <!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
 <html>
-<head>
-	<title>A.N.H.</title>
-	<meta charset="UTF-8">
-	<link rel="stylesheet" type="text/css" href="webstyle.css">
-	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-</head>
-<body>
-	<div class="container-fluid">
-		<div class="row">
-			<div class="col-md-4">
-				
-			</div>
-			<div class="col-md-4">
-				<div id="center">
-					<h1>A.N.H.</h1><br>
-					<a href="boards.html" class="menu">Boards</a>
-					<a href="patients.html" class="menu">Patients</a><br>
-					<a href="tasks.html" class="menu">Tasks</a>
-					<a href="#" class="menu">HELP</a><br><br>
-					<p><i class="fa fa-commenting-o"></i> <a href="contact.html">Contact us</a></p>
-                                        <p><i class="fa fa-book"></i> <a href="#">User manual</a></p>
-				</div>
-			</div>
-			<div class="col-md-4">
-				
-			</div>
-		</div>
-	</div>
-</body>
+    <head>
+        <title>Content</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="//code.jquery.com/jquery-1.12.0.js"></script>
+        <script src="js/json2xml.js"></script>
+        <script src="js/xmlToJSON.js"></script>
+        <script src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="webstyle.css">
+    </head>
+    <body>
+        <script src="js/functions.js"></script>
+        <div class="container">
+            <div class="well">
+                <h1>A.N.H.</h1>
+            </div>
+            <div class="row">
+                <div class="col-sm-3 col-md-3">
+                    <div class="panel-group" id="accordion">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+                                        <span class="glyphicon glyphicon-th-large">
+                                        </span>Boards</a>
+                                </h4>
+                            </div>
+                            <div id="collapseOne" class="panel-collapse collapse in">
+                                <div class="panel-body">
+                                    <table class="table">
+                                        <tr>
+                                            <td>
+                                                <div id="boardList"></div>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
+                                        <span class="glyphicon glyphicon-search">
+                                        </span>Users</a>
+                                </h4>
+                            </div>
+                            <div id="collapseTwo" class="panel-collapse collapse">
+                                <div class="panel-body">
+                                    <table class="table">
+                                        <tr>
+                                            <td>
+                                                <div id="userList"></div>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseFive">
+                                        <span class="glyphicon glyphicon-user">
+                                        </span>Patients</a>
+                                </h4>
+                            </div>
+                            <div id="collapseFive" class="panel-collapse collapse">
+                                <div class="panel-body">
+                                    <table class="table">
+                                        <tr>
+                                            <td>
+                                                <div id="patientList"></div>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree">
+                                        <span class="glyphicon glyphicon-tasks">
+                                        </span>Tasks</a>
+                                </h4>
+                            </div>
+                            <div id="collapseThree" class="panel-collapse collapse">
+                                <div class="panel-body">
+                                    <table class="table">
+                                        <tr>
+                                            <td>
+                                                <div id="taskList"></div>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseFour">
+                                        <span class="glyphicon glyphicon-alert">
+                                        </span>Help</a>
+                                </h4>
+                            </div>
+                            <div id="collapseFour" class="panel-collapse collapse">
+                                <div class="panel-body">
+                                    <table class="table">
+                                        <tr>
+                                            <td>
+
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-9 col-md-9">
+                    <div class="well">
+                        <h2>Contents</h2>
+                        Page contents go here (board posts, tasks etc.)<br><br>
+                        <script>
+                            //onclick function for boards (display posts)
+                            function showBoard() {
+                                showPosts();
+                                addPost();
+                            }
+                            ;
+                        </script>
+                        <div id="postList"></div>
+                        <div id="addUserForm">
+                            <form>
+                                <input id="addUser" type="text" value="Add username">
+                                <input id="user2board" type="submit" value="Add">
+                            </form>
+                        </div>
+                        <div id="postMsgForm">
+                            <form>
+                                <input id="message" type="text" value="New message">
+                                <input id="post2board" type="submit" value="Send">
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="center">
+            <p><span class="glyphicon glyphicon-envelope"></span><a href="#">Contact us</a></p>
+            <p><span class="glyphicon glyphicon-book"></span><a href="#">User manual</a></p>
+        </div>
+        <script>
+            var posterNames;
+            var posterName;
+            var post;
+            var posts;
+            var j;
+            var i;
+            var postXMLDoc;
+            var postXML;
+            var msg;
+            //display all the posts in the board (get)
+            function showPosts() {
+                $.get('api/boards/1/posts', function (xml) {
+                    console.log("function showPosts");
+                    var $xml = $(xml);
+                    posterNames = $xml.find("name");
+                    posts = $xml.find("content");
+                    for (j = 0; j < posts.length; j++) {
+                        post += posts[j].textContent + "<br>";
+                    }
+                    for (i = 0; i < posterNames.length; i++) {
+                        posterName += posterNames[i].textContent + "<br>";
+                    }
+                    document.getElementById("postList").innerHTML = posterName + post + "<br>";
+                });
+                post = "";
+                posterName = "";
+            }
+            ;
+
+            //add a new post to the board (post)
+            function addPost() {
+                console.log("function addPost");
+                $('#post2board').click(function () {
+                    console.log("function post2board");
+                    postXMLDoc = $.parseXML('<post><author><username></username></author><content></content></post>');
+                    postXML = $(postXMLDoc);
+                    msg = $('#message').val();
+                    if (msg !== null) {
+                        postXML.find("content").append(msg);
+                    }
+                    else {
+                        console.log("empty message");
+                    }
+                });
+            }
+            ;
+        </script>
+    </body>
 </html>
