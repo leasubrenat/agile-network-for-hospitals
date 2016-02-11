@@ -20,31 +20,42 @@ var postXML;
 var msg;
 
 //display all the posts in the board (get)
-var myfunc = function () {
-    console.log("HAHAHAHAHAHAH");
-};
-function showPosts() {
-    $.get('api/boards/1/posts', function (xml) {
-        console.log("function showPosts");
+function showPosts(boardId) {
+    $.get('api/boards/' + boardId + '/posts', function (xml) {
+//        console.log("function showPosts");
+        var $postList = $(document.getElementById("postList"));
+        $postList.empty();
         var $xml = $(xml);
-        posterNames = $xml.find("name");
-        posts = $xml.find("content");
-        for (j = 0; j < posts.length; j++) {
-            post += posts[j].textContent + "<br>";
-        }
-        for (i = 0; i < posterNames.length; i++) {
-            posterName += posterNames[i].textContent + "<br>";
-        }
-        document.getElementById("postList").innerHTML = posterName + post + "<br>";
+        var posts = $xml.find('post');
+        $.each(posts, function(index, post) {
+            var $post = $(post);
+            var authorName = $post.find('post > author > name').text();
+            var content = $post.find('post > content').text();
+            var postDOM = $('<div></div>');
+            postDOM.append('<em>' + authorName + '</em><br>');
+            postDOM.append(content);
+            $postList.append(postDOM);
+//            $('<em>' + author + '</em><br>').appendTo(postDOM);
+//            $(content).appendTo(postDOM);
+        });
+        
+//        posterNames = $xml.find("name");
+//        posts = $xml.find("content");
+//        for (j = 0; j < posts.length; j++) {
+//            post += posts[j].textContent + "<br>";
+//        }
+//        for (i = 0; i < posterNames.length; i++) {
+//            posterName += posterNames[i].textContent + "<br>";
+//        }
+//        document.getElementById("postList").innerHTML = posterName + post + "<br>";
     });
     post = "";
     posterName = "";
 }
-;
 
 //add a new post to the board (post)
 function addPost() {
-    console.log("function addPost");
+//    console.log("function addPost");
     $('#post2board').click(function () {
         console.log("function post2board");
         postXMLDoc = $.parseXML('<post><content></content></post>');
@@ -72,7 +83,7 @@ function addPost() {
             }
         });
     });
-};
+}
 
 function pollPosts() {
     setTimeout(function () {
@@ -83,6 +94,7 @@ function pollPosts() {
 
 $(document).ready(function () {
 
+    // Login the user first. This is for development purpose.
     var xmlCred = $.parseXML('<user><username>ctu</username><password>111111</password></user>');
     $.ajax({
         url: "api/users/login",
@@ -96,29 +108,38 @@ $(document).ready(function () {
         }
     });
 
-
     //list all the users (get)
-    $.get('api/users', function (xml) {
-        var $xml = $(xml);
-        names = $xml.find("name");
-        for (i = 0; i < names.length; i++) {
-            name += "<a id=\"userLink\" href=\"#\">"
-                    + names[i].textContent + "</a><br>";
-        }
-        document.getElementById("userList").innerHTML = name;
-    });
-    name = "";
+//    $.get('api/users', function (xml) {
+//        var $xml = $(xml);
+//        names = $xml.find("name");
+//        for (i = 0; i < names.length; i++) {
+//            name += "<a id=\"userLink\" href=\"#\">"
+//                    + names[i].textContent + "</a><br>";
+//        }
+//        document.getElementById("userList").innerHTML = name;
+//    });
+//    name = "";
 
-    //list all the boards (get)
+    // GET all the boards
     $.get('api/boards', function (xml) {
         var $xml = $(xml);
-        boards = $xml.find("board > name");
-        for (i = 0; i < boards.length; i++) {
-            board += "<a id=\"boardLink\" href=\"#" +
-                    "\" onclick=\"showBoard(); return false;\">"
-                    + boards[i].textContent + "</a><br>";
-        }
-        document.getElementById("boardList").innerHTML = board;
+        boards = $xml.find("board");
+        $.each(boards, function (index, board) {
+            var $board = $(board);
+            var id = $board.find('board > id').text();
+            var name = $board.find('board > name').text();
+            boardDOM = $('<a>' + name + '</a><br>');
+            boardDOM.attr('onclick', 'showBoard(' + id + ')');
+            boardDOM.appendTo(document.getElementById("boardList"));
+        });
+
+//        boards = $xml.find("board > name");
+//        for (i = 0; i < boards.length; i++) {
+//            board += "<a id=\"boardLink\" href=\"#" +
+//                    "\" onclick=\"showBoard(); return false;\">"
+//                    + boards[i].textContent + "</a><br>";
+//        }
+//        document.getElementById("boardList").innerHTML = board;
     });
     board = "";
 
