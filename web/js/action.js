@@ -1,6 +1,4 @@
 var boardID;
-var boards;
-//var board;
 var link;
 var links;
 var names;
@@ -14,41 +12,9 @@ var posterName;
 var post;
 var posts;
 var j;
-var i;
 var postXMLDoc;
 var postXML;
 var msg;
-
-//display all the posts in the board (get)
-function showPosts(boardId) {
-    $.get('api/boards/' + boardId + '/posts', function (xml) {
-        var $postList = $(document.getElementById("postList"));
-        $postList.empty();
-        var $xml = $(xml);
-        var posts = $xml.find('post');
-        $.each(posts, function(index, post) {
-            var $post = $(post);
-            var authorName = $post.find('post > author > name').text();
-            var content = $post.find('post > content').text();
-            var postDOM = $('<div></div>');
-            postDOM.append('<em>' + authorName + '</em><br>');
-            postDOM.append(content);
-            $postList.append(postDOM);
-        });
-        
-//        posterNames = $xml.find("name");
-//        posts = $xml.find("content");
-//        for (j = 0; j < posts.length; j++) {
-//            post += posts[j].textContent + "<br>";
-//        }
-//        for (i = 0; i < posterNames.length; i++) {
-//            posterName += posterNames[i].textContent + "<br>";
-//        }
-//        document.getElementById("postList").innerHTML = posterName + post + "<br>";
-    });
-    post = "";
-    posterName = "";
-}
 
 //add a new post to the board (post)
 function addPost() {
@@ -118,36 +84,7 @@ $(document).ready(function () {
 //    });
 //    name = "";
 
-    // GET all the boards
-    $.get('api/boards', function (xml) {
-        var $xml = $(xml);
-        boards = $xml.find("board");
-//        boards.each(function() {
-//            var $board = $(this); // "this" refers to the element calling the function inside .each(), in this case a board.
-//            var id = $board.find('board > id').text();
-//            var name = $board.find('board > name').text();
-//            boardDOM = $('<a>' + name + '</a><br>');
-//            boardDOM.attr('onclick', 'showBoard(' + id + ')');
-//            boardDOM.appendTo(document.getElementById("boardList"));
-//        });
-        
-        for (i = 0; i < boards.length; i++) {
-            var $board = $(boards[i]);
-            var id = $board.find('board > id').text();
-            var name = $board.find('board > name').text();
-            
-//            var boardLink = document.createElement('A');
-//            boardLink.innerHTML = name;
-//            boardLink.setAttribute('onclick', 'showBoard(' + id + ')');
-//            document.getElementById("boardList").appendChild(boardLink);
-//            document.getElementById("boardList").innerHTML += '<br>';
-            
-            var boardDOM = $('<a href="#">' + name + '</a>');
-            boardDOM.attr('onclick', 'showBoard(' + id + ')');
-            boardDOM.appendTo(document.getElementById("boardList"));
-            document.getElementById("boardList").innerHTML += '<br>';
-        }
-    });
+    listBoards();
 
     //list all the board's users (get)
     $('#listUsers').click(function () {
@@ -174,36 +111,19 @@ $(document).ready(function () {
     });
 
     //list all the patients' names (get)
-    $.get('api/patients', function (xml) {
-        var $xml = $(xml);
-        patientNames = $xml.find("value>name");
-        for (i = 0; i < patientNames.length; i++) {
-            patientName += "<a id=\"patientLink\" href=\"#\">"
-                    + patientNames[i].textContent + "</a><br>";
-        }
-        document.getElementById("patientList").innerHTML = patientName;
-    });
-    patientName = "";
+    listPatients();
+//    $.get('api/patients', function (xml) {
+//        var $xml = $(xml);
+//        patientNames = $xml.find("value>name");
+//        for (i = 0; i < patientNames.length; i++) {
+//            patientName += "<a id=\"patientLink\" href=\"#\">"
+//                    + patientNames[i].textContent + "</a><br>";
+//        }
+//        document.getElementById("patientList").innerHTML = patientName;
+//    });
+//    patientName = "";
 
-    //list patient info (get)
-    function showPatient() {
-        $.get('api/patients/{id}', function (xml) {
-            console.log(xml);
-            var $xml = $(xml);
-            names = $xml.find("");//what info should it retrieve
-            for (i = 0; i < names.length; i++) {
-                name += "<a id=\"patientLink\" href=\"#\">"
-                        + names[i].textContent + "</a><br>";
-            }
-            document.getElementById("patientList").innerHTML = name;
-        });
-        name = "";
-    }
-    ;
-
-    //update patient info (put)
-
-    //add new patient (post)
+//    listPatients();
 
     //list all the tasks (get)
     $.get('api/tasks', function (xml) {
@@ -217,3 +137,122 @@ $(document).ready(function () {
     });
     task = "";
 });
+
+function listBoards() {
+    // GET a list of all boards
+    $.get('api/boards', function (xml) {
+        var $xml = $(xml);
+        var boards = $xml.find('board');
+
+        document.getElementById('boardList').innerHTML = '';
+        for (var i = 0; i < boards.length; i++) {
+            var $board = $(boards[i]);
+            var id = $board.find('board > id').text();
+            var name = $board.find('board > name').text();
+
+            var $boardDOM = $('<a href="#">' + name + '</a>');
+            $boardDOM.attr('onclick', 'showBoard(' + id + ')');
+//            boardDOM.appendTo(document.getElementById('boardList'))
+            document.getElementById('boardList').appendChild($boardDOM.get(0));
+            document.getElementById('boardList').innerHTML += '<br>';
+
+//            var boardLink = document.createElement('A');
+//            boardLink.innerHTML = name;
+//            boardLink.setAttribute('onclick', 'showBoard(' + id + ')');
+//            document.getElementById("boardList").appendChild(boardLink);
+//            document.getElementById("boardList").innerHTML += '<br>';
+        }
+    });
+}
+
+function listPatients() {
+    // GET a list of all patients
+    $.get('api/patients', function (xml) {
+        var $xml = $(xml);
+        
+        var patients = $xml.find('byId > entry > value'); // TODO Should be changed from the backend
+//        var patients = $xml.find('patient');
+        
+        document.getElementById('patientList').innerHTML = '';
+        for (var i = 0; i < patients.length; i++) {
+            var $patient = $(patients[i]);
+            
+            var id = $patient.find('value > id').text(); // TODO Should be changed from the backend
+            var name = $patient.find('value > name').text(); // TODO Should be changed from the backend
+            
+            var patientDOM = $('<a href="#">' + name + '</a>');
+            patientDOM.attr('onclick', 'getPatient(' + id + ')');
+            patientDOM.appendTo(document.getElementById('patientList'));
+            document.getElementById('patientList').innerHTML += '<br>';
+        }
+    });
+}
+
+function showPosts(boardId) {
+    // GET a list of all posts in a board
+    $.get('api/boards/' + boardId + '/posts', function (xml) {
+        var $panelDOM = $(document.getElementById("postList"));
+        $panelDOM.empty();
+        var $xml = $(xml);
+        var posts = $xml.find('post');
+        
+        for (var i = 0; i < posts.length; i++) {
+            var $post = $(posts[i]);
+            var authorName = $post.find('post > author > name').text();
+            var content = $post.find('post > content').text();
+            var postDOM = $('<div></div>');
+            postDOM.append('<em>' + authorName + '</em><br>');
+            postDOM.append(content);
+            $panelDOM.append(postDOM);
+        }
+        
+//        $.each(posts, function (index, post) {
+//            var $post = $(post);
+//            var authorName = $post.find('post > author > name').text();
+//            var content = $post.find('post > content').text();
+//            var postDOM = $('<div></div>');
+//            postDOM.append('<em>' + authorName + '</em><br>');
+//            postDOM.append(content);
+//            $postList.append(postDOM);
+//        });
+
+//        posterNames = $xml.find("name");
+//        posts = $xml.find("content");
+//        for (j = 0; j < posts.length; j++) {
+//            post += posts[j].textContent + "<br>";
+//        }
+//        for (i = 0; i < posterNames.length; i++) {
+//            posterName += posterNames[i].textContent + "<br>";
+//        }
+//        document.getElementById("postList").innerHTML = posterName + post + "<br>";
+    });
+}
+
+function getPatient(patientId) {
+    // GET a patient info
+    $.get('api/patients/' + patientId, function (xml) {
+        var $panelDOM = $(document.getElementById("postList"));
+        $panelDOM.empty();
+        var $xml = $(xml);
+        var patients = $xml.find('patient');
+        
+        for (var i = 0; i < patients.length; i++) {
+            var $patient = $(patients[i]);
+            var name = $patient.find('patient > name').text();
+            var age = $patient.find('patient > age').text();
+            var doctorName = $patient.find('patient > mainDoctor > name').text();
+            var roomNumber = $patient.find('patient > room > number').text();
+            
+            var postDOM = $('<div></div>');
+            postDOM.append('<b>' + name + '</b><br>');
+            postDOM.append('Age: ' + age + '<br>');
+            postDOM.append('Doctor: ' + doctorName + '<br>');
+            postDOM.append('Room: ' + roomNumber + '<br>');
+            $panelDOM.append(postDOM);
+        }
+    });
+}
+
+// TODO update patient info (put)
+
+// TODO add new patient (post)
