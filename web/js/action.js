@@ -1,6 +1,6 @@
 var boardID;
 var boards;
-var board;
+//var board;
 var link;
 var links;
 var names;
@@ -74,6 +74,7 @@ function addPost() {
             dataType: "xml",
             error: function (response) {
                 alert("Error: " + response.statusText);
+                console.log(response);
             },
             success: function (res) {
                 showPosts();
@@ -121,24 +122,32 @@ $(document).ready(function () {
     $.get('api/boards', function (xml) {
         var $xml = $(xml);
         boards = $xml.find("board");
-        $.each(boards, function (index, board) {
-            var $board = $(board);
+//        boards.each(function() {
+//            var $board = $(this); // "this" refers to the element calling the function inside .each(), in this case a board.
+//            var id = $board.find('board > id').text();
+//            var name = $board.find('board > name').text();
+//            boardDOM = $('<a>' + name + '</a><br>');
+//            boardDOM.attr('onclick', 'showBoard(' + id + ')');
+//            boardDOM.appendTo(document.getElementById("boardList"));
+//        });
+        
+        for (i = 0; i < boards.length; i++) {
+            var $board = $(boards[i]);
             var id = $board.find('board > id').text();
             var name = $board.find('board > name').text();
-            boardDOM = $('<a>' + name + '</a><br>');
+            
+//            var boardLink = document.createElement('A');
+//            boardLink.innerHTML = name;
+//            boardLink.setAttribute('onclick', 'showBoard(' + id + ')');
+//            document.getElementById("boardList").appendChild(boardLink);
+//            document.getElementById("boardList").innerHTML += '<br>';
+            
+            var boardDOM = $('<a href="#">' + name + '</a>');
             boardDOM.attr('onclick', 'showBoard(' + id + ')');
             boardDOM.appendTo(document.getElementById("boardList"));
-        });
-
-//        boards = $xml.find("board > name");
-//        for (i = 0; i < boards.length; i++) {
-//            board += "<a id=\"boardLink\" href=\"#" +
-//                    "\" onclick=\"showBoard(); return false;\">"
-//                    + boards[i].textContent + "</a><br>";
-//        }
-//        document.getElementById("boardList").innerHTML = board;
+            document.getElementById("boardList").innerHTML += '<br>';
+        }
     });
-    board = "";
 
     //list all the board's users (get)
     $('#listUsers').click(function () {
