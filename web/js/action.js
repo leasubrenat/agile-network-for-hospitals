@@ -215,8 +215,8 @@ function showPosts(boardId) {
 //            $panelDOM.append(postDOM);
 
             var $postDOM;
-            if (cache.postHTML) {
-                $postDOM = $(cache.postHTML);
+            if (cache.postHTML.data) {
+                $postDOM = $(cache.postHTML.data);
                 $postDOM.find('.author').html(authorName);
                 $postDOM.find('.content').html(content);
                 $postDOM.find('.header > img').attr('src', 'http://api.adorable.io/avatars/64' + authorName + '.png');
@@ -225,14 +225,14 @@ function showPosts(boardId) {
                 console.log("No cache found, loading the component...");
                 builder.loadComponent('components/post.html', function (html, cbData) {
 //                    console.log(html);
-                    cache.postHTML = html; // caching the component for reuse
+//                    cache.postHTML = html; // caching the component for reuse
                     console.log(cbData.authorName);
                     var $postDOM = $(html);
                     $postDOM.find('.author').html(cbData.authorName);
                     $postDOM.find('.content').html(cbData.content);
                     $postDOM.find('.header > img').attr('src', 'http://api.adorable.io/avatars/64' + cbData.authorName + '.png');
                     $panelDOM.append($postDOM);
-                }, {authorName: authorName, content: content});
+                }, {authorName: authorName, content: content}, cache.postHTML);
             }
         }
 
@@ -296,10 +296,10 @@ var builder = {
                 '<div class="content"></div>' +
                 '</div>');
     },
-    loadComponent: function (uri, cb, cbData, cache) {
+    loadComponent: function (uri, cb, cbData, cacheTarget) {
         $.get(uri, function (html) {
-            if (typeof cache !== 'undefined') {
-                cache = html;
+            if (typeof cacheTarget.data !== 'undefined') {
+                cacheTarget.data = html;
             }
             cb(html, cbData);
         });
@@ -318,5 +318,5 @@ var builder = {
 };
 
 var cache = {
-    postHTML: null
+    postHTML: { data: null }
 };
