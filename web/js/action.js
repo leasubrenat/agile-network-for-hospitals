@@ -201,6 +201,7 @@ function showPosts(boardId) {
 
         for (var i = 0; i < posts.length; i++) {
             var $post = $(posts[i]);
+            var authorId = $post.find('post > author > id').text();
             var authorName = $post.find('post > author > name').text();
             var content = $post.find('post > content').text();
 
@@ -217,22 +218,20 @@ function showPosts(boardId) {
             var $postDOM;
             if (cache.postHTML.data) {
                 $postDOM = $(cache.postHTML.data);
-                $postDOM.find('.author').html(authorName);
+                $postDOM.find('.author').html(authorName).attr('href', 'api/users/' + authorId);
                 $postDOM.find('.content').html(content);
-                $postDOM.find('.header > img').attr('src', 'http://api.adorable.io/avatars/64' + authorName + '.png');
+                $postDOM.find('.header .profile-img').attr('src', 'http://api.adorable.io/avatars/64' + authorName + '.png');
                 $panelDOM.append($postDOM);
             } else {
                 console.log("No cache found, loading the component...");
                 builder.loadComponent('components/post.html', function (html, cbData) {
-//                    console.log(html);
-//                    cache.postHTML = html; // caching the component for reuse
                     console.log(cbData.authorName);
                     var $postDOM = $(html);
-                    $postDOM.find('.author').html(cbData.authorName);
+                    $postDOM.find('.author').html(cbData.authorName).attr('href', 'api/users/' + cbData.authorId);
                     $postDOM.find('.content').html(cbData.content);
-                    $postDOM.find('.header > img').attr('src', 'http://api.adorable.io/avatars/64' + cbData.authorName + '.png');
+                    $postDOM.find('.header .profile-img').attr('src', 'http://api.adorable.io/avatars/64' + cbData.authorName + '.png');
                     $panelDOM.append($postDOM);
-                }, {authorName: authorName, content: content}, cache.postHTML);
+                }, {authorId: authorId, authorName: authorName, content: content}, cache.postHTML);
             }
         }
 

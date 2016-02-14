@@ -84,5 +84,6 @@ body {
 }
 
 .post .author {
-    color: orange;
+    font-weight: bold;
+    color: #8DBF30;
 }
