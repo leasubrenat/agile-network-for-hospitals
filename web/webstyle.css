@@ -9,7 +9,7 @@ h1 {
 #comment {
     height:100px;
 }
-.menu {
+/*.menu {
     display:inline-block;
     width:160px;
     height:160px;
@@ -25,7 +25,7 @@ h1 {
     color:white;
     text-decoration:none;
     background:#33CC66;
-}
+}*/
 #box {
     width:370px;
     height:520px;
@@ -47,14 +47,42 @@ body{margin-top:50px;}
 .panel-body table tr td { padding-left: 15px }
 .panel-body .table {margin-bottom: 0px; }
 
-a:visited {
-    color: #000000 !important;
+/*UI Kit*/
+body {
+    background-color: #5AAE62;
 }
 
-a:hover {
-    color: #009999 !important;
+.no-gutter > [class*='col-'] {
+    padding-right:0;
+    padding-left:0;
 }
 
-a {
-    color: #000000 !important;
+#accordion .panel {
+    margin: 0;
+}
+
+#accordion .panel-default {
+    border: none;
+}
+
+#accordion .panel-heading {
+    background-color: #8DBF30;
+    color: white;
+}
+
+#accordion .panel-heading:hover {
+    background-color: white;
+    color: black;
+}
+
+#accordion * {
+    border-radius: 0px;
+}
+
+.post > * {
+    margin: 20px;
+}
+
+.post .author {
+    color: orange;
 }

@@ -26,8 +26,7 @@ function addPost() {
         msg = $('#message').val();
         if (msg !== null) {
             postXML.find("content").append(msg);
-        }
-        else {
+        } else {
             console.log("empty message");
         }
 //                    console.log(postXMLDoc);
@@ -57,6 +56,10 @@ function pollPosts() {
 }
 
 $(document).ready(function () {
+
+    // Synchronous loading test
+//    var postHTML = builder.postHTML();
+    var postHTMLcache = null;
 
     // Login the user first. This is for development purpose.
     var xmlCred = $.parseXML('<user><username>ctu</username><password>111111</password></user>');
@@ -150,11 +153,11 @@ function listBoards() {
             var id = $board.find('board > id').text();
             var name = $board.find('board > name').text();
 
-            var $boardDOM = $('<a href="#">' + name + '</a>');
+            var $boardDOM = $('<a href="#" class="list-group-item">' + name + '</a>');
             $boardDOM.attr('onclick', 'showBoard(' + id + ')');
 //            boardDOM.appendTo(document.getElementById('boardList'))
             document.getElementById('boardList').appendChild($boardDOM.get(0));
-            document.getElementById('boardList').innerHTML += '<br>';
+//            document.getElementById('boardList').innerHTML += '<br>';
 
 //            var boardLink = document.createElement('A');
 //            boardLink.innerHTML = name;
@@ -169,17 +172,17 @@ function listPatients() {
     // GET a list of all patients
     $.get('api/patients', function (xml) {
         var $xml = $(xml);
-        
+
         var patients = $xml.find('byId > entry > value'); // TODO Should be changed from the backend
 //        var patients = $xml.find('patient');
-        
+
         document.getElementById('patientList').innerHTML = '';
         for (var i = 0; i < patients.length; i++) {
             var $patient = $(patients[i]);
-            
+
             var id = $patient.find('value > id').text(); // TODO Should be changed from the backend
             var name = $patient.find('value > name').text(); // TODO Should be changed from the backend
-            
+
             var patientDOM = $('<a href="#">' + name + '</a>');
             patientDOM.attr('onclick', 'getPatient(' + id + ')');
             patientDOM.appendTo(document.getElementById('patientList'));
@@ -195,17 +198,44 @@ function showPosts(boardId) {
         $panelDOM.empty();
         var $xml = $(xml);
         var posts = $xml.find('post');
-        
+
         for (var i = 0; i < posts.length; i++) {
             var $post = $(posts[i]);
             var authorName = $post.find('post > author > name').text();
             var content = $post.find('post > content').text();
-            var postDOM = $('<div></div>');
-            postDOM.append('<em>' + authorName + '</em><br>');
-            postDOM.append(content);
-            $panelDOM.append(postDOM);
+
+//            var postDOM = $('<div></div>');
+//            postDOM.append('<em>' + authorName + '</em><br>');
+//            postDOM.append(content);
+//            $panelDOM.append(postDOM);
+
+//            var postDOM = builder.postHTML();
+//            postDOM.find('.author').html(authorName);
+//            postDOM.find('.content').html(content);
+//            $panelDOM.append(postDOM);
+
+            var $postDOM;
+            if (cache.postHTML) {
+                $postDOM = $(cache.postHTML);
+                $postDOM.find('.author').html(authorName);
+                $postDOM.find('.content').html(content);
+                $postDOM.find('.header > img').attr('src', 'http://api.adorable.io/avatars/64' + authorName + '.png');
+                $panelDOM.append($postDOM);
+            } else {
+                console.log("No cache found, loading the component...");
+                builder.loadComponent('components/post.html', function (html, cbData) {
+//                    console.log(html);
+                    cache.postHTML = html; // caching the component for reuse
+                    console.log(cbData.authorName);
+                    var $postDOM = $(html);
+                    $postDOM.find('.author').html(cbData.authorName);
+                    $postDOM.find('.content').html(cbData.content);
+                    $postDOM.find('.header > img').attr('src', 'http://api.adorable.io/avatars/64' + cbData.authorName + '.png');
+                    $panelDOM.append($postDOM);
+                }, {authorName: authorName, content: content});
+            }
         }
-        
+
 //        $.each(posts, function (index, post) {
 //            var $post = $(post);
 //            var authorName = $post.find('post > author > name').text();
@@ -235,14 +265,14 @@ function getPatient(patientId) {
         $panelDOM.empty();
         var $xml = $(xml);
         var patients = $xml.find('patient');
-        
+
         for (var i = 0; i < patients.length; i++) {
             var $patient = $(patients[i]);
             var name = $patient.find('patient > name').text();
             var age = $patient.find('patient > age').text();
             var doctorName = $patient.find('patient > mainDoctor > name').text();
             var roomNumber = $patient.find('patient > room > number').text();
-            
+
             var postDOM = $('<div></div>');
             postDOM.append('<b>' + name + '</b><br>');
             postDOM.append('Age: ' + age + '<br>');
@@ -256,3 +286,37 @@ function getPatient(patientId) {
 // TODO update patient info (put)
 
 // TODO add new patient (post)
+
+var builder = {
+    postHTML: function () {
+        return $('<div class="post">' +
+                '<div class="header">' +
+                '<div class="author"></div>' +
+                '</div>' +
+                '<div class="content"></div>' +
+                '</div>');
+    },
+    loadComponent: function (uri, cb, cbData, cache) {
+        $.get(uri, function (html) {
+            if (typeof cache !== 'undefined') {
+                cache = html;
+            }
+            cb(html, cbData);
+        });
+//        $.ajax({
+//            method: 'get',
+//            url: uri,
+//            async: false,
+//            success: function (html) {
+//                if (typeof cache !== 'undefined') {
+//                    cache = html;
+//                }
+//                cb(html);
+//            }
+//        });
+    }
+};
+
+var cache = {
+    postHTML: null
+};
