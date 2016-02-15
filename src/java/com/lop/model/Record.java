@@ -23,8 +23,8 @@ public class Record implements Serializable{
     private String title;
     private String record;
     private User author;
-    private List<String> medicalImagePath = new ArrayList<>();
     private Patient patient;
+    private List<String> medicalImagePath = new ArrayList<>();
     private HashSet<Link> links = new HashSet<>();
     private Date createdAt;
     
@@ -32,12 +32,24 @@ public class Record implements Serializable{
         createdAt = new Date();
     }
 
-    public Record(int id, String title, String record, User author, Patient patient, Date createdAt) {
-        this.id = id;
+    public Record(String record, User author, Patient patient) {
+        this(null, record, author, patient);
+    }
+    
+    public Record(String title, String record, User author, Patient patient) {
         this.title = title;
         this.record = record;
         this.author = author;
         this.patient = patient;
+        createdAt = new Date();
+    }
+    
+    public Record(String title, String record, User author, Patient patient, String medicalImage) {
+        this.title = title;
+        this.record = record;
+        this.author = author;
+        this.patient = patient;
+        medicalImagePath.add(medicalImage);
         createdAt = new Date();
     }
 

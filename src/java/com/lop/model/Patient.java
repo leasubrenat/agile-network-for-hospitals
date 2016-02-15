@@ -25,11 +25,12 @@ public class Patient extends Model {
     private Location room;
     private String description;
     private Date hospitalizedAt;
+    private final ArrayList<Record> records = new ArrayList<>();
     private HashSet<Link> links = new HashSet<>();
 
     public Patient() {
     }
-    
+
     public Patient(int id) {
         this.id = id;
     }
@@ -96,7 +97,11 @@ public class Patient extends Model {
     public void setLinks(HashSet<Link> links) {
         this.links = links;
     }
-    
+
+    public ArrayList<Record> getRecords() {
+        return records;
+    }
+
     public Patient addLink(String url, String rel) {
         Link link = new Link();
         link.setLink(url);

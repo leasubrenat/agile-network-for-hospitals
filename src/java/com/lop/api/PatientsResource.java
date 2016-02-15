@@ -74,4 +74,10 @@ public class PatientsResource {
     public PatientResource getPatientResource(@PathParam("id") String id) {
         return PatientResource.getInstance(id);
     }
+    
+    @Path("/{patientId}/records")
+    public RecordsResource getTasksResource() {
+        return new RecordsResource(context);
+    }
+    
 }
