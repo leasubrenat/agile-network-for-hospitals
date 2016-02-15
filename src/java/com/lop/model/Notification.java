@@ -38,6 +38,7 @@ public class Notification implements Serializable {
     }
     
     public void send(User u) {
+        if (u.equals(this.getSender())) return;
         recipient = u;
         u.receive(this);
     }
