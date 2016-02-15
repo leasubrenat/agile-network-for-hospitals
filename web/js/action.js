@@ -225,9 +225,13 @@ function showNotifications() {
             var senderName = $notification.find('notification > sender > name').text();
             var postId = $notification.find('notification > post > id').text();
             var postPreview = $notification.find('notification > post > content').text().substring(0, 30);
+            var unread = $notification.find('notification > unread').text();
 
             var $postDOM;
-            $postDOM = $('<div></div>');
+            $postDOM = $('<div class="notification"></div>');
+            if (unread === 'true') {
+                $postDOM.addClass('unread');
+            }
             $postDOM.append('From: ' + senderName + '<br>');
             $postDOM.append(postPreview + '...');
             $panelDOM.append($postDOM);
@@ -252,16 +256,6 @@ function showPosts(boardId) {
             var authorName = $post.find('post > author > name').text();
             var content = $post.find('post > content').text();
 
-//            var postDOM = $('<div></div>');
-//            postDOM.append('<em>' + authorName + '</em><br>');
-//            postDOM.append(content);
-//            $panelDOM.append(postDOM);
-
-//            var postDOM = builder.postHTML();
-//            postDOM.find('.author').html(authorName);
-//            postDOM.find('.content').html(content);
-//            $panelDOM.append(postDOM);
-
             var $postDOM;
             if (cache.postHTML.data) {
                 $postDOM = $(cache.postHTML.data);
@@ -281,30 +275,12 @@ function showPosts(boardId) {
                 }, {authorId: authorId, authorName: authorName, content: content}, cache.postHTML);
             }
         }
-
-//        $.each(posts, function (index, post) {
-//            var $post = $(post);
-//            var authorName = $post.find('post > author > name').text();
-//            var content = $post.find('post > content').text();
-//            var postDOM = $('<div></div>');
-//            postDOM.append('<em>' + authorName + '</em><br>');
-//            postDOM.append(content);
-//            $postList.append(postDOM);
-//        });
-
-//        posterNames = $xml.find("name");
-//        posts = $xml.find("content");
-//        for (j = 0; j < posts.length; j++) {
-//            post += posts[j].textContent + "<br>";
-//        }
-//        for (i = 0; i < posterNames.length; i++) {
-//            posterName += posterNames[i].textContent + "<br>";
-//        }
-//        document.getElementById("postList").innerHTML = posterName + post + "<br>";
     });
 }
 
 function getPatient(patientId) {
+    board.activeId = null;
+    board.polling = false;
     // GET a patient info
     $.get('api/patients/' + patientId, function (xml) {
         var $panelDOM = $(document.getElementById("postList"));

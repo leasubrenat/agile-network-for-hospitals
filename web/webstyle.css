@@ -113,3 +113,7 @@ button.btn-default {
     font-weight: bold;
     color: #8DBF30;
 }
+
+.notification.unread {
+    font-weight: bold;
+}
