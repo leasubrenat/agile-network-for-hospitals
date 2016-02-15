@@ -43,6 +43,7 @@ public class Post implements Serializable, Comparable<Post> {
         this.author = author;
         this.content = content;
         this.repliedTo = repliedTo;
+        createdAt = new Date();
     }
 
     public int getId() {
