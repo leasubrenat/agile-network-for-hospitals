@@ -25,11 +25,36 @@ var board = {
     polling: false
 };
 
-//add a new post to the board (post)
-function addPost() {
-//    console.log("function addPost");
-    if (!board.activeId) return;
-    $('#post2board').click(function () {
+function pollPosts() {
+    setTimeout(function () {
+        if (board.activeId) {
+            showPosts(board.activeId);
+        } else {
+            board.polling = false;
+        }
+        if (board.polling)
+            pollPosts();
+    }, 500);
+}
+
+/**
+ * MAIN FUNCTION
+ */
+$(document).ready(function () {
+
+    session(function () {
+        $('.dashboard > .welcome').html('Welcome back, ' + me.name);
+    });
+    // Adding events to forms
+    $('#login-form button').click(function () { // Login using the credentials entered
+        var username = document.getElementById('login-username').value;
+        var password = document.getElementById('login-password').value;
+        session(function () {
+            $('.dashboard > .welcome').html('Welcome back, ' + me.name);
+        }, {username: username, password: password});
+    });
+    $('#post2board').click(function () { // Add a new post to the board (POST)
+        if (!board.activeId) return;
         console.log("function post2board");
         postXMLDoc = $.parseXML('<post><content></content></post>');
         postXML = $(postXMLDoc);
@@ -39,7 +64,6 @@ function addPost() {
         } else {
             console.log("empty message");
         }
-//                    console.log(postXMLDoc);
         $.ajax({
             url: "api/boards/" + board.activeId + "/posts",
             data: postXMLDoc,
@@ -56,36 +80,6 @@ function addPost() {
             }
         });
     });
-}
-
-function pollPosts() {
-    setTimeout(function () {
-        if (board.activeId) { showPosts(board.activeId); } else { board.polling = false };
-        if (board.polling) pollPosts();
-    }, 500);
-}
-
-/**
- * MAIN FUNCTION
- */
-$(document).ready(function () {
-
-    // Login the user first. This is for development purpose.
-    var xmlCred = $.parseXML('<user><username>huj</username><password>111111</password></user>');
-    $.ajax({
-        url: "api/users/login",
-        data: xmlCred,
-        processData: false,
-        type: "POST",
-        contentType: "application/xml",
-        dataType: "xml",
-        success: function (xml) {
-            var $xml = $(xml);
-            me.id = $xml.find('user > id').text();
-            me.name = $xml.find('user > name').text();
-            $('.dashboard > h1').html('Welcome back, ' + me.name);
-        }
-    });
 
     pollPosts();
 
@@ -94,18 +88,6 @@ $(document).ready(function () {
         board.polling = false;
         showNotifications();
     });
-
-    //list all the users (get)
-//    $.get('api/users', function (xml) {
-//        var $xml = $(xml);
-//        names = $xml.find("name");
-//        for (i = 0; i < names.length; i++) {
-//            name += "<a id=\"userLink\" href=\"#\">"
-//                    + names[i].textContent + "</a><br>";
-//        }
-//        document.getElementById("userList").innerHTML = name;
-//    });
-//    name = "";
 
     listBoards();
 
@@ -135,22 +117,9 @@ $(document).ready(function () {
 
     //list all the patients' names (get)
     listPatients();
-//    $.get('api/patients', function (xml) {
-//        var $xml = $(xml);
-//        patientNames = $xml.find("value>name");
-//        for (i = 0; i < patientNames.length; i++) {
-//            patientName += "<a id=\"patientLink\" href=\"#\">"
-//                    + patientNames[i].textContent + "</a><br>";
-//        }
-//        document.getElementById("patientList").innerHTML = patientName;
-//    });
-//    patientName = "";
-
-//    listPatients();
 
     //list all the tasks (get)
     $.get('api/tasks', function (xml) {
-//        console.log(xml);
         var $xml = $(xml);
         tasks = $xml.find("name");
         for (i = 0; i < tasks.length; i++) {
@@ -161,8 +130,35 @@ $(document).ready(function () {
     task = "";
 });
 
-function session(username, password) {
-    
+function session(cb, cred) {
+    if (cred && cred.username && cred.password) {
+        var xmlCred = $.parseXML('<user><username>' + cred.username + '</username><password>' + cred.password + '</password></user>');
+        $.ajax({
+            url: "api/users/login",
+            data: xmlCred,
+            processData: false,
+            type: "POST",
+            contentType: "application/xml",
+            dataType: "xml",
+            success: function (xml) {
+                var $xml = $(xml);
+                me.id = $xml.find('user > id').text();
+                me.name = $xml.find('user > name').text();
+                cb();
+            }
+        });
+    } else {
+        $.ajax({
+            url: 'api/users/me',
+            type: 'GET',
+            success: function (xml) {
+                var $xml = $(xml);
+                me.id = $xml.find('user > id').text();
+                me.name = $xml.find('user > name').text();
+                cb();
+            }
+        });
+    }
 }
 
 function listBoards() {
@@ -177,7 +173,7 @@ function listBoards() {
             var id = $board.find('board > id').text();
             var name = $board.find('board > name').text();
 
-            var $boardDOM = $('<a href="#" class="list-group-item">' + name + '</a>');
+            var $boardDOM = $('<a href="#tab-board" data-toggle="tab" class="list-group-item">' + name + '</a>');
             $boardDOM.attr('onclick', 'showBoard(' + id + ')');
 //            boardDOM.appendTo(document.getElementById('boardList'))
             document.getElementById('boardList').appendChild($boardDOM.get(0));
@@ -196,7 +192,6 @@ function listPatients() {
     // GET a list of all patients
     $.get('api/patients', function (xml) {
         var $xml = $(xml);
-
         var patients = $xml.find('byId > entry > value'); // TODO Should be changed from the backend
 //        var patients = $xml.find('patient');
 
@@ -207,19 +202,22 @@ function listPatients() {
             var id = $patient.find('value > id').text(); // TODO Should be changed from the backend
             var name = $patient.find('value > name').text(); // TODO Should be changed from the backend
 
-            var patientDOM = $('<a href="#">' + name + '</a>');
-            patientDOM.attr('onclick', 'getPatient(' + id + ')');
-            patientDOM.appendTo(document.getElementById('patientList'));
-            document.getElementById('patientList').innerHTML += '<br>';
+            var $patientDOM = $('<a href="#tab-patient" data-toggle="tab" class="list-group-item">' + name + '</a>');
+            $patientDOM.attr('onclick', 'getPatient(' + id + ')');
+//            patientDOM.appendTo(document.getElementById('patientList'));
+//            document.getElementById('patientList').innerHTML += '<br>';
+            
+            document.getElementById('patientList').appendChild($patientDOM.get(0));
         }
     });
 }
 
 function showNotifications() {
     // GET a list of all notifications
-    if (!me.id) return;
+    if (!me.id)
+        return;
     $.get('api/users/' + me.id + '/notifications', function (xml) {
-        var $panelDOM = $(document.getElementById("postList"));
+        var $panelDOM = $(document.getElementById("notification-list"));
         $panelDOM.empty();
         var $xml = $(xml);
         var notifications = $xml.find('notification');
@@ -245,8 +243,8 @@ function showNotifications() {
 
 function showPosts(boardId) {
     board.activeId = boardId;
-    if (!board.polling) pollPosts();
-    console.log('yo');
+    if (!board.polling)
+        pollPosts();
     // GET a list of all posts in a board
     $.get('api/boards/' + boardId + '/posts', function (xml) {
         var $panelDOM = $(document.getElementById("postList"));
@@ -258,6 +256,7 @@ function showPosts(boardId) {
             var $post = $(posts[i]);
             var authorId = $post.find('post > author > id').text();
             var authorName = $post.find('post > author > name').text();
+            var authorUsername = $post.find('post > author > username').text();
             var content = $post.find('post > content').text();
 
             var $postDOM;
@@ -265,7 +264,7 @@ function showPosts(boardId) {
                 $postDOM = $(cache.postHTML.data);
                 $postDOM.find('.author').html(authorName).attr('href', 'api/users/' + authorId);
                 $postDOM.find('.content').html(content);
-                $postDOM.find('.header .profile-img').attr('src', 'http://api.adorable.io/avatars/32/' + authorName + '.png');
+                $postDOM.find('.header .profile-img').attr('src', 'http://api.adorable.io/avatars/40/' + authorUsername + '.png');
                 $panelDOM.append($postDOM);
             } else {
                 console.log("No cache found, loading the component...");
@@ -274,9 +273,9 @@ function showPosts(boardId) {
                     var $postDOM = $(html);
                     $postDOM.find('.author').html(cbData.authorName).attr('href', 'api/users/' + cbData.authorId);
                     $postDOM.find('.content').html(cbData.content);
-                    $postDOM.find('.header .profile-img').attr('src', 'http://api.adorable.io/avatars/32/' + cbData.authorName + '.png');
+                    $postDOM.find('.header .profile-img').attr('src', 'http://api.adorable.io/avatars/40/' + cbData.authorUsername + '.png');
                     $panelDOM.append($postDOM);
-                }, {authorId: authorId, authorName: authorName, content: content}, cache.postHTML);
+                }, {authorId: authorId, authorName: authorName, authorUsername: authorUsername, content: content}, cache.postHTML);
             }
         }
     });
@@ -287,7 +286,7 @@ function getPatient(patientId) {
     board.polling = false;
     // GET a patient info
     $.get('api/patients/' + patientId, function (xml) {
-        var $panelDOM = $(document.getElementById("postList"));
+        var $panelDOM = $(document.getElementById("patient-info"));
         $panelDOM.empty();
         var $xml = $(xml);
         var patients = $xml.find('patient');
@@ -313,36 +312,19 @@ function getPatient(patientId) {
 
 // TODO add new patient (post)
 
+/**
+ * Utility objects
+ */
 var builder = {
-    postHTML: function () {
-        return $('<div class="post">' +
-                '<div class="header">' +
-                '<div class="author"></div>' +
-                '</div>' +
-                '<div class="content"></div>' +
-                '</div>');
-    },
     loadComponent: function (uri, cb, cbData, cacheTarget) {
         $.get(uri, function (html) {
-            if (typeof cacheTarget.data !== 'undefined') {
+            if (typeof cacheTarget !== 'undefined') {
                 cacheTarget.data = html;
             }
             cb(html, cbData);
         });
-//        $.ajax({
-//            method: 'get',
-//            url: uri,
-//            async: false,
-//            success: function (html) {
-//                if (typeof cache !== 'undefined') {
-//                    cache = html;
-//                }
-//                cb(html);
-//            }
-//        });
     }
 };
-
 var cache = {
     postHTML: {data: null}
 };

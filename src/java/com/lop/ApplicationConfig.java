@@ -33,6 +33,7 @@ public class ApplicationConfig extends Application {
         resources.add(com.lop.api.BoardsResource.class);
         resources.add(com.lop.api.LocationResource.class);
         resources.add(com.lop.api.LocationsResource.class);
+        resources.add(com.lop.api.NotificationResource.class);
         resources.add(com.lop.api.NotificationsResource.class);
         resources.add(com.lop.api.PatientResource.class);
         resources.add(com.lop.api.PatientsResource.class);

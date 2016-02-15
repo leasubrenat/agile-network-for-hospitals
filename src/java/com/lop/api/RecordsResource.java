@@ -53,19 +53,20 @@ public class RecordsResource {
     @GET
     @Produces("application/xml")
     public List<Record> getXml(@PathParam("patientId") String patientId) {
-        List<Record> records;
+        List<Record> records = null;
         // when there is a UserId param show only tasks for the user, show all tasks when no UserId param
         if (patientId != null) {
             records = new ArrayList<>(World.getInstance().getPatients().getById().get(patientId).getRecords());
-            for (Record r : records) {
-                Link.addLinks(r, context);
-            }
-        } else {
-            records = new ArrayList<>(World.getInstance().get().getById().values());
-            for (Task t : tasks) {
-                Link.addLinks(t, context);
-            }
+//            for (Record r : records) {
+//                Link.addLinks(r, context);
+//            }
         }
+//        else {
+//            records = new ArrayList<>(World.getInstance().get().getById().values());
+//            for (Task t : tasks) {
+//                Link.addLinks(t, context);
+//            }
+//        }
         return records;
     }
 
