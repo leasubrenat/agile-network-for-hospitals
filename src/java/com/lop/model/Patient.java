@@ -101,6 +101,10 @@ public class Patient extends Model {
     public ArrayList<Record> getRecords() {
         return records;
     }
+    
+    public void addRecord(Record r){
+        records.add(r);
+    }
 
     public Patient addLink(String url, String rel) {
         Link link = new Link();

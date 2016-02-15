@@ -117,4 +117,11 @@ public class Record implements Serializable{
         this.createdAt = createdAt;
     }
     
+    public Record addLink(String url, String rel) {
+        Link link = new Link();
+        link.setLink(url);
+        link.setRel(rel);
+        links.add(link);
+        return this;
+    }
 }

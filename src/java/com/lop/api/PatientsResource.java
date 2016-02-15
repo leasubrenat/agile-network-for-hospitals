@@ -76,7 +76,7 @@ public class PatientsResource {
     }
     
     @Path("/{patientId}/records")
-    public RecordsResource getTasksResource() {
+    public RecordsResource getRecordsResource() {
         return new RecordsResource(context);
     }
     

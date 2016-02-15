@@ -67,6 +67,7 @@ public class PostsResource {
      * POST method for creating an instance of PostResource
      * @param content representation for the new resource
      * @param boardId
+     * @param request
      * @return an HTTP response with content of the created resource
      */
     @POST

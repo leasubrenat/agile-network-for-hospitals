@@ -132,6 +132,16 @@ public class UsersResource {
     }
 
     @GET
+    @Path("login")
+    public Response logout(@Context HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            session.invalidate();
+        }
+        return Response.ok("Logout successful").build();
+    }
+
+    @GET
     @Path("me")
     public Response sessionCheck(@Context HttpServletRequest request) {
         HttpSession session = request.getSession();

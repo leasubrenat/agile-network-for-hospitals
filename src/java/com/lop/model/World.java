@@ -80,10 +80,15 @@ public class World {
         // tasks.getById().get("1").addParticipant(users.getById().get("5"));
         // tasks.getById().get("1").addParticipant(users.getById().get("6"));
         
-        records.add(new Record("Initial examination for Lawton", "MRI scan", users.get("1"), patients.getById().get("1")));
-        records.add(new Record("2nd examination for Lawton", "X-ray scan", users.get("2"), patients.getById().get("1")));
+        records.add(new Record("Initial examination for Lawton", "MRI scan", users.get("1"), patients.getById().get("1"), "MRIScan.jpg"));
+        records.add(new Record("2nd examination for Lawton", "X-ray scan", users.get("2"), patients.getById().get("1"), "X-rayScan"));
         records.add(new Record("3rd examination for Lawton", "Blood test", users.get("3"), patients.getById().get("1")));
         records.add(new Record("Initial examination for Cross", "Psycology test", users.get("4"), patients.getById().get("2")));
+        
+        patients.getById().get("1").addRecord(records.getById().get("1"));
+        patients.getById().get("1").addRecord(records.getById().get("2"));
+        patients.getById().get("1").addRecord(records.getById().get("3"));
+        patients.getById().get("2").addRecord(records.getById().get("4"));
     }
 
     public static World getInstance() {
