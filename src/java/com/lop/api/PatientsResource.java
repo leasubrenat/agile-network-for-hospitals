@@ -5,9 +5,12 @@
  */
 package com.lop.api;
 
+import com.lop.model.Link;
 import com.lop.model.Patient;
 import com.lop.model.Patients;
 import com.lop.model.World;
+import java.util.ArrayList;
+import java.util.List;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.POST;
@@ -42,8 +45,13 @@ public class PatientsResource {
      */
     @GET
     @Produces(MediaType.APPLICATION_XML)
-    public Patients getXml() {
-        return World.getInstance().getPatients();
+    public List<Patient> getXml() {
+        List<Patient> patients = new ArrayList<>(World.getInstance().getPatients().getById().values());
+        for (Patient p : patients){
+            Link.addLinks(p.getMainDoctor(), context);
+            Link.addLinks(p, context);
+        }
+        return patients;
     }
 
     /**
