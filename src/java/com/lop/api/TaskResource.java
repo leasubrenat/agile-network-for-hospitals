@@ -66,6 +66,10 @@ public class TaskResource {
     public Response putXml(Task content, @Context UriInfo uriInfo) {
         World.getInstance().getTasks().getById().put(id, content);
         World.getInstance().getTasks().getByName().put(content.getName(), content);
+        for (User u : content.getParticipants()){
+            u.addJoinedTask(content);
+            World.getInstance().getUsers().getById().put(Integer.toString(u.getId()), u);
+        }
         Link.addLinks(World.getInstance().getTasks().get(id), uriInfo);
         return Response.ok(Link.getUriForSelf(World.getInstance().getTasks().get(id), uriInfo))
                 .entity(World.getInstance().getTasks().get(id))

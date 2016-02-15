@@ -81,6 +81,7 @@ public class Task implements Serializable {
     }
 
     public void addParticipant(User p) {
+        p.addJoinedTask(this);
         participants.add(p);
     }
 

@@ -30,7 +30,8 @@ public class User implements Sender, Serializable {
     private Location office;
     private final ArrayList<Patient> patients = new ArrayList<>();
     private final ArrayList<Notification> notifications = new ArrayList<>();
-    private final ArrayList<Task> tasks = new ArrayList<>();
+    private final ArrayList<Task> createdTasks = new ArrayList<>();
+    private final ArrayList<Task> joinedTasks = new ArrayList<>();
     private HashSet<Link> links = new HashSet<>();
 
     public User() {
@@ -135,16 +136,22 @@ public class User implements Sender, Serializable {
         this.office = office;
     }
 
-    public ArrayList<Task> getTasks() {
-        return tasks;
+    public ArrayList<Task> getCreatedTasks() {
+        return createdTasks;
+    }
+
+    public ArrayList<Task> getJoinedTasks() {
+        return joinedTasks;
     }
     
-    public void addTask(Task t){
-        tasks.add(t);
+    public void addCreatedTask(Task t){
+        if (!joinedTasks.contains(t))
+            createdTasks.add(t);
     }
     
-    public void removeTask(Task t){
-        tasks.remove(t);
+    public void addJoinedTask(Task t){
+        if (!joinedTasks.contains(t))
+            joinedTasks.add(t);
     }
     
     public void setLinks(HashSet<Link> links) {
