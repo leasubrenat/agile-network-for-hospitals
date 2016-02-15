@@ -5,6 +5,7 @@
  */
 package com.lop.api;
 
+import com.lop.model.Link;
 import com.lop.model.Notification;
 import com.lop.model.World;
 import java.util.List;
@@ -35,6 +36,10 @@ public class NotificationsResource {
      */
     public NotificationsResource() {
     }
+    
+    public NotificationsResource(@Context UriInfo uriInfo) {
+        this.context = uriInfo;
+    }
 
     /**
      * Retrieves representation of an instance of com.lop.api.NotificationsResource
@@ -51,7 +56,12 @@ public class NotificationsResource {
     @GET
     @Produces(MediaType.APPLICATION_XML)
     public List<Notification> getXml(@PathParam("id") String id) {
-        return World.getInstance().getUsers().getById().get(id).getNotifications();
+        List<Notification> notifications = World.getInstance().getUsers().getById().get(id).getNotifications();
+        for (Notification n :notifications)
+        {
+            Link.addLinks(Integer.toString(n.getPost().getBoardId()), n.getPost(), context);
+        }
+        return notifications;
     }
 
     /**

@@ -22,6 +22,7 @@ public class World {
     private final Boards boards;
     private final Posts posts;
     private final Tasks tasks;
+    
 
     private World() {
         users = new Users();
@@ -72,8 +73,11 @@ public class World {
         boards.getById().get("2").addPost(posts.getById().get("3"));
         
         tasks.add(new Task("Take out the lense", "Lense is in the right eye", users.getById().get("1"), patients.getById().get("1")));
-        tasks.add(new Task("Calm him down", "He keeps on babble", users.getById().get("3"), patients.getById().get("2")));
-        
+        tasks.add(new Task("Calm him down", "He keeps on babble", users.getById().get("2"), patients.getById().get("2")));
+        tasks.getById().get("1").addParticipant(users.getById().get("3"));
+        tasks.getById().get("1").addParticipant(users.getById().get("4"));
+        // tasks.getById().get("1").addParticipant(users.getById().get("5"));
+        // tasks.getById().get("1").addParticipant(users.getById().get("6"));
     }
 
     public static World getInstance() {

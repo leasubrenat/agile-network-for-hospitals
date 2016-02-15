@@ -7,6 +7,7 @@ package com.lop.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -26,6 +27,7 @@ public class Task implements Serializable {
     private ArrayList<User> participants = new ArrayList<>();
     private Patient patient;
     private HashSet<Link> links = new HashSet<>();
+    private Date createdAt;
 
     public enum Status {
         ACHIEVED, FAILED, UNDER_PROCESS
@@ -33,6 +35,7 @@ public class Task implements Serializable {
 
     public Task() {
         this.status = Status.UNDER_PROCESS;
+        createdAt = new Date();
     }
 
     public Task(String name, String description, User poster, Patient patient) {
@@ -46,6 +49,7 @@ public class Task implements Serializable {
         this.poster = poster;
         this.patient = patient;
         status = Status.UNDER_PROCESS;
+        createdAt = new Date();
     }
 
     public int getId() {
@@ -81,6 +85,7 @@ public class Task implements Serializable {
     }
 
     public void addParticipant(User p) {
+        p.addJoinedTask(this);
         participants.add(p);
     }
 

@@ -88,6 +88,7 @@ public class PostsResource {
         } catch (Exception e){
             return Response.status(400).entity("No such a board").build();
         }
+        content.setBoardId(Integer.parseInt(boardId));
         World.getInstance().getPosts().add(content);
         board.addPost(content);
         URI uri = uriInfo.getAbsolutePathBuilder().path(Integer.toString(content.getId())).build();

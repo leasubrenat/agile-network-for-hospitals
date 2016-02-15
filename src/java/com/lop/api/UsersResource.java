@@ -67,8 +67,10 @@ public class UsersResource {
     }
 
     /**
-     * POST method for creating an instance of UserResource
-     * add a new user to the board when path is /boards/{boardId}/users but add new user when path is /users
+     * POST method for creating an instance of UserResource add a new user to
+     * the board when path is /boards/{boardId}/users but add new user when path
+     * is /users
+     *
      * @param content representation for the new resource
      * @return an HTTP response with content of the created resource
      */
@@ -95,9 +97,9 @@ public class UsersResource {
      */
     @Path("{id}")
     public UserResource getUserResource(@PathParam("id") String id) {
-        return UserResource.getInstance(id);
+        return UserResource.getInstance(id, uriInfo);
     }
-    
+
 //    @GET
 //    @Path("{id}")
 //    public Response getUserResource(@PathParam("id") String id) {
@@ -106,7 +108,6 @@ public class UsersResource {
 //                .entity(user)
 //                .build();
 //    }
-
     @POST
     @Path("login")
     public Response login(@Context HttpServletRequest request, User u) {
@@ -129,9 +130,28 @@ public class UsersResource {
                     .build();
         }
     }
-    
-    @Path("/{UserId}/tasks")
-    public TasksResource getTasksResource() {
+
+    @GET
+    @Path("me")
+    public Response sessionCheck(@Context HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        User me = (User) session.getAttribute("me");
+        if (me == null) {
+            return Response.status(400).entity("Not logged in").build();
+        }
+        me = Link.addLinks(me, uriInfo);
+        me.setPassword("");
+        URI uri = uriInfo.getAbsolutePathBuilder()
+                .path(UsersResource.class)
+                .path(Integer.toString(me.getId()))
+                .build();
+        return Response.ok(uri)
+                .entity(me)
+                .build();
+    }
+
+@Path("/{UserId}/tasks")
+        public TasksResource getTasksResource() {
         return new TasksResource(uriInfo);
     }
 }

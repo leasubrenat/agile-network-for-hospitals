@@ -62,7 +62,7 @@ public class TasksResource {
         List<Task> tasks;
         // when there is a UserId param show only tasks for the user, show all tasks when no UserId param
         if (userId != null) {
-            tasks = new ArrayList<>(World.getInstance().getUsers().getById().get(userId).getTasks());
+            tasks = new ArrayList<>(World.getInstance().getUsers().getById().get(userId).getJoinedTasks());
             for (Task t : tasks) {
                 Link.addLinks(t, context);
             }
@@ -87,15 +87,23 @@ public class TasksResource {
     public Response postXml(Task content, @Context HttpServletRequest request) {
         //set the POST author using username
         HttpSession session = request.getSession();
+        /// set user with session "me"
         try {
             content.setPoster((User) session.getAttribute("me"));
         } catch (NullPointerException e) {
             return Response.status(400).entity("Invalid user").build();
         }
+        /// set patients
         try {
             content.setPatient(World.getInstance().getPatients().getById().get(Integer.toString(content.getPatient().getId())));
         } catch (NullPointerException e) {
             return Response.status(400).entity("Invalid patient").build();
+        }
+        
+        /// two way association, add this task to the participants
+        for (User u : content.getParticipants()){
+            u.addJoinedTask(content);
+            World.getInstance().getUsers().getById().put(Integer.toString(u.getId()), u);
         }
         World.getInstance().getTasks().add(content);
         //poster.addTask(content);
