@@ -63,7 +63,8 @@ public class Link {
         return uri;
     }
 
-    public static String getUriForSelf(String boardId, Post post, @Context UriInfo uriInfo) {        
+    public static String getUriForSelf(String boardId, Post post, @Context UriInfo uriInfo) {   
+        System.out.println(boardId+ post+ uriInfo);
         String uri = uriInfo.getBaseUriBuilder()
                 .path(BoardsResource.class) //boards
                 .path(BoardsResource.class, "getPostsResource") // {id}/posts

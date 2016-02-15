@@ -105,6 +105,4 @@ public class Record implements Serializable{
         this.createdAt = createdAt;
     }
     
-    
-    
 }

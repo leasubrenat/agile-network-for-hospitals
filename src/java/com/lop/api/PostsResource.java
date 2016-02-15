@@ -78,7 +78,7 @@ public class PostsResource {
         HttpSession session = request.getSession();
         User author = (User) session.getAttribute("me");
         try {
-            content.setAuthor(World.getInstance().getUsers().getByUsername().get(author.getName()));
+            content.setAuthor(World.getInstance().getUsers().getByUsername().get(author.getUsername()));
         } catch (NullPointerException e) {
             return Response.status(400).entity("Invalid user").build();
         }
@@ -89,6 +89,7 @@ public class PostsResource {
         } catch (Exception e){
             return Response.status(400).entity("No such a board").build();
         }
+        content.setBoardId(Integer.parseInt(boardId));
         World.getInstance().getPosts().add(content);
         board.addPost(content);
         URI uri = uriInfo.getAbsolutePathBuilder().path(Integer.toString(content.getId())).build();

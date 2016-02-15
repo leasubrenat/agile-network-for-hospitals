@@ -27,7 +27,9 @@ import javax.ws.rs.core.UriInfo;
 public class UserResource {
 
     private String id;
-
+    
+    @Context
+    private UriInfo uriInfo;
     /**
      * Creates a new instance of UserResource
      */
@@ -38,10 +40,12 @@ public class UserResource {
     /**
      * Get instance of the UserResource
      */
-    public static UserResource getInstance(String id) {
+    public static UserResource getInstance(String id, @Context UriInfo uriInfo) {
         // The user may use some kind of persistence mechanism
         // to store and restore instances of UserResource class.
-        return new UserResource(id);
+        UserResource userResource = new UserResource(id);
+        userResource.uriInfo = uriInfo;
+        return userResource;
     }
 
     /**
@@ -84,6 +88,6 @@ public class UserResource {
      */
     @Path("notifications")
     public NotificationsResource getNotificationsResource() {
-        return new NotificationsResource();
+        return new NotificationsResource(uriInfo);
     }
 }

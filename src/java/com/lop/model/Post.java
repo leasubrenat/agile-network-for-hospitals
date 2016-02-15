@@ -19,6 +19,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class Post implements Serializable, Comparable<Post> {
 
     private int id;
+    private int boardId;
     private User author;
     private String content;
     private final HashSet<Task> tasks = new HashSet<>();
@@ -30,16 +31,12 @@ public class Post implements Serializable, Comparable<Post> {
     public Post() {
     }
 
-    public Post(int id, User author, String content) {
-        this(id, author, content, new Date(), null);
+    public Post(int boardId, User author, String content) {
+        this(boardId, author, content, null);
     }
     
-    public Post(int id, User author, String content, Post repliedTo) {
-        this(id, author, content, new Date(), repliedTo);
-    }
-
-    public Post(int id, User author, String content, Date createdAt, Post repliedTo) {
-        this.id = id;
+    public Post(int boardId, User author, String content, Post repliedTo) {
+        this.boardId = boardId;
         this.author = author;
         this.content = content;
         this.repliedTo = repliedTo;
@@ -101,5 +98,22 @@ public class Post implements Serializable, Comparable<Post> {
     @Override
     public int compareTo(Post o) {
         return createdAt.compareTo(o.createdAt);
+    }
+    
+    
+    public int getBoardId() {
+        return boardId;
+    }
+
+    public void setBoardId(int boardId) {
+        this.boardId = boardId;
+    }
+
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
     }
 }

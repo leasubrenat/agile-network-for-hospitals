@@ -97,7 +97,7 @@ public class UsersResource {
      */
     @Path("{id}")
     public UserResource getUserResource(@PathParam("id") String id) {
-        return UserResource.getInstance(id);
+        return UserResource.getInstance(id, uriInfo);
     }
 
 //    @GET
