@@ -8,6 +8,7 @@ package com.lop.model;
 import com.lop.api.BoardsResource;
 import com.lop.api.PatientsResource;
 import com.lop.api.PostsResource;
+import com.lop.api.RecordsResource;
 import com.lop.api.TasksResource;
 import com.lop.api.UsersResource;
 import java.util.Objects;
@@ -22,6 +23,10 @@ public class Link {
 
     private String link;
     private String rel;
+    
+    public static Record addLinks(String patientId, Record r, @Context UriInfo uriInfo) {
+        return r.addLink(getUriForSelf(patientId, r, uriInfo), "self");
+    }
     
     public static Patient addLinks(Patient p ,@Context UriInfo uriInfo) {
         return p.addLink(getUriForSelf(p, uriInfo), "self");
@@ -45,6 +50,18 @@ public class Link {
 
     public static User addLinks(User user, @Context UriInfo uriInfo) {
         return user.addLink(getUriForSelf(user, uriInfo), "self");
+    }
+    
+    public static String getUriForSelf(String patientId, Record r, @Context UriInfo uriInfo) {
+        String uri = uriInfo.getBaseUriBuilder()
+                .path(PatientsResource.class) //patientId
+                .path(PatientsResource.class, "getRecordsResource") // {id}/posts
+                .path(RecordsResource.class) // /
+                .path(Long.toString(r.getId())) // post ID
+                .resolveTemplate("patientId", patientId)
+                .build()
+                .toString();
+        return uri;
     }
     
     public static String getUriForSelf(Patient p, @Context UriInfo uriInfo) {        
