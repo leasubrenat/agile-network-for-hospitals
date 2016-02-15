@@ -192,15 +192,14 @@ function listPatients() {
     // GET a list of all patients
     $.get('api/patients', function (xml) {
         var $xml = $(xml);
-        var patients = $xml.find('byId > entry > value'); // TODO Should be changed from the backend
-//        var patients = $xml.find('patient');
+        var patients = $xml.find('patient');
 
         document.getElementById('patientList').innerHTML = '';
         for (var i = 0; i < patients.length; i++) {
             var $patient = $(patients[i]);
 
-            var id = $patient.find('value > id').text(); // TODO Should be changed from the backend
-            var name = $patient.find('value > name').text(); // TODO Should be changed from the backend
+            var id = $patient.find('patient > id').text();
+            var name = $patient.find('patient > name').text();
 
             var $patientDOM = $('<a href="#tab-patient" data-toggle="tab" class="list-group-item">' + name + '</a>');
             $patientDOM.attr('onclick', 'getPatient(' + id + ')');
