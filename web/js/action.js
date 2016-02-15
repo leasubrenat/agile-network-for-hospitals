@@ -161,6 +161,10 @@ $(document).ready(function () {
     task = "";
 });
 
+function session(username, password) {
+    
+}
+
 function listBoards() {
     // GET a list of all boards
     $.get('api/boards', function (xml) {

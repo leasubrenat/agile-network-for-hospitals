@@ -6,11 +6,7 @@
 package com.lop.api;
 
 import com.lop.model.Notification;
-import com.lop.model.Notifications;
-import com.lop.model.Post;
-import com.lop.model.User;
 import com.lop.model.World;
-import java.util.ArrayList;
 import java.util.List;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
