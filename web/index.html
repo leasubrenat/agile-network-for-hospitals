@@ -18,7 +18,7 @@ and open the template in the editor.
     </head>
     <body>
         <div class="container">
-            <div class="well">
+            <div class="well dashboard">
                 <h1>A.N.H.</h1>
             </div>
             <div class="row">
@@ -27,22 +27,10 @@ and open the template in the editor.
                         <div class="panel panel-default">
                             <div class="panel-heading">
                                 <h4 class="panel-title">
-                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapse-tab-1">
-                                        <span class="glyphicon glyphicon-th-large"></span></a>
-                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapse-tab-2">
-                                        <span class="glyphicon glyphicon-search"></span></a>
-                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapse-tab-3">
-                                        <span class="glyphicon glyphicon-user"></span></a>
+                                    <a data-parent="#accordion" id="collapse-notification" href="#">
+                                        <span class="glyphicon glyphicon-alert">
+                                        </span>Notifications</a>
                                 </h4>
-                            </div>
-                            <div id="collapse-tab-1" class="panel-collapse collapse">
-                                <div class="panel-body">Something in Tab 1</div>
-                            </div>
-                            <div id="collapse-tab-2" class="panel-collapse collapse">
-                                <div class="panel-body">Something in Tab 2</div>
-                            </div>
-                            <div id="collapse-tab-3" class="panel-collapse collapse">
-                                <div class="panel-body">Something in Tab 3</div>
                             </div>
                         </div>
                         <div class="panel panel-default">
@@ -120,9 +108,7 @@ and open the template in the editor.
                         <div class="panel panel-default">
                             <div class="panel-heading">
                                 <h4 class="panel-title">
-                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseFour">
-                                        <span class="glyphicon glyphicon-alert">
-                                        </span>Help</a>
+                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseFour">Help</a>
                                 </h4>
                             </div>
                             <div id="collapseFour" class="panel-collapse collapse">
@@ -150,11 +136,10 @@ and open the template in the editor.
                                 <input id="user2board" type="submit" value="Add">
                             </form>
                         </div>
-                        <div id="postMsgForm">
-                            <input id="message" type="text" value="New message">
-                            <input id="post2board" type="submit" value="Send">
-                            <form onsubmit="false">
-                            </form>
+                        <div id="postMsgForm" class="form-group">
+                            <input id="message" class="form-control" type="text" value="New message">
+                            <!--<input id="post2board" class="form-control button" type="submit" value="Send">-->
+                            <button id="post2board" class="btn btn-default">Send</button>
                         </div>
                     </div>
                 </div>

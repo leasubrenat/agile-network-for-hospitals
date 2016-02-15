@@ -55,7 +55,6 @@ public class PostsResource {
     @GET
     @Produces("application/xml")
     public List<Post> getXml(@PathParam("boardId") String boardId) {
-        System.out.println("getXml " + boardId);
         Board board = World.getInstance().getBoards().getById().get(boardId);
         List<Post> posts = board.getPosts();
         for (Post p : posts) {
@@ -78,7 +77,7 @@ public class PostsResource {
         HttpSession session = request.getSession();
         User author = (User) session.getAttribute("me");
         try {
-            content.setAuthor(World.getInstance().getUsers().getByUsername().get(author.getName()));
+            content.setAuthor(World.getInstance().getUsers().getByUsername().get(author.getUsername()));
         } catch (NullPointerException e) {
             return Response.status(400).entity("Invalid user").build();
         }

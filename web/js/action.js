@@ -16,9 +16,19 @@ var postXMLDoc;
 var postXML;
 var msg;
 
+var me = {
+    id: null,
+    name: null
+};
+var board = {
+    activeId: null,
+    polling: false
+};
+
 //add a new post to the board (post)
 function addPost() {
 //    console.log("function addPost");
+    if (!board.activeId) return;
     $('#post2board').click(function () {
         console.log("function post2board");
         postXMLDoc = $.parseXML('<post><content></content></post>');
@@ -31,7 +41,7 @@ function addPost() {
         }
 //                    console.log(postXMLDoc);
         $.ajax({
-            url: "api/boards/1/posts",
+            url: "api/boards/" + board.activeId + "/posts",
             data: postXMLDoc,
             processData: false,
             type: "POST",
@@ -42,7 +52,7 @@ function addPost() {
                 console.log(response);
             },
             success: function (res) {
-                showPosts();
+                showPosts(board.activeId);
             }
         });
     });
@@ -50,19 +60,18 @@ function addPost() {
 
 function pollPosts() {
     setTimeout(function () {
-        showPosts();
-        pollPosts();
+        if (board.activeId) { showPosts(board.activeId); } else { board.polling = false };
+        if (board.polling) pollPosts();
     }, 500);
 }
 
+/**
+ * MAIN FUNCTION
+ */
 $(document).ready(function () {
 
-    // Synchronous loading test
-//    var postHTML = builder.postHTML();
-    var postHTMLcache = null;
-
     // Login the user first. This is for development purpose.
-    var xmlCred = $.parseXML('<user><username>ctu</username><password>111111</password></user>');
+    var xmlCred = $.parseXML('<user><username>huj</username><password>111111</password></user>');
     $.ajax({
         url: "api/users/login",
         data: xmlCred,
@@ -71,8 +80,19 @@ $(document).ready(function () {
         contentType: "application/xml",
         dataType: "xml",
         success: function (xml) {
-            console.log(xml);
+            var $xml = $(xml);
+            me.id = $xml.find('user > id').text();
+            me.name = $xml.find('user > name').text();
+            $('.dashboard > h1').html('Welcome back, ' + me.name);
         }
+    });
+
+    pollPosts();
+
+    $('#collapse-notification').click(function () {
+        board.activeId = null;
+        board.polling = false;
+        showNotifications();
     });
 
     //list all the users (get)
@@ -191,7 +211,34 @@ function listPatients() {
     });
 }
 
+function showNotifications() {
+    // GET a list of all notifications
+    if (!me.id) return;
+    $.get('api/users/' + me.id + '/notifications', function (xml) {
+        var $panelDOM = $(document.getElementById("postList"));
+        $panelDOM.empty();
+        var $xml = $(xml);
+        var notifications = $xml.find('notification');
+
+        for (var i = 0; i < notifications.length; i++) {
+            var $notification = $(notifications[i]);
+            var senderName = $notification.find('notification > sender > name').text();
+            var postId = $notification.find('notification > post > id').text();
+            var postPreview = $notification.find('notification > post > content').text().substring(0, 30);
+
+            var $postDOM;
+            $postDOM = $('<div></div>');
+            $postDOM.append('From: ' + senderName + '<br>');
+            $postDOM.append(postPreview + '...');
+            $panelDOM.append($postDOM);
+        }
+    });
+}
+
 function showPosts(boardId) {
+    board.activeId = boardId;
+    if (!board.polling) pollPosts();
+    console.log('yo');
     // GET a list of all posts in a board
     $.get('api/boards/' + boardId + '/posts', function (xml) {
         var $panelDOM = $(document.getElementById("postList"));
@@ -220,7 +267,7 @@ function showPosts(boardId) {
                 $postDOM = $(cache.postHTML.data);
                 $postDOM.find('.author').html(authorName).attr('href', 'api/users/' + authorId);
                 $postDOM.find('.content').html(content);
-                $postDOM.find('.header .profile-img').attr('src', 'http://api.adorable.io/avatars/64' + authorName + '.png');
+                $postDOM.find('.header .profile-img').attr('src', 'http://api.adorable.io/avatars/32/' + authorName + '.png');
                 $panelDOM.append($postDOM);
             } else {
                 console.log("No cache found, loading the component...");
@@ -229,7 +276,7 @@ function showPosts(boardId) {
                     var $postDOM = $(html);
                     $postDOM.find('.author').html(cbData.authorName).attr('href', 'api/users/' + cbData.authorId);
                     $postDOM.find('.content').html(cbData.content);
-                    $postDOM.find('.header .profile-img').attr('src', 'http://api.adorable.io/avatars/64' + cbData.authorName + '.png');
+                    $postDOM.find('.header .profile-img').attr('src', 'http://api.adorable.io/avatars/32/' + cbData.authorName + '.png');
                     $panelDOM.append($postDOM);
                 }, {authorId: authorId, authorName: authorName, content: content}, cache.postHTML);
             }
@@ -317,5 +364,5 @@ var builder = {
 };
 
 var cache = {
-    postHTML: { data: null }
+    postHTML: {data: null}
 };
