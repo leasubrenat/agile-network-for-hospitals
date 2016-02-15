@@ -150,8 +150,8 @@ public class UsersResource {
                 .build();
     }
 
-@Path("/{UserId}/tasks")
-        public TasksResource getTasksResource() {
+    @Path("/{UserId}/tasks")
+    public TasksResource getTasksResource() {
         return new TasksResource(uriInfo);
     }
 }

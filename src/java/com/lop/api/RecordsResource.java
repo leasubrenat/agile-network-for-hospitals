@@ -52,21 +52,21 @@ public class RecordsResource {
      */
     @GET
     @Produces("application/xml")
-    public Records getXml() {
-//        List<Task> tasks;
-//        // when there is a UserId param show only tasks for the user, show all tasks when no UserId param
-//        if (userId != null) {
-//            tasks = new ArrayList<>(World.getInstance().getUsers().getById().get(userId).getJoinedTasks());
-//            for (Task t : tasks) {
-//                Link.addLinks(t, context);
-//            }
-//        } else {
-//            tasks = new ArrayList<>(World.getInstance().getTasks().getById().values());
-//            for (Task t : tasks) {
-//                Link.addLinks(t, context);
-//            }
-//        }
-        return new Records();
+    public List<Record> getXml(@PathParam("patientId") String patientId) {
+        List<Record> records;
+        // when there is a UserId param show only tasks for the user, show all tasks when no UserId param
+        if (patientId != null) {
+            records = new ArrayList<>(World.getInstance().getPatients().getById().get(patientId).getRecords());
+            for (Record r : records) {
+                Link.addLinks(r, context);
+            }
+        } else {
+            records = new ArrayList<>(World.getInstance().get().getById().values());
+            for (Task t : tasks) {
+                Link.addLinks(t, context);
+            }
+        }
+        return records;
     }
 
     /**
@@ -89,4 +89,5 @@ public class RecordsResource {
     public RecordResource getRecordResource(@PathParam("id") String id) {
         return RecordResource.getInstance(id);
     }
+    
 }
