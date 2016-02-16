@@ -43,6 +43,7 @@ public class ApplicationConfig extends Application {
         resources.add(com.lop.api.RecordsResource.class);
         resources.add(com.lop.api.RoleResource.class);
         resources.add(com.lop.api.RolesResource.class);
+        resources.add(com.lop.api.TaskResource.class);
         resources.add(com.lop.api.TasksResource.class);
         resources.add(com.lop.api.UsersResource.class);
     }
