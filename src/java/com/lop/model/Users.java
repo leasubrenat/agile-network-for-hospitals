@@ -29,7 +29,9 @@ public class Users implements ModelCollectionInterface<User>, Serializable {
     }
     
     public User login(User user) {
+//        System.out.println("login received: " + user);
         for (User u : byUsername.values()) {
+//            System.out.println("comparing to " + u);
             if (u.getUsername().equals(user.getUsername()) && u.getPassword().equals(user.getPassword()))
                 return u;
         }

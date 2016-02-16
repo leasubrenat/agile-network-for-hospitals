@@ -23,6 +23,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriBuilderException;
 
 /**
  * REST Web Service
@@ -111,7 +112,6 @@ public class UsersResource {
     @POST
     @Path("login")
     public Response login(@Context HttpServletRequest request, User u) {
-        System.out.println(World.getInstance().getUsers());
         User me = World.getInstance().getUsers().login(u);
         System.out.println(me);
         if (me != null) {
@@ -146,20 +146,21 @@ public class UsersResource {
     @GET
     @Path("me")
     public Response sessionCheck(@Context HttpServletRequest request) {
-        HttpSession session = request.getSession();
-        User me = (User) session.getAttribute("me");
-        if (me == null) {
+        try {
+            HttpSession session = request.getSession(false);
+            User me = (User) session.getAttribute("me");
+            me = Link.addLinks(me, uriInfo);
+            me.setPassword("");
+            URI uri = uriInfo.getAbsolutePathBuilder()
+                    .path(UsersResource.class)
+                    .path(Integer.toString(me.getId()))
+                    .build();
+            return Response.ok(uri)
+                    .entity(me)
+                    .build();
+        } catch (IllegalArgumentException | UriBuilderException | NullPointerException e) {
             return Response.status(400).entity("<response>Not logged in</response>").build();
         }
-        me = Link.addLinks(me, uriInfo);
-        me.setPassword("");
-        URI uri = uriInfo.getAbsolutePathBuilder()
-                .path(UsersResource.class)
-                .path(Integer.toString(me.getId()))
-                .build();
-        return Response.ok(uri)
-                .entity(me)
-                .build();
     }
 
     @Path("/{UserId}/tasks")
