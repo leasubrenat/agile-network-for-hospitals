@@ -132,13 +132,13 @@ public class UsersResource {
     }
 
     @GET
-    @Path("login")
+    @Path("logout")
     public Response logout(@Context HttpServletRequest request) {
         HttpSession session = request.getSession(false);
         if (session != null) {
             session.invalidate();
         }
-        return Response.ok("Logout successful").build();
+        return Response.ok("<response>Logout successful</response>").build();
     }
 
     @GET
@@ -147,7 +147,7 @@ public class UsersResource {
         HttpSession session = request.getSession();
         User me = (User) session.getAttribute("me");
         if (me == null) {
-            return Response.status(400).entity("Not logged in").build();
+            return Response.status(400).entity("<response>Not logged in</response>").build();
         }
         me = Link.addLinks(me, uriInfo);
         me.setPassword("");
