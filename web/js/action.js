@@ -16,10 +16,50 @@ var postXMLDoc;
 var postXML;
 var msg;
 
-//add a new post to the board (post)
-function addPost() {
-//    console.log("function addPost");
-    $('#post2board').click(function () {
+var me = {
+    id: null,
+    name: null
+};
+var board = {
+    activeId: null,
+    polling: false
+};
+
+function pollPosts() {
+    setTimeout(function () {
+        if (board.activeId) {
+            showPosts(board.activeId);
+            pollPosts();
+        }
+//        else {
+//            board.polling = false;
+//        }
+//        if (board.polling)
+//            pollPosts();
+    }, 500);
+}
+
+/**
+ * MAIN FUNCTION
+ */
+$(document).ready(function () {
+
+    session(function () {
+        $('.dashboard > .welcome').html('Welcome back, ' + me.name + '. ').append('<a onclick="logout()">Logout</a>');
+        showNotifications();
+    });
+    // Adding events to forms
+    $('#login-form button').click(function () { // Login using the credentials entered
+        var username = document.getElementById('login-username').value;
+        var password = document.getElementById('login-password').value;
+        session(function () {
+            $('.dashboard > .welcome').html('Welcome back, ' + me.name + '. ').append('<a onclick="logout()">Logout</a>');
+            showNotifications();
+        }, {username: username, password: password});
+    });
+    $('#post2board').click(function () { // Add a new post to the board (POST)
+        if (!board.activeId)
+            return;
         console.log("function post2board");
         postXMLDoc = $.parseXML('<post><content></content></post>');
         postXML = $(postXMLDoc);
@@ -29,9 +69,8 @@ function addPost() {
         } else {
             console.log("empty message");
         }
-//                    console.log(postXMLDoc);
         $.ajax({
-            url: "api/boards/1/posts",
+            url: "api/boards/" + board.activeId + "/posts",
             data: postXMLDoc,
             processData: false,
             type: "POST",
@@ -42,50 +81,19 @@ function addPost() {
                 console.log(response);
             },
             success: function (res) {
-                showPosts();
+                showPosts(board.activeId);
             }
         });
     });
-}
 
-function pollPosts() {
-    setTimeout(function () {
-        showPosts();
-        pollPosts();
-    }, 500);
-}
+    
+//    pollPosts();
 
-$(document).ready(function () {
-
-    // Synchronous loading test
-//    var postHTML = builder.postHTML();
-    var postHTMLcache = null;
-
-    // Login the user first. This is for development purpose.
-    var xmlCred = $.parseXML('<user><username>ctu</username><password>111111</password></user>');
-    $.ajax({
-        url: "api/users/login",
-        data: xmlCred,
-        processData: false,
-        type: "POST",
-        contentType: "application/xml",
-        dataType: "xml",
-        success: function (xml) {
-            console.log(xml);
-        }
+    $('#collapse-notification').click(function () {
+        board.activeId = null;
+        board.polling = false;
+        showNotifications();
     });
-
-    //list all the users (get)
-//    $.get('api/users', function (xml) {
-//        var $xml = $(xml);
-//        names = $xml.find("name");
-//        for (i = 0; i < names.length; i++) {
-//            name += "<a id=\"userLink\" href=\"#\">"
-//                    + names[i].textContent + "</a><br>";
-//        }
-//        document.getElementById("userList").innerHTML = name;
-//    });
-//    name = "";
 
     listBoards();
 
@@ -115,22 +123,9 @@ $(document).ready(function () {
 
     //list all the patients' names (get)
     listPatients();
-//    $.get('api/patients', function (xml) {
-//        var $xml = $(xml);
-//        patientNames = $xml.find("value>name");
-//        for (i = 0; i < patientNames.length; i++) {
-//            patientName += "<a id=\"patientLink\" href=\"#\">"
-//                    + patientNames[i].textContent + "</a><br>";
-//        }
-//        document.getElementById("patientList").innerHTML = patientName;
-//    });
-//    patientName = "";
-
-//    listPatients();
 
     //list all the tasks (get)
     $.get('api/tasks', function (xml) {
-//        console.log(xml);
         var $xml = $(xml);
         tasks = $xml.find("name");
         for (i = 0; i < tasks.length; i++) {
@@ -140,6 +135,38 @@ $(document).ready(function () {
     });
     task = "";
 });
+
+function session(cb, cred) {
+    if (cred && cred.username && cred.password) {
+        var xmlCred = $.parseXML('<user><username>' + cred.username + '</username><password>' + cred.password + '</password></user>');
+        console.log(xmlCred);
+        $.ajax({
+            url: "api/users/login",
+            data: xmlCred,
+            processData: false,
+            type: "POST",
+            contentType: "application/xml",
+            dataType: "xml",
+            success: function (xml) {
+                var $xml = $(xml);
+                me.id = $xml.find('user > id').text();
+                me.name = $xml.find('user > name').text();
+                cb();
+            }
+        });
+    } else {
+        $.ajax({
+            url: 'api/users/me',
+            type: 'GET',
+            success: function (xml) {
+                var $xml = $(xml);
+                me.id = $xml.find('user > id').text();
+                me.name = $xml.find('user > name').text();
+                cb();
+            }
+        });
+    }
+}
 
 function listBoards() {
     // GET a list of all boards
@@ -153,7 +180,7 @@ function listBoards() {
             var id = $board.find('board > id').text();
             var name = $board.find('board > name').text();
 
-            var $boardDOM = $('<a href="#" class="list-group-item">' + name + '</a>');
+            var $boardDOM = $('<a href="#tab-board" data-toggle="tab" class="list-group-item">' + name + '</a>');
             $boardDOM.attr('onclick', 'showBoard(' + id + ')');
 //            boardDOM.appendTo(document.getElementById('boardList'))
             document.getElementById('boardList').appendChild($boardDOM.get(0));
@@ -172,26 +199,58 @@ function listPatients() {
     // GET a list of all patients
     $.get('api/patients', function (xml) {
         var $xml = $(xml);
-
-        var patients = $xml.find('byId > entry > value'); // TODO Should be changed from the backend
-//        var patients = $xml.find('patient');
+        var patients = $xml.find('patient');
 
         document.getElementById('patientList').innerHTML = '';
         for (var i = 0; i < patients.length; i++) {
             var $patient = $(patients[i]);
 
-            var id = $patient.find('value > id').text(); // TODO Should be changed from the backend
-            var name = $patient.find('value > name').text(); // TODO Should be changed from the backend
+            var id = $patient.find('patient > id').text();
+            var name = $patient.find('patient > name').text();
 
-            var patientDOM = $('<a href="#">' + name + '</a>');
-            patientDOM.attr('onclick', 'getPatient(' + id + ')');
-            patientDOM.appendTo(document.getElementById('patientList'));
-            document.getElementById('patientList').innerHTML += '<br>';
+            var $patientDOM = $('<a href="#tab-patient" data-toggle="tab" class="list-group-item">' + name + '</a>');
+            $patientDOM.attr('onclick', 'getPatient(' + id + ')');
+//            patientDOM.appendTo(document.getElementById('patientList'));
+//            document.getElementById('patientList').innerHTML += '<br>';
+
+            document.getElementById('patientList').appendChild($patientDOM.get(0));
+        }
+    });
+}
+
+function showNotifications() {
+    // GET a list of all notifications
+    if (!me.id)
+        return;
+    $.get('api/users/' + me.id + '/notifications', function (xml) {
+        var $panelDOM = $(document.getElementById("notification-list"));
+        $panelDOM.empty();
+        var $xml = $(xml);
+        var notifications = $xml.find('notification');
+
+        for (var i = 0; i < notifications.length; i++) {
+            var $notification = $(notifications[i]);
+            var senderName = $notification.find('notification > sender > name').text();
+            var postId = $notification.find('notification > post > id').text();
+            var postPreview = $notification.find('notification > post > content').text().substring(0, 30);
+            var unread = $notification.find('notification > unread').text();
+
+            var $postDOM;
+            $postDOM = $('<div class="notification"></div>');
+            if (unread === 'true') {
+                $postDOM.addClass('unread');
+            }
+            $postDOM.append('From: ' + senderName + '<br>');
+            $postDOM.append(postPreview + '...');
+            $panelDOM.append($postDOM);
         }
     });
 }
 
 function showPosts(boardId) {
+    if (!board.activeId)
+        pollPosts();
+    board.activeId = boardId;
     // GET a list of all posts in a board
     $.get('api/boards/' + boardId + '/posts', function (xml) {
         var $panelDOM = $(document.getElementById("postList"));
@@ -203,64 +262,37 @@ function showPosts(boardId) {
             var $post = $(posts[i]);
             var authorId = $post.find('post > author > id').text();
             var authorName = $post.find('post > author > name').text();
+            var authorUsername = $post.find('post > author > username').text();
             var content = $post.find('post > content').text();
-
-//            var postDOM = $('<div></div>');
-//            postDOM.append('<em>' + authorName + '</em><br>');
-//            postDOM.append(content);
-//            $panelDOM.append(postDOM);
-
-//            var postDOM = builder.postHTML();
-//            postDOM.find('.author').html(authorName);
-//            postDOM.find('.content').html(content);
-//            $panelDOM.append(postDOM);
 
             var $postDOM;
             if (cache.postHTML.data) {
                 $postDOM = $(cache.postHTML.data);
                 $postDOM.find('.author').html(authorName).attr('href', 'api/users/' + authorId);
                 $postDOM.find('.content').html(content);
-                $postDOM.find('.header .profile-img').attr('src', 'http://api.adorable.io/avatars/64' + authorName + '.png');
+                $postDOM.find('.header .profile-img').attr('src', 'http://api.adorable.io/avatars/40/' + authorUsername + '.png');
                 $panelDOM.append($postDOM);
             } else {
                 console.log("No cache found, loading the component...");
-                builder.loadComponent('components/post.html', function (html, cbData) {
+                util.loadComponent('components/post.html', function (html, cbData) {
                     console.log(cbData.authorName);
                     var $postDOM = $(html);
                     $postDOM.find('.author').html(cbData.authorName).attr('href', 'api/users/' + cbData.authorId);
                     $postDOM.find('.content').html(cbData.content);
-                    $postDOM.find('.header .profile-img').attr('src', 'http://api.adorable.io/avatars/64' + cbData.authorName + '.png');
+                    $postDOM.find('.header .profile-img').attr('src', 'http://api.adorable.io/avatars/40/' + cbData.authorUsername + '.png');
                     $panelDOM.append($postDOM);
-                }, {authorId: authorId, authorName: authorName, content: content}, cache.postHTML);
+                }, {authorId: authorId, authorName: authorName, authorUsername: authorUsername, content: content}, cache.postHTML);
             }
         }
-
-//        $.each(posts, function (index, post) {
-//            var $post = $(post);
-//            var authorName = $post.find('post > author > name').text();
-//            var content = $post.find('post > content').text();
-//            var postDOM = $('<div></div>');
-//            postDOM.append('<em>' + authorName + '</em><br>');
-//            postDOM.append(content);
-//            $postList.append(postDOM);
-//        });
-
-//        posterNames = $xml.find("name");
-//        posts = $xml.find("content");
-//        for (j = 0; j < posts.length; j++) {
-//            post += posts[j].textContent + "<br>";
-//        }
-//        for (i = 0; i < posterNames.length; i++) {
-//            posterName += posterNames[i].textContent + "<br>";
-//        }
-//        document.getElementById("postList").innerHTML = posterName + post + "<br>";
     });
 }
 
 function getPatient(patientId) {
+    board.activeId = null;
+//    board.polling = false;
     // GET a patient info
     $.get('api/patients/' + patientId, function (xml) {
-        var $panelDOM = $(document.getElementById("postList"));
+        var $panelDOM = $(document.getElementById("patient-info"));
         $panelDOM.empty();
         var $xml = $(xml);
         var patients = $xml.find('patient');
@@ -286,36 +318,25 @@ function getPatient(patientId) {
 
 // TODO add new patient (post)
 
-var builder = {
-    postHTML: function () {
-        return $('<div class="post">' +
-                '<div class="header">' +
-                '<div class="author"></div>' +
-                '</div>' +
-                '<div class="content"></div>' +
-                '</div>');
-    },
+function logout() {
+    $.get('api/users/logout').always(function () {
+        location.reload();
+    });
+}
+
+/**
+ * Utility objects
+ */
+var util = {
     loadComponent: function (uri, cb, cbData, cacheTarget) {
         $.get(uri, function (html) {
-            if (typeof cacheTarget.data !== 'undefined') {
+            if (typeof cacheTarget !== 'undefined') {
                 cacheTarget.data = html;
             }
             cb(html, cbData);
         });
-//        $.ajax({
-//            method: 'get',
-//            url: uri,
-//            async: false,
-//            success: function (html) {
-//                if (typeof cache !== 'undefined') {
-//                    cache = html;
-//                }
-//                cb(html);
-//            }
-//        });
     }
 };
-
 var cache = {
-    postHTML: { data: null }
+    postHTML: {data: null}
 };

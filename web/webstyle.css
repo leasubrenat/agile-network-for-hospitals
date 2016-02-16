@@ -47,6 +47,10 @@ body{margin-top:50px;}
 .panel-body table tr td { padding-left: 15px }
 .panel-body .table {margin-bottom: 0px; }
 
+#main {
+    background-color: white;
+}
+
 /*UI Kit*/
 body {
     background-color: #5AAE62;
@@ -79,11 +83,37 @@ body {
     border-radius: 0px;
 }
 
+input.form-control {
+    border-radius: 2px;
+    border-style: solid;
+    border-width: 1px;
+    /*border-color: rgba(0, 0, 0, 10);*/
+    box-sizing: border-box;
+    background-color: #f2f2f3;
+}
+
+button.btn-default {
+    border-color: #8DBF30;
+    border-radius: 2px;
+    background-color: #8DBF30;
+    color: #ffffff;
+    text-align: left;
+}
+
+/*Components*/
 .post > * {
     margin: 20px;
+}
+
+.post .header > div {
+    display: inline-block;
 }
 
 .post .author {
     font-weight: bold;
     color: #8DBF30;
+}
+
+.notification.unread {
+    font-weight: bold;
 }

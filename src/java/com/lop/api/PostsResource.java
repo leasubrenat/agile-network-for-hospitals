@@ -55,7 +55,6 @@ public class PostsResource {
     @GET
     @Produces("application/xml")
     public List<Post> getXml(@PathParam("boardId") String boardId) {
-        System.out.println("getXml " + boardId);
         Board board = World.getInstance().getBoards().getById().get(boardId);
         List<Post> posts = board.getPosts();
         for (Post p : posts) {
@@ -105,8 +104,8 @@ public class PostsResource {
     @GET
     @Path("{postId}")
     public Response getPostResource(@PathParam("boardId") String boardId, @PathParam("postId") String postId) {
-        System.out.println("getPostResource " + boardId);
-        Post post = Link.addLinks(boardId, World.getInstance().getPosts().get(postId), uriInfo);      
+//        System.out.println("getPostResource " + boardId);
+        Post post = Link.addLinks(boardId, World.getInstance().getPosts().get(postId), uriInfo);
         return Response.ok(Link.getUriForSelf(boardId, post, uriInfo))
                 .entity(post)
                 .build();
