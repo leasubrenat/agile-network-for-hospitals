@@ -48,7 +48,7 @@ public class PatientsResource {
     public List<Patient> getXml() {
         List<Patient> patients = new ArrayList<>(World.getInstance().getPatients().getById().values());
         for (Patient p : patients){
-            Link.addLinks(p.getMainDoctor(), context);
+            // Link.addLinks(p.getMainDoctor(), context);
             Link.addLinks(p, context);
         }
         return patients;

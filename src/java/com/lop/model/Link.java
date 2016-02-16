@@ -29,6 +29,7 @@ public class Link {
     }
     
     public static Patient addLinks(Patient p ,@Context UriInfo uriInfo) {
+        p.addLink(getUriForMainDoctor(p, uriInfo), "mainDoctor");
         return p.addLink(getUriForSelf(p, uriInfo), "self");
     }
     
@@ -50,6 +51,15 @@ public class Link {
 
     public static User addLinks(User user, @Context UriInfo uriInfo) {
         return user.addLink(getUriForSelf(user, uriInfo), "self");
+    }
+    
+    public static String getUriForMainDoctor(Patient p, @Context UriInfo uriInfo) {
+        String uri = uriInfo.getBaseUriBuilder()
+                .path(UsersResource.class)
+                .path(Long.toString(p.getMainDoctor().getId()))
+                .build()
+                .toString();
+        return uri;
     }
     
     public static String getUriForSelf(String patientId, Record r, @Context UriInfo uriInfo) {
