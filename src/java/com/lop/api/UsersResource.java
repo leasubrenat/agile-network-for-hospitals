@@ -112,6 +112,7 @@ public class UsersResource {
     @Path("login")
     public Response login(@Context HttpServletRequest request, User u) {
         User me = World.getInstance().getUsers().login(u);
+        System.out.println(me);
         if (me != null) {
             HttpSession session = request.getSession();
             me = Link.addLinks(me, uriInfo);
@@ -149,7 +150,6 @@ public class UsersResource {
             return Response.status(400).entity("<response>Not logged in</response>").build();
         }
         me = Link.addLinks(me, uriInfo);
-        me.setPassword("");
         URI uri = uriInfo.getAbsolutePathBuilder()
                 .path(UsersResource.class)
                 .path(Integer.toString(me.getId()))
