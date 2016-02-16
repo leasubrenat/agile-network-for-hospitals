@@ -111,8 +111,9 @@ public class UsersResource {
     @POST
     @Path("login")
     public Response login(@Context HttpServletRequest request, User u) {
-        System.out.println(u.getUsername());
+        System.out.println(World.getInstance().getUsers());
         User me = World.getInstance().getUsers().login(u);
+        System.out.println(me);
         if (me != null) {
             HttpSession session = request.getSession();
             me = Link.addLinks(me, uriInfo);
@@ -136,7 +137,8 @@ public class UsersResource {
     public Response logout(@Context HttpServletRequest request) {
         HttpSession session = request.getSession(false);
         if (session != null) {
-            session.invalidate();
+//            session.invalidate();
+            session.setAttribute("me", null);
         }
         return Response.ok("<response>Logout successful</response>").build();
     }
