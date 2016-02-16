@@ -35,13 +35,17 @@ public class ApplicationConfig extends Application {
         resources.add(com.lop.api.LocationsResource.class);
         resources.add(com.lop.api.NotificationResource.class);
         resources.add(com.lop.api.NotificationsResource.class);
+        resources.add(com.lop.api.PatientResource.class);
         resources.add(com.lop.api.PatientsResource.class);
         resources.add(com.lop.api.PostResource.class);
         resources.add(com.lop.api.PostsResource.class);
+        resources.add(com.lop.api.RecordResource.class);
         resources.add(com.lop.api.RecordsResource.class);
         resources.add(com.lop.api.RoleResource.class);
         resources.add(com.lop.api.RolesResource.class);
+        resources.add(com.lop.api.TaskResource.class);
         resources.add(com.lop.api.TasksResource.class);
+        resources.add(com.lop.api.UserResource.class);
         resources.add(com.lop.api.UsersResource.class);
     }
     

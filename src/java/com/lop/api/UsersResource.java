@@ -111,7 +111,7 @@ public class UsersResource {
     @POST
     @Path("login")
     public Response login(@Context HttpServletRequest request, User u) {
-        System.out.println(u.getPassword());
+        System.out.println(u.getUsername());
         User me = World.getInstance().getUsers().login(u);
         if (me != null) {
             HttpSession session = request.getSession();
@@ -132,7 +132,7 @@ public class UsersResource {
     }
 
     @GET
-    @Path("login")
+    @Path("logout")
     public Response logout(@Context HttpServletRequest request) {
         HttpSession session = request.getSession(false);
         if (session != null) {

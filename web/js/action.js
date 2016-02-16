@@ -29,11 +29,13 @@ function pollPosts() {
     setTimeout(function () {
         if (board.activeId) {
             showPosts(board.activeId);
-        } else {
-            board.polling = false;
-        }
-        if (board.polling)
             pollPosts();
+        }
+//        else {
+//            board.polling = false;
+//        }
+//        if (board.polling)
+//            pollPosts();
     }, 500);
 }
 
@@ -43,18 +45,21 @@ function pollPosts() {
 $(document).ready(function () {
 
     session(function () {
-        $('.dashboard > .welcome').html('Welcome back, ' + me.name);
+        $('.dashboard > .welcome').html('Welcome back, ' + me.name + '. ').append('<a onclick="logout()">Logout</a>');
+        showNotifications();
     });
     // Adding events to forms
     $('#login-form button').click(function () { // Login using the credentials entered
         var username = document.getElementById('login-username').value;
         var password = document.getElementById('login-password').value;
         session(function () {
-            $('.dashboard > .welcome').html('Welcome back, ' + me.name);
+            $('.dashboard > .welcome').html('Welcome back, ' + me.name + '. ').append('<a onclick="logout()">Logout</a>');
+            showNotifications();
         }, {username: username, password: password});
     });
     $('#post2board').click(function () { // Add a new post to the board (POST)
-        if (!board.activeId) return;
+        if (!board.activeId)
+            return;
         console.log("function post2board");
         postXMLDoc = $.parseXML('<post><content></content></post>');
         postXML = $(postXMLDoc);
@@ -81,7 +86,8 @@ $(document).ready(function () {
         });
     });
 
-    pollPosts();
+    
+//    pollPosts();
 
     $('#collapse-notification').click(function () {
         board.activeId = null;
@@ -133,6 +139,7 @@ $(document).ready(function () {
 function session(cb, cred) {
     if (cred && cred.username && cred.password) {
         var xmlCred = $.parseXML('<user><username>' + cred.username + '</username><password>' + cred.password + '</password></user>');
+        console.log(xmlCred);
         $.ajax({
             url: "api/users/login",
             data: xmlCred,
@@ -205,7 +212,7 @@ function listPatients() {
             $patientDOM.attr('onclick', 'getPatient(' + id + ')');
 //            patientDOM.appendTo(document.getElementById('patientList'));
 //            document.getElementById('patientList').innerHTML += '<br>';
-            
+
             document.getElementById('patientList').appendChild($patientDOM.get(0));
         }
     });
@@ -241,9 +248,9 @@ function showNotifications() {
 }
 
 function showPosts(boardId) {
-    board.activeId = boardId;
-    if (!board.polling)
+    if (!board.activeId)
         pollPosts();
+    board.activeId = boardId;
     // GET a list of all posts in a board
     $.get('api/boards/' + boardId + '/posts', function (xml) {
         var $panelDOM = $(document.getElementById("postList"));
@@ -267,7 +274,7 @@ function showPosts(boardId) {
                 $panelDOM.append($postDOM);
             } else {
                 console.log("No cache found, loading the component...");
-                builder.loadComponent('components/post.html', function (html, cbData) {
+                util.loadComponent('components/post.html', function (html, cbData) {
                     console.log(cbData.authorName);
                     var $postDOM = $(html);
                     $postDOM.find('.author').html(cbData.authorName).attr('href', 'api/users/' + cbData.authorId);
@@ -282,7 +289,7 @@ function showPosts(boardId) {
 
 function getPatient(patientId) {
     board.activeId = null;
-    board.polling = false;
+//    board.polling = false;
     // GET a patient info
     $.get('api/patients/' + patientId, function (xml) {
         var $panelDOM = $(document.getElementById("patient-info"));
@@ -311,10 +318,16 @@ function getPatient(patientId) {
 
 // TODO add new patient (post)
 
+function logout() {
+    $.get('api/users/logout').always(function () {
+        location.reload();
+    });
+}
+
 /**
  * Utility objects
  */
-var builder = {
+var util = {
     loadComponent: function (uri, cb, cbData, cacheTarget) {
         $.get(uri, function (html) {
             if (typeof cacheTarget !== 'undefined') {
