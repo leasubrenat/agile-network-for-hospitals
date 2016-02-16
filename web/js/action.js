@@ -127,7 +127,7 @@ $(document).ready(function () {
     //list all the tasks (get)
     $.get('api/tasks', function (xml) {
         var $xml = $(xml);
-        tasks = $xml.find("name");
+        tasks = $xml.find("task>name");
         for (i = 0; i < tasks.length; i++) {
             task += tasks[i].textContent + "<br>";
         }

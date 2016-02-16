@@ -104,10 +104,10 @@ and open the template in the editor.
                             <div id="notification-list"></div>
                         </div>
                         <div class="tab-pane" id="tab-board">
-                            <div id="postList"></div>
+                            <div id="postList"></div><br><br>
                             <div id="addUserForm" class="form-group">
-                                    <input id="addUser" class="form-control" type="text" value="Add username">
-                                    <button id="user2board" class="btn btn-default">Add</button>
+                                <input id="addUser" class="form-control" type="text" size="30" value="Add username">
+                                <button id="user2board" class="btn btn-default">Add</button>
                             </div>
                             <div id="postMsgForm" class="form-group">
                                 <input id="message" class="form-control" type="text" value="New message">
@@ -122,9 +122,11 @@ and open the template in the editor.
             </div>
         </div>
         <div id="center">
-            <p><span class="glyphicon glyphicon-envelope"></span><a href="#">Contact us</a></p>
-            <p><span class="glyphicon glyphicon-book"></span><a href="#">User manual</a></p>
-        </div>
+            <div id="white">
+                <p><span class="glyphicon glyphicon-envelope"></span><a href="#">Contact us</a></p>
+                <p><span class="glyphicon glyphicon-book"></span><a href="#">User manual</a></p>
+            </div> 
+       </div>
         <script>
             function showBoard(boardId) {
                 showPosts(boardId);
