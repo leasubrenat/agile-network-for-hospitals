@@ -137,8 +137,7 @@ public class UsersResource {
     public Response logout(@Context HttpServletRequest request) {
         HttpSession session = request.getSession(false);
         if (session != null) {
-//            session.invalidate();
-            session.setAttribute("me", null);
+            session.invalidate();
         }
         return Response.ok("<response>Logout successful</response>").build();
     }

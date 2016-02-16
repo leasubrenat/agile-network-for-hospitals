@@ -37,6 +37,10 @@ public class User implements Sender, Serializable {
     public User() {
     }
 
+    public User(String username, String password) {
+        this(username, password, null, null, null);
+    }
+    
     public User(String username, String password, String name) {
         this(username, password, name, null, null);
     }
