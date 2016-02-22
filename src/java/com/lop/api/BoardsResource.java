@@ -95,4 +95,12 @@ public class BoardsResource {
         return new UsersResource(uriInfo);
     }
 
+    public UriInfo getUriInfo() {
+        return uriInfo;
+    }
+
+    public void setUriInfo(UriInfo uriInfo) {
+        this.uriInfo = uriInfo;
+    }
+
 }

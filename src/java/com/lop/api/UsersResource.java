@@ -80,12 +80,14 @@ public class UsersResource {
             content = World.getInstance().getUsers().getById().get(Integer.toString(content.getId()));
             World.getInstance().getBoards().getById().get(boardId).addUser(content);
             URI uri = uriInfo.getAbsolutePathBuilder().path(Integer.toString(content.getId())).build();
+            System.out.println(uri);
             return Response.created(uri)
                     .entity(content)
                     .build();
         } else {
             World.getInstance().getUsers().add(content);
             URI uri = uriInfo.getAbsolutePathBuilder().path(Integer.toString(content.getId())).build();
+            System.out.println(uri);
             return Response.created(uri)
                     .entity(content)
                     .build();
@@ -135,10 +137,11 @@ public class UsersResource {
     @Path("logout")
     public Response logout(@Context HttpServletRequest request) {
         HttpSession session = request.getSession(false);
-        if (session != null) {
+        if (session.getAttribute("me") != null) {
             session.invalidate();
+            return Response.ok("<response>Logout successful</response>").build();
         }
-        return Response.ok("<response>Logout successful</response>").build();
+        return Response.status(400).entity("<response>You are not logged in</response>").build();
     }
 
     @GET
@@ -163,4 +166,14 @@ public class UsersResource {
     public TasksResource getTasksResource() {
         return new TasksResource(uriInfo);
     }
+
+    public UriInfo getUriInfo() {
+        return uriInfo;
+    }
+
+    public void setUriInfo(UriInfo uriInfo) {
+        this.uriInfo = uriInfo;
+    }
+    
+    
 }

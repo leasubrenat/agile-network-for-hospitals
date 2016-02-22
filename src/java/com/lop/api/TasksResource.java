@@ -120,4 +120,12 @@ public class TasksResource {
     public TaskResource getTaskResource(@PathParam("id") String id) {
         return TaskResource.getInstance(id);
     }
+
+    public UriInfo getContext() {
+        return context;
+    }
+
+    public void setContext(UriInfo context) {
+        this.context = context;
+    }
 }

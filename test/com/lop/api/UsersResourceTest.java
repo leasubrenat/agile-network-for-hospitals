@@ -7,6 +7,7 @@ package com.lop.api;
 
 import com.lop.model.User;
 import com.lop.model.World;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
@@ -19,6 +20,11 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import org.junit.Ignore;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import static org.mockito.Mockito.*;
+import static sun.invoke.util.ValueConversions.ignore;
 
 /**
  *
@@ -27,15 +33,15 @@ import static org.junit.Assert.*;
 public class UsersResourceTest {
     
     static UsersResource instance;
-    static @Context HttpServletRequest request;
-    static @Context UriInfo uriinfo;
+    static HttpServletRequest request;
+    
+    
     public UsersResourceTest() {
     }
     
     @BeforeClass
     public static void setUpClass() {
         
-        instance = new UsersResource(uriinfo);
     }
     
     @AfterClass
@@ -44,116 +50,92 @@ public class UsersResourceTest {
     
     @Before
     public void setUp() {
+        MockitoAnnotations.initMocks(this);
+        TestUriInfo uriinfo = new TestUriInfo("users");
+        instance = new UsersResource(uriinfo);
+        request = new TestHttpRequest();
     }
     
     @After
     public void tearDown() {
+        request = null;
     }
 
     /**
      * Test of getXml method, of class UsersResource.
      */
     @Test
-    public void testGetXml() {
+    public void testGetXml_should_return_list_of_users_from_world() {
         System.out.println("getXml");
         String boardId = "1";
         
         List<User> expResult = new ArrayList<User>(World.getInstance().getBoards().getById().get(boardId).getUsers());
         List<User> result = instance.getXml(boardId);
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        // fail("The test case is a prototype.");
     }
 
     /**
      * Test of postXml method, of class UsersResource.
      */
     @Test
-    public void testPostXml() {
+    public void testPostXml_should_return_successful_response() {
         System.out.println("postXml");
-        String boardId = "1";
-        User content = null;
-        UsersResource instance = new UsersResource();
-        Response expResult = null;
+        String boardId = null;
+        User content = new User("testUser", "testPassword");
         Response result = instance.postXml(boardId, content);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of getUserResource method, of class UsersResource.
-     */
-    @Test
-    public void testGetUserResource() {
-        System.out.println("getUserResource");
-        String id = "";
-        UsersResource instance = new UsersResource();
-        UserResource expResult = null;
-        UserResource result = instance.getUserResource(id);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        System.out.println(result);
+        URI uri = instance.getUriInfo().getAbsolutePathBuilder().path(Integer.toString(9)).build();
+        System.out.println(uri);
+        Response expResult = Response.created(uri)
+                    .entity(content)
+                    .build();
+        System.out.println(expResult);
+        assertEquals(expResult.toString(), result.toString());
     }
 
     /**
      * Test of login method, of class UsersResource.
      */
     @Test
-    public void testLogin() {
+    public void testLogin_should_success() {
         System.out.println("login");
-        HttpServletRequest request = null;
-        User u = null;
-        UsersResource instance = new UsersResource();
-        Response expResult = null;
+        User u = World.getInstance().getUsers().getById().get("1");
+        
         Response result = instance.login(request, u);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        URI uri = instance.getUriInfo().getAbsolutePathBuilder()
+                    .path(UsersResource.class)
+                    .path(Integer.toString(u.getId()))
+                    .build();
+        Response expResult = Response.ok(uri)
+                    .entity(u)
+                    .build();
+        assertEquals(expResult.toString(), result.toString());
     }
 
     /**
      * Test of logout method, of class UsersResource.
      */
     @Test
-    public void testLogout() {
+    public void testLogout_returns_badrequest_for_trying_to_logout_without_login() {
         System.out.println("logout");
-        HttpServletRequest request = null;
-        UsersResource instance = new UsersResource();
-        Response expResult = null;
+        Response expResult = Response.status(400).entity("<response>You are not logged in</response>").build();
         Response result = instance.logout(request);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        System.out.println(expResult);
+        System.out.println(result);
+        assertEquals(expResult.toString(), result.toString());
     }
 
     /**
      * Test of sessionCheck method, of class UsersResource.
      */
     @Test
-    public void testSessionCheck() {
+    public void testSessionCheck_returns_badrequest_with_Not_logged_in_message() {
         System.out.println("sessionCheck");
-        HttpServletRequest request = null;
-        UsersResource instance = new UsersResource();
-        Response expResult = null;
+        Response expResult = Response.status(400).entity("<response>Not logged in</response>").build();
         Response result = instance.sessionCheck(request);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of getTasksResource method, of class UsersResource.
-     */
-    @Test
-    public void testGetTasksResource() {
-        System.out.println("getTasksResource");
-        UsersResource instance = new UsersResource();
-        TasksResource expResult = null;
-        TasksResource result = instance.getTasksResource();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        System.out.println(expResult);
+        System.out.println(result);
+        assertEquals(expResult.toString(), result.toString());
     }
     
 }
