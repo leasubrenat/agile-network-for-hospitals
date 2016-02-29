@@ -319,7 +319,7 @@ function getPatient(patientId) {
 // TODO add new patient (post)
 
 function logout() {
-    $.get('api/users/logout').always(function () {
+    $.get('api/users/logout').done(function () {
         location.reload();
     });
 }
