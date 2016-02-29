@@ -60,9 +60,9 @@ and open the template in the editor.
                                         </span>Users</a>
                                 </h4>
                             </div>
-                            <div id="collapseTwo" class="panel-collapse collapse">
+<!--                            <div id="collapseTwo" class="panel-collapse collapse">
                                 <div id="userList" class="list-group"></div>
-                            </div>
+                            </div>-->
                         </div>
                         <div class="panel panel-default">
                             <div class="panel-heading">
@@ -96,6 +96,15 @@ and open the template in the editor.
                                 </div>
                             </div>
                         </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseSix">
+                                        <span class="glyphicon glyphicon-envelope" onclick="showContactForm()">
+                                        </span>Contact us</a>
+                                </h4>
+                            </div>
+                        </div>
                     </div><!-- #accordion -->
                 </div>
                 <div class="col-sm-9 col-md-9">
@@ -117,19 +126,19 @@ and open the template in the editor.
                         <div class="tab-pane" id="tab-patient">
                             <div id="patient-info"></div>
                         </div>
+                        <div class="tab-pane" id="tab-contact">
+                            <div id="patient-info"></div>
+                        </div>
                     </div><!-- .tab content -->
                 </div>
             </div>
         </div>
-        <div id="center">
-            <div id="white">
-                <p><span class="glyphicon glyphicon-envelope"></span><a href="#">Contact us</a></p>
-                <p><span class="glyphicon glyphicon-book"></span><a href="#">User manual</a></p>
-            </div> 
-       </div>
         <script>
             function showBoard(boardId) {
                 showPosts(boardId);
+            }
+            function showContactForm() {
+                
             }
         </script>
     </body>
