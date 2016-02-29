@@ -64,11 +64,18 @@ public class TaskResource {
     @PUT
     @Consumes("application/xml")
     public Response putXml(Task content, @Context UriInfo uriInfo) {
-        World.getInstance().getTasks().getById().put(id, content);
-        World.getInstance().getTasks().getByName().put(content.getName(), content);
+        Task task = World.getInstance().getTasks().getById().get(id);
+//        World.getInstance().getTasks().getById().replace(id, content);
+//        World.getInstance().getTasks().getByName().replace(content.getName(), content);
+        for (User u : content.getParticipants()){
+            u = World.getInstance().getUsers().get(Integer.toString(u.getId()));
+            if (u != null && !task.getParticipants().contains(u)) {
+                task.addParticipant(u);
+            }
+        }
         for (User u : content.getParticipants()){
             u.addJoinedTask(content);
-            World.getInstance().getUsers().getById().put(Integer.toString(u.getId()), u);
+            World.getInstance().getUsers().getById().replace(Integer.toString(u.getId()), u);
         }
         Link.addLinks(World.getInstance().getTasks().get(id), uriInfo);
         return Response.ok(Link.getUriForSelf(World.getInstance().getTasks().get(id), uriInfo))

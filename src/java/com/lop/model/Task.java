@@ -23,6 +23,7 @@ public class Task implements Serializable {
     private String name;
     private String description;
     private User poster;
+    private Post post = null;
     private Status status;
     private ArrayList<User> participants = new ArrayList<>();
     private Patient patient;
@@ -87,6 +88,13 @@ public class Task implements Serializable {
     public void addParticipant(User p) {
         p.addJoinedTask(this);
         participants.add(p);
+        
+        Notification n = new Notification(poster, this.getPost(), "You have been added to a new task.");
+        n.send(p);
+    }
+    
+    public Post getPost() {
+        return post;
     }
 
     public ArrayList<User> getParticipants() {

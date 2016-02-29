@@ -111,14 +111,12 @@ public class UsersResource {
     @POST
     @Path("login")
     public Response login(@Context HttpServletRequest request, User u) {
-        System.out.println(World.getInstance().getUsers());
         User me = World.getInstance().getUsers().login(u);
         System.out.println(me);
         if (me != null) {
             HttpSession session = request.getSession();
             me = Link.addLinks(me, uriInfo);
             session.setAttribute("me", me);
-            // User userNoPassword = new User(me);
             URI uri = uriInfo.getAbsolutePathBuilder()
                     .path(UsersResource.class)
                     .path(Integer.toString(me.getId()))
@@ -137,8 +135,7 @@ public class UsersResource {
     public Response logout(@Context HttpServletRequest request) {
         HttpSession session = request.getSession(false);
         if (session != null) {
-//            session.invalidate();
-            session.setAttribute("me", null);
+            session.invalidate();
         }
         return Response.ok("<response>Logout successful</response>").build();
     }
@@ -152,7 +149,6 @@ public class UsersResource {
             return Response.status(400).entity("<response>Not logged in</response>").build();
         }
         me = Link.addLinks(me, uriInfo);
-        me.setPassword("");
         URI uri = uriInfo.getAbsolutePathBuilder()
                 .path(UsersResource.class)
                 .path(Integer.toString(me.getId()))
