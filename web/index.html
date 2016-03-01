@@ -60,9 +60,9 @@ and open the template in the editor.
                                         </span>Users</a>
                                 </h4>
                             </div>
-<!--                            <div id="collapseTwo" class="panel-collapse collapse">
-                                <div id="userList" class="list-group"></div>
-                            </div>-->
+                            <!--                            <div id="collapseTwo" class="panel-collapse collapse">
+                                                            <div id="userList" class="list-group"></div>
+                                                        </div>-->
                         </div>
                         <div class="panel panel-default">
                             <div class="panel-heading">
@@ -99,8 +99,8 @@ and open the template in the editor.
                         <div class="panel panel-default">
                             <div class="panel-heading">
                                 <h4 class="panel-title">
-                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseSix">
-                                        <span class="glyphicon glyphicon-envelope" onclick="showContactForm()">
+                                    <a data-parent="#accordion" id="collapse-notification" href="#tab-contact" data-toggle="tab">
+                                        <span class="glyphicon glyphicon-envelope">
                                         </span>Contact us</a>
                                 </h4>
                             </div>
@@ -127,7 +127,15 @@ and open the template in the editor.
                             <div id="patient-info"></div>
                         </div>
                         <div class="tab-pane" id="tab-contact">
-                            <div id="patient-info"></div>
+                            <div id="center">Send us an email!</div><br>
+                                <a href="mailto:lea.subrenat@metropolia.fi?Subject=ANH%20app" target="_top">
+                                    Léa Subrenat</a>, project manager/front-end<br>
+                                <a href="mailto:anh.do@metropolia.fi?Subject=ANH%20app" target="_top">
+                                    Anh Do</a>, back-end/front-end<br>
+                                <a href="mailto:won.seo@metropolia.fi?Subject=ANH%20app" target="_top">
+                                    Won Seob Seo</a>, back-end<br>
+                                <a href="mailto:julia.cui@metropolia.fi?Subject=ANH%20app" target="_top">
+                                    Julia Cui</a>, front-end<br>
                         </div>
                     </div><!-- .tab content -->
                 </div>
@@ -136,9 +144,6 @@ and open the template in the editor.
         <script>
             function showBoard(boardId) {
                 showPosts(boardId);
-            }
-            function showContactForm() {
-                
             }
         </script>
     </body>
