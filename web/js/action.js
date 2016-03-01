@@ -47,6 +47,9 @@ $(document).ready(function () {
     session(function () {
         $('.dashboard > .welcome').html('Welcome back, ' + me.name + '. ').append('<a onclick="logout()">Logout</a>');
         showNotifications();
+        listBoards();
+        listPatients();
+        listTasks();
     });
     // Adding events to forms
     $('#login-form button').click(function () { // Login using the credentials entered
@@ -55,6 +58,9 @@ $(document).ready(function () {
         session(function () {
             $('.dashboard > .welcome').html('Welcome back, ' + me.name + '. ').append('<a onclick="logout()">Logout</a>');
             showNotifications();
+            listBoards();
+            listPatients();
+            listTasks();
         }, {username: username, password: password});
     });
     $('#post2board').click(function () { // Add a new post to the board (POST)
@@ -86,7 +92,7 @@ $(document).ready(function () {
         });
     });
 
-    
+
 //    pollPosts();
 
     $('#collapse-notification').click(function () {
@@ -95,7 +101,7 @@ $(document).ready(function () {
         showNotifications();
     });
 
-    listBoards();
+    //listBoards();
 
     //list all the board's users (get)
     $('#listUsers').click(function () {
@@ -122,18 +128,10 @@ $(document).ready(function () {
     });
 
     //list all the patients' names (get)
-    listPatients();
+    //listPatients();
 
     //list all the tasks (get)
-    $.get('api/tasks', function (xml) {
-        var $xml = $(xml);
-        tasks = $xml.find("task>name");
-        for (i = 0; i < tasks.length; i++) {
-            task += tasks[i].textContent + "<br>";
-        }
-        document.getElementById("taskList").innerHTML = task;
-    });
-    task = "";
+    //listTasks();
 });
 
 function session(cb, cred) {
@@ -216,6 +214,18 @@ function listPatients() {
             document.getElementById('patientList').appendChild($patientDOM.get(0));
         }
     });
+}
+
+function listTasks() {
+    $.get('api/tasks', function (xml) {
+        var $xml = $(xml);
+        tasks = $xml.find("name");
+        for (i = 0; i < tasks.length; i++) {
+            task += tasks[i].textContent + "<br>";
+        }
+        document.getElementById("taskList").innerHTML = task;
+    });
+    task = "";
 }
 
 function showNotifications() {
