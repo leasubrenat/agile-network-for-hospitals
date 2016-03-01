@@ -29,7 +29,6 @@ public class ApplicationConfig extends Application {
      * If required, comment out calling this method in getClasses().
      */
     private void addRestResourceClasses(Set<Class<?>> resources) {
-        resources.add(com.lop.api.BoardResource.class);
         resources.add(com.lop.api.BoardsResource.class);
         resources.add(com.lop.api.LocationResource.class);
         resources.add(com.lop.api.LocationsResource.class);
@@ -43,9 +42,7 @@ public class ApplicationConfig extends Application {
         resources.add(com.lop.api.RecordsResource.class);
         resources.add(com.lop.api.RoleResource.class);
         resources.add(com.lop.api.RolesResource.class);
-        resources.add(com.lop.api.TaskResource.class);
         resources.add(com.lop.api.TasksResource.class);
-        resources.add(com.lop.api.UserResource.class);
         resources.add(com.lop.api.UsersResource.class);
     }
     
