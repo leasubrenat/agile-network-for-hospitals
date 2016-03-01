@@ -44,6 +44,14 @@ body{margin-top:50px;}
 }
 
 /*UI Kit*/
+a {
+    color: #5AAE62;
+}
+
+a:hover {
+    color: #8DBF30;
+}
+
 body {
     background-color: #5AAE62;
 }
@@ -104,6 +112,12 @@ button.btn-default {
 .post .author {
     font-weight: bold;
     color: #8DBF30;
+}
+
+.post .role {
+    display: inline-block;
+    color: #5AAE62;
+    font-style: italic;
 }
 
 .notification.unread {
