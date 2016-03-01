@@ -45,6 +45,14 @@ public class User implements Sender, Serializable {
         this(username, password, name, null, null);
     }
 
+    public User(int id, String username, String password, String name, Role role) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+        this.name = name;
+        this.role = role;
+    }
+
     public User(String username, String password, String name, Role role, Location office) {
         this.username = username;
         this.password = password;

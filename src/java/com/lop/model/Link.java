@@ -109,7 +109,7 @@ public class Link {
         String uri = uriInfo.getBaseUriBuilder()
                 .path(BoardsResource.class) //boards
                 .path(BoardsResource.class, "getPostsResource") // {id}/posts
-                .path(PostsResource.class) // /
+                // .path(PostsResource.class) // /
                 .path(Long.toString(post.getId())) // post ID
                 .resolveTemplate("boardId", boardId)
                 .build()
