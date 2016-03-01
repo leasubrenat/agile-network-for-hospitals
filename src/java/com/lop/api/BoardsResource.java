@@ -54,7 +54,11 @@ public class BoardsResource {
     public List<Board> getXml(@Context HttpServletRequest request) {
         HttpSession session = request.getSession();
         User me = (User) session.getAttribute("me");
-        if (me == null) return new ArrayList<Board>();
+        // System.out.println((User) session.getAttribute("me"));
+        if (me == null) {
+            System.out.println("me null");
+            return new ArrayList<Board>();
+        }
         List<Board> boards = new ArrayList<>(World.getInstance().getBoards().getById().values());
         for (Board b : boards) {
             Link.addLinks(b, uriInfo);

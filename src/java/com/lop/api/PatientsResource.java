@@ -51,7 +51,11 @@ public class PatientsResource {
     public List<Patient> getXml(@Context HttpServletRequest request) {
         HttpSession session = request.getSession();
         User me = (User) session.getAttribute("me");
-        if (me == null) return new ArrayList<Patient>();
+        // System.out.println((User) session.getAttribute("me"));
+        if (me == null) {
+            System.out.println("me null");
+            return new ArrayList<Patient>();
+        }
         List<Patient> patients = new ArrayList<>(World.getInstance().getPatients().getById().values());
         for (Patient p : patients){
             // Link.addLinks(p.getMainDoctor(), context);

@@ -47,6 +47,8 @@ $(document).ready(function () {
     session(function () {
         $('.dashboard > .welcome').html('Welcome back, ' + me.name + '. ').append('<a onclick="logout()">Logout</a>');
         showNotifications();
+        listBoards();
+        listPatients();
     });
     // Adding events to forms
     $('#login-form button').click(function () { // Login using the credentials entered
@@ -55,6 +57,8 @@ $(document).ready(function () {
         session(function () {
             $('.dashboard > .welcome').html('Welcome back, ' + me.name + '. ').append('<a onclick="logout()">Logout</a>');
             showNotifications();
+            listBoards();
+            listPatients();
         }, {username: username, password: password});
     });
     $('#post2board').click(function () { // Add a new post to the board (POST)
@@ -86,7 +90,7 @@ $(document).ready(function () {
         });
     });
 
-    
+
 //    pollPosts();
 
     $('#collapse-notification').click(function () {
@@ -95,7 +99,7 @@ $(document).ready(function () {
         showNotifications();
     });
 
-    listBoards();
+    //listBoards();
 
     //list all the board's users (get)
     $('#listUsers').click(function () {
@@ -122,7 +126,7 @@ $(document).ready(function () {
     });
 
     //list all the patients' names (get)
-    listPatients();
+    //listPatients();
 
     //list all the tasks (get)
     $.get('api/tasks', function (xml) {
