@@ -8,6 +8,7 @@ package com.lop.model;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -30,6 +31,21 @@ public class Board implements Sender, Serializable {
     public Board(int id, String name) {
         this.id = id;
         this.name = name;
+    }
+    
+    public Board(int id, String name, List<User> users) {
+        this.id = id;
+        this.name = name;
+        for (User u : users){
+            this.users.add(u);
+        }
+    }
+    
+    public Board(int id, String name, User sender, User receiver) {
+        this.id = id;
+        this.name = name;
+        users.add(sender);
+        users.add(receiver);
     }
 
     public void addPost(Post post) {
