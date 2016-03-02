@@ -8,6 +8,7 @@ package com.lop.api;
 import com.lop.model.Link;
 import com.lop.model.Notification;
 import com.lop.model.World;
+import java.util.ArrayList;
 import java.util.List;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
@@ -57,11 +58,30 @@ public class NotificationsResource {
     @Produces(MediaType.APPLICATION_XML)
     public List<Notification> getXml(@PathParam("id") String id) {
         List<Notification> notifications = World.getInstance().getUsers().getById().get(id).getNotifications();
+        List<Notification> returnedNotifications = new ArrayList<>();
         for (Notification n :notifications)
         {
-            Link.addLinks(Integer.toString(n.getPost().getBoardId()), n.getPost(), context);
+            if (n.isUnread()) {
+                returnedNotifications.add(n);
+//                n.setUnread(false);
+                Link.addLinks(Integer.toString(n.getPost().getBoardId()), n.getPost(), context);
+            }
         }
-        return notifications;
+        return returnedNotifications;
+    }
+    
+    @GET
+    @Path("read")
+    @Produces(MediaType.APPLICATION_XML)
+    public Response readAll(@PathParam("id") String id) {
+        List<Notification> notifications = World.getInstance().getUsers().getById().get(id).getNotifications();
+        for (Notification n :notifications)
+        {
+            if (n.isUnread()) {
+                n.setUnread(false);
+            }
+        }
+        return Response.ok().build();
     }
 
     /**
