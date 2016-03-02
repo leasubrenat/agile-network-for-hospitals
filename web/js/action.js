@@ -24,6 +24,13 @@ var board = {
     activeId: null,
     polling: false
 };
+// Notification polling
+(function pollNotifications() {
+    setTimeout(function () {
+        fetchNotificationInfo();
+        pollNotifications();
+    }, 500);
+})();
 
 function pollPosts() {
     setTimeout(function () {
@@ -88,7 +95,7 @@ $(document).ready(function () {
         });
     });
 
-    
+
 //    pollPosts();
 
     $('#collapse-notification').click(function () {
@@ -122,10 +129,10 @@ $(document).ready(function () {
                     console.log("user addition ok");
                 });
     });
-    
+
     var $searchBar = $('#user-search-input');
     $('#user-search-btn').click(function () {
-        lookupUsers($searchBar.val()) ;
+        lookupUsers($searchBar.val());
     });
 
     //list all the patients' names (get)
@@ -192,12 +199,6 @@ function listBoards() {
 //            boardDOM.appendTo(document.getElementById('boardList'))
             document.getElementById('boardList').appendChild($boardDOM.get(0));
 //            document.getElementById('boardList').innerHTML += '<br>';
-
-//            var boardLink = document.createElement('A');
-//            boardLink.innerHTML = name;
-//            boardLink.setAttribute('onclick', 'showBoard(' + id + ')');
-//            document.getElementById("boardList").appendChild(boardLink);
-//            document.getElementById("boardList").innerHTML += '<br>';
         }
     });
 }
@@ -225,6 +226,15 @@ function listPatients() {
     });
 }
 
+function fetchNotificationInfo() {
+    if (!me.id)
+        return;
+    $.get('api/users/' + me.id + '/notifications', function (xml) {
+        var $xml = $(xml);
+        document.getElementById('notification-count').innerHTML = $xml.find('notification').length;
+    });
+}
+
 function showNotifications() {
     // GET a list of all notifications
     if (!me.id)
@@ -234,6 +244,9 @@ function showNotifications() {
         $panelDOM.empty();
         var $xml = $(xml);
         var notifications = $xml.find('notification');
+        console.log(document.getElementById('notification-count').innerHTML);
+//        document.getElementById('notification-list').innerHTML = 'You have ' + document.getElementById('notification-count').innerHTML + ' unread notification(s).';
+        if (notifications.length === 0) document.getElementById('notification-list').innerHTML = 'You have no new notification.';
 
         for (var i = 0; i < notifications.length; i++) {
             var $notification = $(notifications[i]);
@@ -251,7 +264,10 @@ function showNotifications() {
             $postDOM.append(postPreview + '...');
             $panelDOM.append($postDOM);
         }
+        $.get('api/users/' + me.id + '/notifications/read');
     });
+
+    document.getElementById('notification-count').innerHTML = '';
 }
 
 function showPosts(boardId) {
@@ -322,8 +338,22 @@ function getPatient(patientId) {
 }
 
 function lookupUsers(query) {
-    $.get('api/search?query=' + query).done(function(xml) {
-       console.log(xml); 
+    $.get('api/search?query=' + query).done(function (xml) {
+        console.log(xml);
+        var $panelDOM = $(document.getElementById("user-list"));
+        $panelDOM.empty();
+        var $xml = $(xml);
+        var users = $xml.find('user');
+
+        for (var i = 0; i < users.length; i++) {
+            var $user = $(users[i]);
+            var name = $user.find('user > name').text();
+            var username = $user.find('user > username').text();
+
+            var postDOM = $('<div></div>');
+            postDOM.append('<b>' + name + '</b> <em>@' + username + '</em><br>');
+            $panelDOM.append(postDOM);
+        }
     });
 }
 
