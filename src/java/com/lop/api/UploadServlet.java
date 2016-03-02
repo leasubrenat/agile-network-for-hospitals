@@ -31,7 +31,7 @@ public class UploadServlet extends HttpServlet {
 
     private boolean isMultipart;
    private String filePath;
-   private int maxFileSize = 100 * 1024 * 1024;
+   private int maxFileSize = 100 * 1024 ;
    private int maxMemSize = 4 * 1024;
    private File file ;
 
@@ -106,8 +106,14 @@ public class UploadServlet extends HttpServlet {
       }
       out.println("</body>");
       out.println("</html>");
-   }catch(Exception ex) {
+   }catch (FileNotFoundException fne) {
+        out.println("You either did not specify a file to upload or are "
+                + "trying to upload a file to a protected or nonexistent "
+                + "location.");
+        out.println("<br/> ERROR: " + fne.getMessage());
+    } catch(Exception ex) {
        System.out.println(ex);
+       out.println("ERROR: " + ex.getMessage());
    }
    }
    public void doGet(HttpServletRequest request, 
