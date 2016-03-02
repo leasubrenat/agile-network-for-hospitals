@@ -48,7 +48,9 @@ $(document).ready(function () {
         $('.dashboard > .welcome').html('Welcome back, ' + me.name + '. ').append('<a onclick="logout()">Logout</a>');
         showNotifications();
     });
-    // Adding events to forms
+    /**
+     * ADDING EVENTS TO FORMS
+     */
     $('#login-form button').click(function () { // Login using the credentials entered
         var username = document.getElementById('login-username').value;
         var password = document.getElementById('login-password').value;
@@ -119,6 +121,11 @@ $(document).ready(function () {
                 function () {
                     console.log("user addition ok");
                 });
+    });
+    
+    var $searchBar = $('#user-search-input');
+    $('#user-search-btn').click(function () {
+        lookupUsers($searchBar.val()) ;
     });
 
     //list all the patients' names (get)
@@ -311,6 +318,12 @@ function getPatient(patientId) {
             postDOM.append('Room: ' + roomNumber + '<br>');
             $panelDOM.append(postDOM);
         }
+    });
+}
+
+function lookupUsers(query) {
+    $.get('api/search?query=' + query).done(function(xml) {
+       console.log(xml); 
     });
 }
 

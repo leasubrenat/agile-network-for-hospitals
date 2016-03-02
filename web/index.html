@@ -55,7 +55,7 @@ and open the template in the editor.
                         <div class="panel panel-default">
                             <div class="panel-heading">
                                 <h4 class="panel-title">
-                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
+                                    <a data-parent="#accordion" id="collapse-user" href="#tab-user" data-toggle="tab">
                                         <span class="glyphicon glyphicon-search">
                                         </span>Users</a>
                                 </h4>
@@ -113,6 +113,14 @@ and open the template in the editor.
                                 <input id="message" class="form-control" type="text" value="New message">
                                 <button id="post2board" class="btn btn-default">Send</button>
                             </div>
+                        </div>
+                        <div class="tab-pane" id="tab-user">
+                            <div id="user-search" class="form-group">
+                                <input id="user-search-input" class="form-control" type="text">
+                                <button id="user-search-btn" class="btn btn-default"><span class="glyphicon glyphicon-search"></span>Search</button>
+                            </div>
+                            <div id="user-list"></div>
+                            <div id="user-info"></div>
                         </div>
                         <div class="tab-pane" id="tab-patient">
                             <div id="patient-info"></div>
