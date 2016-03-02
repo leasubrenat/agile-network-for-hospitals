@@ -61,9 +61,9 @@ and open the template in the editor.
                                         </span>Users</a>
                                 </h4>
                             </div>
-                            <div id="collapseTwo" class="panel-collapse collapse">
-                                <div id="userList" class="list-group"></div>
-                            </div>
+                            <!--                            <div id="collapseTwo" class="panel-collapse collapse">
+                                                            <div id="userList" class="list-group"></div>
+                                                        </div>-->
                         </div>
                         <div class="panel panel-default">
                             <div class="panel-heading">
@@ -97,6 +97,15 @@ and open the template in the editor.
                                 </div>
                             </div>
                         </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a data-parent="#accordion" id="collapse-notification" href="#tab-contact" data-toggle="tab">
+                                        <span class="glyphicon glyphicon-envelope">
+                                        </span>Contact us</a>
+                                </h4>
+                            </div>
+                        </div>
                     </div><!-- #accordion -->
                 </div>
                 <div class="col-sm-9 col-md-9">
@@ -105,14 +114,24 @@ and open the template in the editor.
                             <div id="notification-list"></div>
                         </div>
                         <div class="tab-pane" id="tab-board">
-                            <div id="postList"></div>
+                            <div id="postList"></div><br><br>
                             <div id="addUserForm" class="form-group">
-                                <input id="addUser" class="form-control" type="text" value="Add username">
-                                <button id="user2board" class="btn btn-default">Add</button>
-                            </div>
+                                <div class="col-md-4"></div>
+                                <div class="col-md-6">
+                                    <input id="addUser" class="form-control" type="text" placeholder="Add username">
+                                </div>
+                                <div class="col-md-1">
+                                    <button id="user2board" class="btn btn-default">Add</button>
+                                </div>
+                            </div><br><br>
                             <div id="postMsgForm" class="form-group">
-                                <input id="message" class="form-control" type="text" value="New message">
-                                <button id="post2board" class="btn btn-default">Send</button>
+                                <div class="col-md-4"></div>
+                                <div class="col-md-6">
+                                    <input id="message" class="form-control" type="text" placeholder="New message">
+                                </div>
+                                <div class="col-md-1">
+                                    <button id="post2board" class="btn btn-default">Send</button>
+                                </div>
                             </div>
                         </div>
                         <div class="tab-pane" id="tab-user">
@@ -126,13 +145,20 @@ and open the template in the editor.
                         <div class="tab-pane" id="tab-patient">
                             <div id="patient-info"></div>
                         </div>
+                        <div class="tab-pane" id="tab-contact">
+                            <div id="center">Send us an email!</div><br>
+                            <a href="mailto:lea.subrenat@metropolia.fi?Subject=ANH%20app" target="_top">
+                                Léa Subrenat</a>, project manager/front-end<br>
+                            <a href="mailto:anh.do@metropolia.fi?Subject=ANH%20app" target="_top">
+                                Anh Do</a>, back-end/front-end<br>
+                            <a href="mailto:won.seo@metropolia.fi?Subject=ANH%20app" target="_top">
+                                Won Seob Seo</a>, back-end<br>
+                            <a href="mailto:julia.cui@metropolia.fi?Subject=ANH%20app" target="_top">
+                                Julia Cui</a>, front-end<br>
+                        </div>
                     </div><!-- .tab content -->
                 </div>
             </div>
-        </div>
-        <div id="center">
-            <p><span class="glyphicon glyphicon-envelope"></span><a href="#">Contact us</a></p>
-            <p><span class="glyphicon glyphicon-book"></span><a href="#">User manual</a></p>
         </div>
         <script>
             function showBoard(boardId) {

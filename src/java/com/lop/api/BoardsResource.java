@@ -7,10 +7,13 @@ package com.lop.api;
 
 import com.lop.model.Board;
 import com.lop.model.Link;
+import com.lop.model.User;
 import com.lop.model.World;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.PathParam;
@@ -48,7 +51,14 @@ public class BoardsResource {
      */
     @GET
     @Produces("application/xml")
-    public List<Board> getXml() {
+    public List<Board> getXml(@Context HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        User me = (User) session.getAttribute("me");
+        // System.out.println((User) session.getAttribute("me"));
+        if (me == null) {
+            System.out.println("me null");
+            return new ArrayList<Board>();
+        }
         List<Board> boards = new ArrayList<>(World.getInstance().getBoards().getById().values());
         for (Board b : boards) {
             Link.addLinks(b, uriInfo);

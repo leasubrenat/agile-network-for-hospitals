@@ -58,7 +58,14 @@ public class TasksResource {
      */
     @GET
     @Produces("application/xml")
-    public List<Task> getXml(@PathParam("UserId") String userId) {
+    public List<Task> getXml(@PathParam("UserId") String userId, @Context HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        User me = (User) session.getAttribute("me");
+        // System.out.println((User) session.getAttribute("me"));
+        if (me == null) {
+            System.out.println("me null");
+            return new ArrayList<Task>();
+        }
         List<Task> tasks;
         // when there is a UserId param show only tasks for the user, show all tasks when no UserId param
         if (userId != null) {

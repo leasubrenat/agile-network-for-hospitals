@@ -89,6 +89,15 @@ public class Board implements Sender, Serializable {
     public ArrayList<Post> getPosts() {
         return posts;
     }
+    
+    public Post getPost(int index) {
+        for (Post post : posts)
+        {
+            System.out.println(post.getId());
+            if (post.getId() == index) return post;
+        }
+        return null;
+    }
 
     @XmlElement
     public ArrayList<User> getUsers() {

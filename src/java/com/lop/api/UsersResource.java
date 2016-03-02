@@ -118,7 +118,7 @@ public class UsersResource {
             HttpSession session = request.getSession();
             me = Link.addLinks(me, uriInfo);
             session.setAttribute("me", me);
-            // User userNoPassword = new User(me);
+            System.out.println((User) session.getAttribute("me"));
             URI uri = uriInfo.getAbsolutePathBuilder()
                     .path(UsersResource.class)
                     .path(Integer.toString(me.getId()))

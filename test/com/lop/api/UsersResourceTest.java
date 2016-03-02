@@ -10,7 +10,9 @@ import com.lop.model.World;
 import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriInfo;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -24,11 +26,16 @@ import static org.junit.Assert.*;
  */
 public class UsersResourceTest {
     
+    static UsersResource instance;
+    static @Context HttpServletRequest request;
+    static @Context UriInfo uriinfo;
     public UsersResourceTest() {
     }
     
     @BeforeClass
     public static void setUpClass() {
+        
+        instance = new UsersResource(uriinfo);
     }
     
     @AfterClass
@@ -50,7 +57,7 @@ public class UsersResourceTest {
     public void testGetXml() {
         System.out.println("getXml");
         String boardId = "1";
-        UsersResource instance = new UsersResource();
+        
         List<User> expResult = new ArrayList<User>(World.getInstance().getBoards().getById().get(boardId).getUsers());
         List<User> result = instance.getXml(boardId);
         assertEquals(expResult, result);
