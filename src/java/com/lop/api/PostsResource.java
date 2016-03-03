@@ -11,6 +11,7 @@ import com.lop.model.Post;
 import com.lop.model.User;
 import com.lop.model.World;
 import java.net.URI;
+import java.util.Date;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -90,6 +91,7 @@ public class PostsResource {
         } catch (Exception e){
             return Response.status(400).entity("No such a board").build();
         }
+        content.setCreatedAt(new Date());
         content.setBoardId(Integer.parseInt(boardId));
         World.getInstance().getPosts().add(content);
         board.addPost(content);

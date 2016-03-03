@@ -69,7 +69,7 @@ $(document).ready(function () {
             showNotifications();
             listBoards();
             listPatients();
-            listTasks();
+//            listTasks();
         }, {username: username, password: password});
     });
     $('#post2board').click(function () { // Add a new post to the board (POST)
@@ -329,6 +329,7 @@ function showPosts(boardId) {
             postData.authorUsername = $post.find('post > author > username').text();
             postData.authorRole = $post.find('post > author > role > name').text();
             postData.content = $post.find('post > content').text();
+            postData.date = $post.find('post > createdAt').text();
 
             var $postDOM;
             if (cache.postHTML.data) {
@@ -337,6 +338,7 @@ function showPosts(boardId) {
                 $postDOM.find('.role').html(postData.authorRole);
                 $postDOM.find('.content').html(postData.content);
                 $postDOM.find('.header .profile-img').attr('src', 'http://api.adorable.io/avatars/40/' + postData.authorUsername + '.png');
+                $postDOM.find('.date').html(postData.date);
                 $panelDOM.append($postDOM);
             } else {
                 console.log("No cache found, loading the component...");
@@ -347,6 +349,7 @@ function showPosts(boardId) {
                     $postDOM.find('.role').html(cbData.authorRole);
                     $postDOM.find('.content').html(cbData.content);
                     $postDOM.find('.header .profile-img').attr('src', 'http://api.adorable.io/avatars/40/' + cbData.authorUsername + '.png');
+                    $postDOM.find('.date').html(postData.date);
                     $panelDOM.append($postDOM);
                 }, postData, cache.postHTML);
             }

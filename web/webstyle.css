@@ -1,3 +1,7 @@
+#addUser {
+    display: inline-block;
+}
+
 h1 {
     text-align: center;
 }
@@ -115,6 +119,12 @@ button.btn-default {
 }
 
 .post .role {
+    display: inline-block;
+    color: #5AAE62;
+    font-style: italic;
+}
+
+.post .date {
     display: inline-block;
     color: #5AAE62;
     font-style: italic;
