@@ -56,10 +56,10 @@ $(document).ready(function () {
         showNotifications();
         listBoards();
         listPatients();
-        listTasks();
+//        listTasks();
     });
     /**
-     * ADDING EVENTS TO FORMS
+     * ADDING EVENTS
      */
     $('#login-form button').click(function () { // Login using the credentials entered
         var username = document.getElementById('login-username').value;
@@ -100,7 +100,6 @@ $(document).ready(function () {
             }
         });
     });
-
 
 //    pollPosts();
 
@@ -324,17 +323,20 @@ function showPosts(boardId) {
 
         for (var i = 0; i < posts.length; i++) {
             var $post = $(posts[i]);
-            var authorId = $post.find('post > author > id').text();
-            var authorName = $post.find('post > author > name').text();
-            var authorUsername = $post.find('post > author > username').text();
-            var content = $post.find('post > content').text();
+            var postData = {};
+            postData.authorId = $post.find('post > author > id').text();
+            postData.authorName = $post.find('post > author > name').text();
+            postData.authorUsername = $post.find('post > author > username').text();
+            postData.authorRole = $post.find('post > author > role > name').text();
+            postData.content = $post.find('post > content').text();
 
             var $postDOM;
             if (cache.postHTML.data) {
                 $postDOM = $(cache.postHTML.data);
-                $postDOM.find('.author').html(authorName).attr('href', 'api/users/' + authorId);
-                $postDOM.find('.content').html(content);
-                $postDOM.find('.header .profile-img').attr('src', 'http://api.adorable.io/avatars/40/' + authorUsername + '.png');
+                $postDOM.find('.author').html(postData.authorName).attr('href', 'api/users/' + postData.authorId);
+                $postDOM.find('.role').html(postData.authorRole);
+                $postDOM.find('.content').html(postData.content);
+                $postDOM.find('.header .profile-img').attr('src', 'http://api.adorable.io/avatars/40/' + postData.authorUsername + '.png');
                 $panelDOM.append($postDOM);
             } else {
                 console.log("No cache found, loading the component...");
@@ -342,10 +344,11 @@ function showPosts(boardId) {
                     console.log(cbData.authorName);
                     var $postDOM = $(html);
                     $postDOM.find('.author').html(cbData.authorName).attr('href', 'api/users/' + cbData.authorId);
+                    $postDOM.find('.role').html(cbData.authorRole);
                     $postDOM.find('.content').html(cbData.content);
                     $postDOM.find('.header .profile-img').attr('src', 'http://api.adorable.io/avatars/40/' + cbData.authorUsername + '.png');
                     $panelDOM.append($postDOM);
-                }, {authorId: authorId, authorName: authorName, authorUsername: authorUsername, content: content}, cache.postHTML);
+                }, postData, cache.postHTML);
             }
         }
     });
@@ -392,6 +395,7 @@ function lookupUsers(query) {
             var username = $user.find('user > username').text();
 
             var postDOM = $('<div></div>');
+            postDOM.append('<img class="profile-img" src="http://api.adorable.io/avatars/40/' + username + '.png">')
             postDOM.append('<b>' + name + '</b> <em>@' + username + '</em><br>');
             $panelDOM.append(postDOM);
         }

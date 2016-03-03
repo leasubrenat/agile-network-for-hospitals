@@ -149,7 +149,7 @@ public class UsersResource {
             HttpSession session = request.getSession(false);
             User me = (User) session.getAttribute("me");
             me = Link.addLinks(me, uriInfo);
-            me.setPassword("");
+//            me.setPassword("");
             URI uri = uriInfo.getAbsolutePathBuilder()
                     .path(UsersResource.class)
                     .path(Integer.toString(me.getId()))
