@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>Content</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+        <script src="//code.jquery.com/jquery-1.12.0.js"></script>
+        <script src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+
+        <link rel="stylesheet" type="text/css" href="webstyle.css">
+        <script src="js/action.js"></script>
+    </head>
+    <body>
+        <div class="container">
+            <div class="well dashboard">
+                <h1>A.N.H.</h1>
+                <div class="welcome">
+                    <div id="login-form" class="form-group">
+                        <input id="login-username" class="form-control" type="text" value="ctu">
+                        <input id="login-password" class="form-control" type="password" value="111111">
+                        <button class="form-control btn btn-default">Login</button>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-3 col-md-3">
+                    <div class="panel-group" id="accordion">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a data-parent="#accordion" id="collapse-notification" href="#tab-notification" data-toggle="tab">
+                                        <span class="glyphicon glyphicon-alert">
+                                        </span>Notifications
+                                        <span id="notification-count" class="badge"></span></a>
+                                </h4>
+                            </div>
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a data-toggle="collapse" id="collapse-board" data-parent="#accordion" href="#collapseOne">
+                                        <span class="glyphicon glyphicon-th-large">
+                                        </span>Boards</a>
+                                </h4>
+                            </div>
+                            <div id="collapseOne" class="panel-collapse collapse in">
+                                <div id="boardList" class="list-group"></div>
+                            </div>
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a data-parent="#accordion" id="collapse-user" href="#tab-user" data-toggle="tab">
+                                        <span class="glyphicon glyphicon-search">
+                                        </span>Users</a>
+                                </h4>
+                            </div>
+                            <!--                            <div id="collapseTwo" class="panel-collapse collapse">
+                                                            <div id="userList" class="list-group"></div>
+                                                        </div>-->
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseFive">
+                                        <span class="glyphicon glyphicon-user">
+                                        </span>Patients</a>
+                                </h4>
+                            </div>
+                            <div id="collapseFive" class="panel-collapse collapse">
+                                <div id="patientList" class="list-group"></div>
+                            </div>
+                        </div>
+<!--                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree">
+                                        <span class="glyphicon glyphicon-tasks">
+                                        </span>Tasks</a>
+                                </h4>
+                            </div>
+                            <div id="collapseThree" class="panel-collapse collapse">
+                                <div class="panel-body">
+                                    <table class="table">
+                                        <tr>
+                                            <td>
+                                                <div id="taskList"></div>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>-->
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a data-parent="#accordion" id="collapse-notification" href="#tab-contact" data-toggle="tab">
+                                        <span class="glyphicon glyphicon-envelope">
+                                        </span>Contact us</a>
+                                </h4>
+                            </div>
+                        </div>
+                    </div><!-- #accordion -->
+                </div>
+                <div class="col-sm-9 col-md-9">
+                    <div id="main" class="well tab-content">
+                        <div class="tab-pane active" id="tab-notification">
+                            <div id="notification-list"></div>
+                        </div>
+                        <div class="tab-pane" id="tab-board">
+                            <div id="postList"></div><br><br>
+                            <div id="addUserForm" class="form-group">
+                                <div class="col-md-4"></div>
+                                <div class="col-md-6">
+                                    <input id="addUser" class="form-control" type="text" placeholder="Add username">
+                                </div>
+                                <div class="col-md-1">
+                                    <button id="user2board" class="btn btn-default">Add</button>
+                                </div>
+                            </div><br><br>
+                            <div id="postMsgForm" class="form-group">
+                                <div class="col-md-4"></div>
+                                <div class="col-md-6">
+                                    <input id="message" class="form-control" type="text" placeholder="New message">
+                                </div>
+                                <div class="col-md-1">
+                                    <button id="post2board" class="btn btn-default">Send</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane" id="tab-user">
+                            <div id="user-search" class="form-group">
+                                <input id="user-search-input" class="form-control" type="text">
+                                <button id="user-search-btn" class="btn btn-default"><span class="glyphicon glyphicon-search"></span>Search</button>
+                            </div>
+                            <div id="user-list"></div>
+                            <div id="user-info"></div>
+                        </div>
+                        <div class="tab-pane" id="tab-patient">
+                            <div id="patient-info"></div>
+                        </div>
+                        <div class="tab-pane" id="tab-contact">
+                            <div id="center">Send us an email!</div><br>
+                            <a href="mailto:lea.subrenat@metropolia.fi?Subject=ANH%20app" target="_top">
+                                Léa Subrenat</a>, project manager/front-end<br>
+                            <a href="mailto:anh.do@metropolia.fi?Subject=ANH%20app" target="_top">
+                                Anh Do</a>, back-end/front-end<br>
+                            <a href="mailto:won.seo@metropolia.fi?Subject=ANH%20app" target="_top">
+                                Won Seob Seo</a>, back-end<br>
+                            <a href="mailto:julia.cui@metropolia.fi?Subject=ANH%20app" target="_top">
+                                Julia Cui</a>, front-end<br>
+                        </div>
+                    </div><!-- .tab content -->
+                </div>
+            </div>
+        </div>
+        <!--MODALS-->
+        <div class="modal fade" id="new-board-modal" tabindex="-1" role="dialog" aria-labelledby="boardModalLabel">
+            <div class="modal-dialog modal-sm" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="boardModalLabel">New board</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div class="form-group">
+                                <label for="new-board-name" class="control-label">Board name:</label>
+                                <input type="text" class="form-control" id="new-board-name">
+                            </div>
+<!--                            <div class="form-group">
+                                <label for="message-text" class="control-label">Message:</label>
+                                <textarea class="form-control" id="message-text"></textarea>
+                            </div>-->
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <!--<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>-->
+                        <button id="submit-board" type="button" class="btn btn-primary" data-dismiss="modal">Create</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--END MODALS-->
+        <script>
+            function showBoard(boardId) {
+                showPosts(boardId);
+            }
+        </script>
+    </body>
+</html>

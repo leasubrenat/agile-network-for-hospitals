@@ -1,0 +1,125 @@
+h1 {
+    text-align: center;
+}
+
+#white {
+    color: #ffffff;
+}
+
+#white a {
+    color: #ffffff;
+}
+
+#center {
+    text-align: center;
+}
+
+#comment {
+    height:100px;
+}
+
+#box {
+    width:370px;
+    height:520px;
+    padding:15px;
+    border:3px solid lightgray;
+    margin:25px;
+}
+#smbox {
+    width:220px;
+    height:270px;
+    padding:10px;
+    border:3px solid lightgray;
+    margin:10px;
+}
+
+body{margin-top:50px;}
+.glyphicon { margin-right:10px; }
+.panel-body { padding:0px; }
+.panel-body table tr td { padding-left: 15px }
+.panel-body .table {margin-bottom: 0px; }
+
+#main {
+    background-color: white;
+}
+
+/*UI Kit*/
+a {
+    color: #5AAE62;
+}
+
+a:hover {
+    color: #8DBF30;
+}
+
+body {
+    background-color: #5AAE62;
+}
+
+.no-gutter > [class*='col-'] {
+    padding-right:0;
+    padding-left:0;
+}
+
+#accordion .panel {
+    margin: 0;
+}
+
+#accordion .panel-default {
+    border: none;
+}
+
+#accordion .panel-heading {
+    background-color: #8DBF30;
+    color: white;
+}
+
+#accordion .panel-heading:hover {
+    background-color: white;
+    color: black;
+}
+
+#accordion * {
+    border-radius: 0px;
+}
+
+input.form-control {
+    border-radius: 2px;
+    border-style: solid;
+    border-width: 1px;
+    /*border-color: rgba(0, 0, 0, 10);*/
+    box-sizing: border-box;
+    background-color: #f2f2f3;
+}
+
+button.btn-default {
+    border-color: #8DBF30;
+    border-radius: 2px;
+    background-color: #8DBF30;
+    color: #ffffff;
+    text-align: left;
+}
+
+/*Components*/
+.post > * {
+    margin: 20px;
+}
+
+.post .header > div {
+    display: inline-block;
+}
+
+.post .author {
+    font-weight: bold;
+    color: #8DBF30;
+}
+
+.post .role {
+    display: inline-block;
+    color: #5AAE62;
+    font-style: italic;
+}
+
+.notification.unread {
+    font-weight: bold;
+}
