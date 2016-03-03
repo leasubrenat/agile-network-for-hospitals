@@ -75,7 +75,7 @@ $(document).ready(function () {
     $('#post2board').click(function () { // Add a new post to the board (POST)
         if (!board.activeId)
             return;
-        console.log("function post2board");
+//        console.log("function post2board");
         postXMLDoc = $.parseXML('<post><content></content></post>');
         postXML = $(postXMLDoc);
         msg = $('#message').val();
@@ -111,6 +111,34 @@ $(document).ready(function () {
     });
 
     //listBoards();
+    $('#collapse-board').click(function () {
+        listBoards();
+    });
+    $('#submit-board').click(function () {
+        var boardName = document.getElementById('new-board-name').value;
+        if (!boardName) {
+            alert('Please enter a board name.');
+            return;
+        }
+        postXMLDoc = $.parseXML('<board><name>' + boardName + '</name></board>');
+//        postXML = $(postXMLDoc);
+        console.log(postXMLDoc);
+        $.ajax({
+            url: "api/boards/",
+            data: postXMLDoc,
+            processData: false,
+            type: "POST",
+            contentType: "application/xml",
+            dataType: "xml",
+            error: function (response) {
+                alert("Error: " + response.statusText);
+                console.log(response);
+            },
+            success: function (res) {
+                listBoards();
+            }
+        });
+    });
 
     //list all the board's users (get)
     $('#listUsers').click(function () {
@@ -128,7 +156,7 @@ $(document).ready(function () {
 
     //add a new user to the board (post)
     $('user2board').click(function () {
-        console.log("inside user2board function");
+//        console.log("inside user2board function");
         var usr = $('#addUser').val();
         $.post('api/boards//users', usr,
                 function () {
@@ -186,7 +214,9 @@ function listBoards() {
         var $xml = $(xml);
         var boards = $xml.find('board');
 
-        document.getElementById('boardList').innerHTML = '';
+        document.getElementById('boardList').innerHTML = '<a class="list-group-item" data-toggle="modal" data-target="#new-board-modal">' +
+                '<span class="glyphicon glyphicon-plus"></span><em>Create a new board</em></div>' +
+                '</a>';
         for (var i = 0; i < boards.length; i++) {
             var $board = $(boards[i]);
             var id = $board.find('board > id').text();
@@ -256,7 +286,8 @@ function showNotifications() {
         var notifications = $xml.find('notification');
         console.log(document.getElementById('notification-count').innerHTML);
 //        document.getElementById('notification-list').innerHTML = 'You have ' + document.getElementById('notification-count').innerHTML + ' unread notification(s).';
-        if (notifications.length === 0) document.getElementById('notification-list').innerHTML = 'You have no new notification.';
+        if (notifications.length === 0)
+            document.getElementById('notification-list').innerHTML = 'You have no new notification.';
 
         for (var i = 0; i < notifications.length; i++) {
             var $notification = $(notifications[i]);
