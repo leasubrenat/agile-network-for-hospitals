@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.lop.api;
 
 import com.lop.model.Board;
@@ -26,8 +21,8 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 /**
- * REST Web Service
- *
+ * BoardsResource REST Web Service.
+ * The collection resource class of Board.
  * @author Won Seob Seo <Wons at Metropolia UAS>
  */
 @Path("/boards")
@@ -46,8 +41,8 @@ public class BoardsResource {
 
     /**
      * Retrieves representation of an instance of com.lop.api.BoardsResource
-     *
-     * @return an instance of com.lop.model.Boards
+     * @param request HttpServletRequest for checking session
+     * @return List of all the board (if user is not logged in, return new empty array
      */
     @GET
     @Produces("application/xml")
@@ -95,11 +90,17 @@ public class BoardsResource {
                 .build();
     }
 
+    /**
+     * @return  posts under this board
+     */
     @Path("/{boardId}/posts")
     public PostsResource getPostsResource() {
         return new PostsResource(uriInfo);
     }
     
+    /**
+     * @return subscribed users under this board
+     */
     @Path("/{boardId}/users")
     public UsersResource getUsersResource() {
         return new UsersResource(uriInfo);

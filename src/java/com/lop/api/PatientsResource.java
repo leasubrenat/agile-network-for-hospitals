@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.lop.api;
 
 import com.lop.model.Link;
@@ -66,7 +61,7 @@ public class PatientsResource {
 
     /**
      * POST method for creating an instance of PatientResource
-     * @param content representation for the new resource
+     * @param content representation for the new Patient resource
      * @return an HTTP response with content of the created resource
      */
     @POST
@@ -85,6 +80,9 @@ public class PatientsResource {
         return PatientResource.getInstance(id);
     }
     
+    /**
+     *  @return (medical) RecordsResource under this patient
+     */
     @Path("/{patientId}/records")
     public RecordsResource getRecordsResource() {
         return new RecordsResource(context);

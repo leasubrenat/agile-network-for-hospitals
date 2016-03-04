@@ -8,8 +8,7 @@ package com.lop;
 import java.util.Set;
 import javax.ws.rs.core.Application;
 
-/**
- *
+/*
  * @author Anh
  */
 @javax.ws.rs.ApplicationPath("api")
@@ -22,15 +21,15 @@ public class ApplicationConfig extends Application {
         return resources;
     }
 
-    /**
+    /*
      * Do not modify addRestResourceClasses() method.
      * It is automatically populated with
      * all resources defined in the project.
      * If required, comment out calling this method in getClasses().
      */
     private void addRestResourceClasses(Set<Class<?>> resources) {
+        resources.add(com.lop.api.BoardResource.class);
         resources.add(com.lop.api.BoardsResource.class);
-        resources.add(com.lop.api.LocationResource.class);
         resources.add(com.lop.api.LocationsResource.class);
         resources.add(com.lop.api.NotificationResource.class);
         resources.add(com.lop.api.NotificationsResource.class);
@@ -43,7 +42,9 @@ public class ApplicationConfig extends Application {
         resources.add(com.lop.api.RoleResource.class);
         resources.add(com.lop.api.RolesResource.class);
         resources.add(com.lop.api.SearchResource.class);
+        resources.add(com.lop.api.TaskResource.class);
         resources.add(com.lop.api.TasksResource.class);
+        resources.add(com.lop.api.UserResource.class);
         resources.add(com.lop.api.UsersResource.class);
     }
     

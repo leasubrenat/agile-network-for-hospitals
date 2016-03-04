@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.lop.api;
 
 import com.lop.model.Patient;
@@ -34,8 +29,6 @@ public class PatientResource {
      * Get instance of the PatientResource
      */
     public static PatientResource getInstance(String id) {
-        // The user may use some kind of persistence mechanism
-        // to store and restore instances of PatientResource class.
         return new PatientResource(id);
     }
 
@@ -51,7 +44,7 @@ public class PatientResource {
 
     /**
      * PUT method for updating or creating an instance of PatientResource
-     * @param content representation for the resource
+     * @param content representation for the Patient resource
      */
     @PUT
     @Consumes(MediaType.APPLICATION_XML)
