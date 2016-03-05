@@ -23,7 +23,7 @@ import javax.ws.rs.core.Response;
 /**
  * BoardsResource REST Web Service.
  * The collection resource class of Board.
- * @author Won Seob Seo <Wons at Metropolia UAS>
+ * @author Won Seob Seo
  */
 @Path("/boards")
 @Consumes(MediaType.APPLICATION_XML)

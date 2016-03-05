@@ -17,7 +17,7 @@ import javax.ws.rs.core.UriInfo;
 
 /**
  *
- * @author Won Seob Seo <Wons at Metropolia UAS>
+ * @author Won Seob Seo
  */
 public class Link {
 

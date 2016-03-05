@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.lop.api;
 
 import com.lop.model.Link;
@@ -27,9 +22,9 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 /**
- * REST Web Service
+ * RecordsResource REST Web Service
  *
- * @author Won Seob Seo <Wons at Metropolia UAS>
+ * @author Won Seob Seo
  */
 @Path("/records")
 @Consumes(MediaType.APPLICATION_XML)
@@ -51,7 +46,8 @@ public class RecordsResource {
 
     /**
      * Retrieves representation of an instance of com.lop.api.RecordsResource
-     * @return an instance of com.lop.model.Records
+     * @param patientId patient ID of whom this record belongs to
+     * @return List of records
      */
     @GET
     @Produces("application/xml")
@@ -69,12 +65,6 @@ public class RecordsResource {
                 Link.addLinks(Integer.toString(r.getPatient().getId()), r, context);
             }
         }
-//        else {
-//            records = new ArrayList<>(World.getInstance().get().getById().values());
-//            for (Task t : tasks) {
-//                Link.addLinks(t, context);
-//            }
-//        }
         return records;
     }
 
@@ -82,7 +72,7 @@ public class RecordsResource {
      * POST method for creating an instance of RecordResource
      * @param content representation for the new resource
      * @param request
-     * @return an HTTP response with content of the created resource
+     * @return an HTTP response with content of the created RecordResource
      */
     @POST
     @Consumes("application/xml")

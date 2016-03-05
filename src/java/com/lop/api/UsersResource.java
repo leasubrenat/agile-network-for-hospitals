@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.lop.api;
 
 import com.lop.model.Link;
@@ -26,7 +21,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriBuilderException;
 
 /**
- * REST Web Service
+ * UsersResource REST Web Service
  *
  * @author Anh
  */
@@ -50,8 +45,7 @@ public class UsersResource {
 
     /**
      * Retrieves representation of an instance of com.lop.api.UsersResource
-     *
-     * @return an instance of com.lop.model.Users
+     * @return List of Users
      */
     @GET
     public List<User> getXml(@PathParam("boardId") String boardId) {
@@ -72,6 +66,7 @@ public class UsersResource {
      * the board when path is /boards/{boardId}/users but add new user when path
      * is /users
      *
+     * @param boardId
      * @param content representation for the new resource
      * @return an HTTP response with content of the created resource
      */
@@ -95,20 +90,21 @@ public class UsersResource {
 
     /**
      * Sub-resource locator method for {id}
+     * @param id
+     * @return an instance of UserResource
      */
     @Path("{id}")
     public UserResource getUserResource(@PathParam("id") String id) {
         return UserResource.getInstance(id, uriInfo);
     }
-
-//    @GET
-//    @Path("{id}")
-//    public Response getUserResource(@PathParam("id") String id) {
-//        User user = Link.addLinks(World.getInstance().getUsers().get(id), uriInfo);
-//        return Response.ok(Link.getUriForSelf(user, uriInfo))
-//                .entity(user)
-//                .build();
-//    }
+    
+    /**
+     * Login method.
+     * 
+     * @param request
+     * @param u User object, with a Username and password
+     * @return an HTTP response
+     */
     @POST
     @Path("login")
     public Response login(@Context HttpServletRequest request, User u) {
@@ -131,7 +127,12 @@ public class UsersResource {
                     .build();
         }
     }
-
+    
+    /**
+     * logout method
+     * @param request
+     * @return an HTTP response
+     */
     @GET
     @Path("logout")
     public Response logout(@Context HttpServletRequest request) {
@@ -141,7 +142,12 @@ public class UsersResource {
         }
         return Response.ok("<response>Logout successful</response>").build();
     }
-
+    
+    /**
+     * sessionCheck method, checks if the user is logged in or not
+     * @param request
+     * @return an HTTP response
+     */
     @GET
     @Path("me")
     public Response sessionCheck(@Context HttpServletRequest request) {
@@ -149,7 +155,6 @@ public class UsersResource {
             HttpSession session = request.getSession(false);
             User me = (User) session.getAttribute("me");
             me = Link.addLinks(me, uriInfo);
-//            me.setPassword("");
             URI uri = uriInfo.getAbsolutePathBuilder()
                     .path(UsersResource.class)
                     .path(Integer.toString(me.getId()))

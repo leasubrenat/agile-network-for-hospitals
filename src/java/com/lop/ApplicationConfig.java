@@ -30,6 +30,7 @@ public class ApplicationConfig extends Application {
     private void addRestResourceClasses(Set<Class<?>> resources) {
         resources.add(com.lop.api.BoardResource.class);
         resources.add(com.lop.api.BoardsResource.class);
+        resources.add(com.lop.api.LocationResource.class);
         resources.add(com.lop.api.LocationsResource.class);
         resources.add(com.lop.api.NotificationResource.class);
         resources.add(com.lop.api.NotificationsResource.class);
@@ -39,7 +40,6 @@ public class ApplicationConfig extends Application {
         resources.add(com.lop.api.PostsResource.class);
         resources.add(com.lop.api.RecordResource.class);
         resources.add(com.lop.api.RecordsResource.class);
-        resources.add(com.lop.api.RoleResource.class);
         resources.add(com.lop.api.RolesResource.class);
         resources.add(com.lop.api.SearchResource.class);
         resources.add(com.lop.api.TaskResource.class);

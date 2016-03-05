@@ -11,7 +11,7 @@ import javax.ws.rs.DELETE;
  * BoardResource REST Web Service.
  * Returns single Board upon the request from BoardsResource, the collection class.
  * 
- * @author Won Seob Seo <Wons at Metropolia UAS>
+ * @author Won Seob Seo 
  */
 public class BoardResource {
 

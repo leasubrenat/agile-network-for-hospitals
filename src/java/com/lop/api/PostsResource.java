@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.lop.api;
 
 import com.lop.model.Board;
@@ -29,7 +24,7 @@ import javax.ws.rs.core.Response;
 /**
  * REST Web Service
  *
- * @author Won Seob Seo <Wons at Metropolia UAS>
+ * @author Won Seob Seo
  */
 @Path("/posts")
 @Consumes(MediaType.APPLICATION_XML)
@@ -51,7 +46,7 @@ public class PostsResource {
 
     /**
      * Retrieves representation of an instance of com.lop.api.PostsResource
-     * @return an instance of com.lop.model.Posts
+     * @return List of Post under the Board of board ID PathParam("boardId")
      */
     @GET
     @Produces("application/xml")
@@ -67,8 +62,8 @@ public class PostsResource {
     /**
      * POST method for creating an instance of PostResource
      * @param content representation for the new resource
-     * @param boardId
-     * @param request
+     * @param boardId the ID of the board this post belong to  
+     * @param request HttpServletRequest
      * @return an HTTP response with content of the created resource
      */
     @POST
@@ -101,12 +96,13 @@ public class PostsResource {
     
     /**
      * Sub-resource locator method for {id}
+     * @param boardId Board ID that this Post is belong to
+     * @param postId Id of Post that will be returned
+     * @return (medical) PostResource under the Board of boardId and ID of postId this patient
      */
     @GET
     @Path("{postId}")
     public Response getPostResource(@PathParam("boardId") String boardId, @PathParam("postId") String postId) {
-//        System.out.println("getPostResource " + boardId);
-        // World.getInstance().getBoards().getById().get(boardId).getPost(Integer.parseInt(postId));
         try {
             Post post = Link.addLinks(boardId, World.getInstance().getBoards().getById().get(boardId).getPost(Integer.parseInt(postId)), uriInfo);
             return Response.ok(Link.getUriForSelf(boardId, post, uriInfo))
