@@ -14,7 +14,7 @@ var posts;
 var j;
 var postXMLDoc;
 var postXML;
-var msg;
+var username;
 
 var me = {
     id: null,
@@ -78,9 +78,9 @@ $(document).ready(function () {
 //        console.log("function post2board");
         postXMLDoc = $.parseXML('<post><content></content></post>');
         postXML = $(postXMLDoc);
-        msg = $('#message').val();
-        if (msg !== null) {
-            postXML.find("content").append(msg);
+        username = $('#message').val();
+        if (username !== null) {
+            postXML.find("content").append(username);
         } else {
             console.log("empty message");
         }
@@ -140,27 +140,49 @@ $(document).ready(function () {
     });
 
     //list all the board's users (get)
-    $('#listUsers').click(function () {
-        $.get('api/board//users', function (xml) {
-            console.log(xml);
-            var $xml = $(xml);
-            names = $xml.find("name");
-            for (i = 0; i < names.length; i++) {
-                name += names[i].textContent + "<br>";
-            }
-            document.getElementById("userList").innerHTML = name;
-        });
-        name = "";
-    });
+//    $('#listUsers').click(function () {
+//        $.get('api/board//users', function (xml) {
+//            console.log(xml);
+//            var $xml = $(xml);
+//            names = $xml.find("name");
+//            for (i = 0; i < names.length; i++) {
+//                name += names[i].textContent + "<br>";
+//            }
+//            document.getElementById("userList").innerHTML = name;
+//        });
+//        name = "";
+//    });
 
     //add a new user to the board (post)
-    $('user2board').click(function () {
+    $('#user2board').click(function () {
+        if (!board.activeId)
+            return;
 //        console.log("inside user2board function");
-        var usr = $('#addUser').val();
-        $.post('api/boards//users', usr,
-                function () {
-                    console.log("user addition ok");
-                });
+        postXMLDoc = $.parseXML('<user><username></username></user>');
+        postXML = $(postXMLDoc);
+        username = $('#addUser').val();
+        if (username !== null) {
+            postXML.find("username").append(username);
+        } else {
+            alert("Please enter a username");
+            console.log("empty message");
+        }
+        $.ajax({
+            url: "api/boards/" + board.activeId + "/subscribe",
+            data: postXMLDoc,
+            processData: false,
+            type: "POST",
+            contentType: "application/xml",
+            dataType: "text",
+            error: function (response) {
+                alert(response.statusText);
+                console.log(response);
+            },
+            success: function (res) {
+                alert(res);
+                console.log(res);
+            }
+        });
     });
 
     var $searchBar = $('#user-search-input');

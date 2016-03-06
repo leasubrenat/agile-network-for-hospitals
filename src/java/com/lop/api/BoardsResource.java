@@ -21,6 +21,7 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.Produces;
 import javax.ws.rs.GET;
+import javax.ws.rs.NotFoundException;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -89,20 +90,46 @@ public class BoardsResource {
     @GET
     @Path("{id}")
     public Response getBoardResource(@PathParam("id") String id) {
-        Board board = Link.addLinks(World.getInstance().getBoards().get(id), uriInfo);
-        return Response.ok(Link.getUriForSelf(board, uriInfo))
-                .entity(board)
-                .build();
+        try {
+            Board board = Link.addLinks(World.getInstance().getBoards().get(id), uriInfo);
+            return Response.ok(Link.getUriForSelf(board, uriInfo))
+                    .entity(board)
+                    .build();
+        } catch (NullPointerException e) {
+            throw new NotFoundException();
+        }
     }
 
     @Path("/{boardId}/posts")
     public PostsResource getPostsResource() {
         return new PostsResource(uriInfo);
     }
-    
+
     @Path("/{boardId}/users")
     public UsersResource getUsersResource() {
         return new UsersResource(uriInfo);
+    }
+
+    @POST
+    @Path("/{id}/subscribe")
+    @Consumes("application/xml")
+    public Response addUserToBoard(@PathParam("id") String id, User content) {
+        try {
+            System.out.println(content);
+            Board board = World.getInstance().getBoards().get(id);
+            System.out.println(board);
+            User user = World.getInstance().getUsers().getByUsername().get(content.getUsername());
+            System.out.println(user);
+            for (User u : board.getUsers()) {
+                if (user.getUsername().equals(u.getUsername())) {
+                    return Response.ok("The user has already subscribed to this board.").build();
+                }
+            }
+            board.getUsers().add(user);
+            return Response.ok("The user is now subscribed to this board.").build();
+        } catch (NullPointerException e) {
+            throw new NotFoundException();
+        }
     }
 
 }

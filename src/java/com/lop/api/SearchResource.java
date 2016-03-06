@@ -11,21 +11,16 @@ import com.lop.model.World;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Pattern;
-import javax.ws.rs.BadRequestException;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.GET;
-import javax.ws.rs.NotFoundException;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import org.omg.CosNaming.NamingContextPackage.NotFound;
 
 /**
  * REST Web Service
@@ -55,7 +50,7 @@ public class SearchResource {
         List<User> results = new ArrayList<>();
         try {
             if (query.length() == 0) return results;
-            Pattern p = Pattern.compile(query);
+            Pattern p = Pattern.compile(query, Pattern.CASE_INSENSITIVE);
             for (Entry<String, User> e : World.getInstance().getUsers().getById().entrySet()) {
                 User u = e.getValue();
 //                Matcher m = p.matcher(u.getName());
