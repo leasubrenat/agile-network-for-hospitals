@@ -1,5 +1,5 @@
-Dojo Rules
+Agile Network for Hospitals
 ==========
 
-This repository contains a list of dojo rules for the Deadly Vipers dojo
+Communication app specialized in hospital environments
 
