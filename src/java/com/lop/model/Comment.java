@@ -11,7 +11,7 @@ import java.util.Date;
 
 /**
  *
- * @author Won Seob Seo <Wons at Metropolia UAS>
+ * @author Won Seob Seo
  */
 public class Comment implements Serializable, Comparable<Comment>  {
     

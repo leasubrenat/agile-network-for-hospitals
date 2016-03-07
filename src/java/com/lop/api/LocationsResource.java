@@ -20,7 +20,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 /**
- * REST Web Service
+ * LocationsResource REST Web Service
  *
  * @author Anh
  */

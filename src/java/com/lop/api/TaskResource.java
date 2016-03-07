@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.lop.api;
 
 import com.lop.model.Link;
@@ -21,7 +16,7 @@ import javax.ws.rs.core.UriInfo;
 /**
  * REST Web Service
  *
- * @author Won Seob Seo <Wons at Metropolia UAS>
+ * @author Won Seob Seo
  */
 public class TaskResource {
 
@@ -36,6 +31,8 @@ public class TaskResource {
 
     /**
      * Get instance of the TaskResource
+     * @param id
+     * @return an instance of the TaskResource
      */
     public static TaskResource getInstance(String id) {
         // The user may use some kind of persistence mechanism
@@ -45,6 +42,7 @@ public class TaskResource {
 
     /**
      * Retrieves representation of an instance of com.lop.api.TaskResource
+     * @param uriInfo
      * @return an instance of com.lop.model.Task
      */
     @GET
@@ -59,14 +57,13 @@ public class TaskResource {
     /**
      * PUT method for updating or creating an instance of TaskResource
      * @param content representation for the resource
+     * @param uriInfo
      * @return an HTTP response with content of the updated or created resource.
      */
     @PUT
     @Consumes("application/xml")
     public Response putXml(Task content, @Context UriInfo uriInfo) {
         Task task = World.getInstance().getTasks().getById().get(id);
-//        World.getInstance().getTasks().getById().replace(id, content);
-//        World.getInstance().getTasks().getByName().replace(content.getName(), content);
         for (User u : content.getParticipants()){
             u = World.getInstance().getUsers().get(Integer.toString(u.getId()));
             if (u != null && !task.getParticipants().contains(u)) {

@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.lop.api;
 
 import com.lop.model.Board;
@@ -29,9 +24,9 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 /**
- * REST Web Service
+ * TasksResource REST Web Service
  *
- * @author Won Seob Seo <Wons at Metropolia UAS>
+ * @author Won Seob Seo
  */
 @Path("/tasks")
 @Consumes(MediaType.APPLICATION_XML)
@@ -54,6 +49,8 @@ public class TasksResource {
     /**
      * Retrieves representation of an instance of com.lop.api.TasksResource
      * when /tasks, gets all tasks, when users/{id}/tasks, gets tasks for that user
+     * @param userId
+     * @param request
      * @return an instance of com.lop.model.Tasks
      */
     @GET
@@ -61,7 +58,6 @@ public class TasksResource {
     public List<Task> getXml(@PathParam("UserId") String userId, @Context HttpServletRequest request) {
         HttpSession session = request.getSession();
         User me = (User) session.getAttribute("me");
-        // System.out.println((User) session.getAttribute("me"));
         if (me == null) {
             System.out.println("me null");
             return new ArrayList<Task>();
@@ -84,8 +80,8 @@ public class TasksResource {
 
     /**
      * POST method for creating an instance of TaskResource
-     *
      * @param content representation for the new resource
+     * @param request
      * @return an HTTP response with content of the created resource
      */
     @POST
@@ -113,7 +109,6 @@ public class TasksResource {
             World.getInstance().getUsers().getById().put(Integer.toString(u.getId()), u);
         }
         World.getInstance().getTasks().add(content);
-        //poster.addTask(content);
         URI uri = context.getAbsolutePathBuilder().path(Integer.toString(content.getId())).build();
         return Response.created(uri)
                 .entity(content)

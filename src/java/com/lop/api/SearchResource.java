@@ -41,7 +41,7 @@ public class SearchResource {
 
     /**
      * Retrieves representation of an instance of com.lop.api.SearchResource
-     *
+     * @param query (part of ) user name to search
      * @return an instance of java.lang.String
      */
     @GET

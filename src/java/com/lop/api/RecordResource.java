@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.lop.api;
 
 import com.lop.model.Record;
@@ -13,9 +8,9 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.DELETE;
 
 /**
- * REST Web Service
+ * RecordResource REST Web Service
  *
- * @author Won Seob Seo <Wons at Metropolia UAS>
+ * @author Won Seob Seo
  */
 public class RecordResource {
 
@@ -51,7 +46,6 @@ public class RecordResource {
     /**
      * PUT method for updating or creating an instance of RecordResource
      * @param content representation for the resource
-     * @return an HTTP response with content of the updated or created resource.
      */
     @PUT
     @Consumes("application/xml")

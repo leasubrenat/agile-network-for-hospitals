@@ -15,7 +15,7 @@ import javax.ws.rs.DELETE;
 /**
  * REST Web Service
  *
- * @author Won Seob Seo <Wons at Metropolia UAS>
+ * @author Won Seob Seo
  */
 public class PostResource {
 
@@ -44,14 +44,12 @@ public class PostResource {
     @GET
     @Produces("application/xml")
     public Post getXml() {
-        //TODO return proper representation object
         throw new UnsupportedOperationException();
     }
 
     /**
      * PUT method for updating or creating an instance of PostResource
-     * @param content representation for the resource
-     * @return an HTTP response with content of the updated or created resource.
+     * @param content representation for the Post resource
      */
     @PUT
     @Consumes("application/xml")

@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.lop.api;
 
 import com.lop.model.Location;
@@ -15,7 +10,7 @@ import javax.ws.rs.DELETE;
 import javax.ws.rs.core.MediaType;
 
 /**
- * REST Web Service
+ * LocationResource REST Web Service
  *
  * @author Anh
  */

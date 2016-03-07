@@ -41,19 +41,12 @@ public class NotificationsResource {
     public NotificationsResource(@Context UriInfo uriInfo) {
         this.context = uriInfo;
     }
-
+    
     /**
      * Retrieves representation of an instance of com.lop.api.NotificationsResource
      * @param id ID of the User from /users/{id}
      * @return an instance of com.lop.model.Notifications
      */
-//    @GET
-//    @Produces(MediaType.APPLICATION_XML)
-//    public Notifications getXml() {
-//        //TODO return proper representation object
-//        throw new UnsupportedOperationException();
-//    }
-    
     @GET
     @Produces(MediaType.APPLICATION_XML)
     public List<Notification> getXml(@PathParam("id") String id) {
@@ -63,7 +56,6 @@ public class NotificationsResource {
         {
             if (n.isUnread()) {
                 returnedNotifications.add(n);
-//                n.setUnread(false);
                 Link.addLinks(Integer.toString(n.getPost().getBoardId()), n.getPost(), context);
             }
         }
@@ -93,7 +85,6 @@ public class NotificationsResource {
     @Consumes(MediaType.APPLICATION_XML)
     @Produces(MediaType.APPLICATION_XML)
     public Response postXml(Notification content) {
-        //TODO
         return Response.created(context.getAbsolutePath()).build();
     }
 
